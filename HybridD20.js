@@ -33,30 +33,28 @@ function HybridD20() {
     alert('The HybridD20 module requires use of the SRD35 module');
     return;
   }
-  if(window.Pathfinder == null) {
-    alert('The HybridD20 module requires use of the Pathfinder module');
-    return;
-  }
 
   var rules = new ScribeRules('HybridD20', HybridD20_VERSION);
   rules.editorElements = SRD35.initialEditorElements();
   SRD35.createViewers(rules, SRD35.VIEWERS);
   // Remove some editor and character sheet elements that don't apply
   rules.defineEditorElement('experience', 'Experience', 'text', [8], 'levels');
-  rules.defineEditorElement('experienceSpent', 'Spent', 'text', [8], 'levels');
   rules.defineSheetElement('ExperienceInfo', 'Level', null, '');
-  rules.defineSheetElement('Experience', 'ExperienceInfo/');
+  rules.defineSheetElement('Experience', 'ExperienceInfo/', '<b>Experience/Spent/Needed</b>: %V');
   rules.defineSheetElement('Experience Spent', 'ExperienceInfo/', '/%V');
   rules.defineSheetElement('Experience Needed', 'ExperienceInfo/', '/%V');
   rules.defineRule('level', 'experienceSpent', '=', 'Math.floor(Math.log(source / 1000 + 1) / Math.log(1.1))');
+  rules.defineRule('experienceNeeded', 'level', '=', 'Math.floor(1000 * (Math.pow(1.1, source + 1) - 1))');
   rules.defineEditorElement('levels');
   rules.defineEditorElement('specialize');
   rules.defineEditorElement('prohibit');
+  rules.defineEditorElement('feats');
+  rules.defineEditorElement('feats', 'Feats', 'bag', 'feats', 'skills');
   rules.defineSheetElement('Levels');
   rules.randomizeOneAttribute = SRD35.randomizeOneAttribute;
   rules.makeValid = SRD35.makeValid;
   rules.ruleNotes = HybridD20.ruleNotes;
-  SRD35.abilityRules(rules);
+  HybridD20.abilityRules(rules);
   HybridD20.raceRules(rules, SRD35.LANGUAGES, SRD35.RACES);
   HybridD20.skillRules(rules, HybridD20.SKILLS);
   HybridD20.featRules(rules, HybridD20.FEATS);
@@ -499,8 +497,64 @@ HybridD20.SKILLS = [
   'Stealth:dex', 'Streetwise:cha', 'Survival:wis'
 ];
 
+/* Defines the rules related to character abilities. */
+HybridD20.abilityRules = function(rules) {
+
+  rules.defineRule('experienceSpent', '', '=', '0');
+
+  // Ability modifier computation
+  for(var ability in {'charisma':'', 'constitution':'', 'dexterity':'',
+                      'intelligence':'', 'strength':'', 'wisdom':''}) {
+    rules.defineRule(ability, ability + 'Adjust', '+', null);
+    rules.defineRule
+      (ability + 'Modifier', ability, '=', 'Math.floor((source - 10) / 2)');
+    rules.defineNote(ability + ':%V (%1)');
+    rules.defineRule(ability + '.1', ability + 'Modifier', '=', null);
+    // Experience bump costs 3 * new value for each increment, so
+    // cost(new, bumps) = bumps * new * 3 - (bumps * (bumps - 1) * 0.5) * 3
+    rules.defineRule('subtractExperienceSpentOn' + ability, ability + 'Adjust', '=', 'source * (source - 1) * -1.5');
+    rules.defineRule('experienceSpentOn' + ability,
+      ability + 'Adjust', '=', '3 * source',
+      ability, '*', null,
+      'subtractExperienceSpentOn' + ability, '+', null
+    );
+    rules.defineRule
+      ('experienceSpent', 'experienceSpentOn' + ability, '+', null);
+  }
+
+  // Effects of ability modifiers
+  rules.defineRule('combatNotes.constitutionHitPointsAdjustment',
+    'constitutionModifier', '=', null,
+    'level', '*', null
+  );
+  rules.defineRule('combatNotes.dexterityArmorClassAdjustment',
+    'dexterityModifier', '=', null
+  );
+  rules.defineRule('combatNotes.dexterityAttackAdjustment',
+    'dexterityModifier', '=', null
+  );
+  rules.defineRule('combatNotes.strengthAttackAdjustment',
+    'strengthModifier', '=', null
+  );
+  rules.defineRule('combatNotes.strengthDamageAdjustment',
+    'strengthModifier', '=', null
+  );
+
+  // Effects of the notes computed above
+  rules.defineRule
+    ('armorClass', 'combatNotes.dexterityArmorClassAdjustment', '+', null);
+  rules.defineRule
+    ('hitPoints', 'combatNotes.constitutionHitPointsAdjustment', '+', null);
+  rules.defineRule
+    ('meleeAttack', 'combatNotes.strengthAttackAdjustment', '+', null);
+  rules.defineRule
+    ('rangedAttack', 'combatNotes.dexterityAttackAdjustment', '+', null);
+
+};
+
 /* Defines the rules related to combat. */
 HybridD20.combatRules = function(rules) {
+  SRD35.combatRules(rules);
   // TODO
 };
 
@@ -725,6 +779,9 @@ HybridD20.featRules = function(rules, feats) {
     if(notes != null)
       rules.defineNote(notes);
 
+    rules.defineRule('experienceSpentOn' + feat, 'feats.' + feat, '=', 'source * (source + 1) + 3');
+    rules.defineRule('experienceSpent', 'experienceSpentOn' + feat, '+', null);
+
   }
 
 };
@@ -790,7 +847,11 @@ HybridD20.skillRules = function(rules, skills) {
       'skills.' + skill, '=', 'source + 3',
       abilityNames[ability] + 'Modifier', '+', null
     );
+    rules.defineRule('experienceSpentOn' + skill, 'skills.' + skill, '=', 'source * (source + 1) + 3');
+    rules.defineRule('experienceSpent', 'experienceSpentOn' + skill, '+', null);
   }
+
+  // TODO Skill specialization
 
 };
 
