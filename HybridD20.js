@@ -44,8 +44,6 @@ function HybridD20() {
   rules.defineSheetElement('Experience Used', 'ExperienceInfo/', '/%V');
   rules.defineSheetElement('Experience Needed', 'ExperienceInfo/', '/%V');
   rules.defineSheetElement('Allocated Exp', 'Level', null, '; ');
-  rules.defineRule('level', 'experienceUsed', '=', 'Math.floor(Math.log(source / 1000 + 1) / Math.log(1.1))');
-  rules.defineRule('experienceNeeded', 'level', '=', 'Math.floor(1000 * (Math.pow(1.1, source + 1) - 1))');
   rules.randomizeOneAttribute = HybridD20.randomizeOneAttribute;
   rules.makeValid = SRD35.makeValid;
   rules.ruleNotes = HybridD20.ruleNotes;
@@ -98,7 +96,7 @@ HybridD20.FEATS = [
 // random characters
 HybridD20.RANDOMIZABLE_ATTRIBUTES = [
   'charisma', 'constitution', 'dexterity', 'intelligence', 'strength', 'wisdom',
-  'name', 'race', 'gender', 'alignment', 'experience', 'deity', 'feats',
+  'name', 'race', 'gender', 'alignment', 'deity', 'experience', 'feats',
   'skills', 'languages', 'hitPoints', 'armor', 'shield', 'weapons', 'spells',
   'goodies'
 ];
@@ -496,7 +494,16 @@ HybridD20.SKILLS = [
 /* Defines the rules related to character abilities. */
 HybridD20.abilityRules = function(rules) {
 
-  rules.defineRule('experienceUsed', '', '=', '-1');
+  rules.defineRule('experienceNeeded',
+    'level', '=', 'Math.floor(1000 * (Math.pow(1.1, source + 1) - 1))'
+  );
+  rules.defineRule('experienceUsed',
+    '', '=', '0',
+    'allocatedExp.Abilities', '+', null
+  );
+  rules.defineRule('level',
+    'experience', '=', 'Math.floor(Math.log(source / 1000 + 1) / Math.log(1.1))'
+  );
 
   // Ability modifier computation
   for(var ability in {'charisma':'', 'constitution':'', 'dexterity':'',
@@ -508,14 +515,14 @@ HybridD20.abilityRules = function(rules) {
     rules.defineRule(ability + '.1', ability + 'Modifier', '=', null);
     // Experience bump costs 3 * new value for each increment, so
     // cost(new, bumps) = bumps * new * 3 - (bumps * (bumps - 1) * 0.5) * 3
-    rules.defineRule('subtractAllocatedExp.' + ability, ability + 'Adjust', '=', 'source * (source - 1) * -1.5');
-    rules.defineRule('allocatedExp.' + ability,
+    rules.defineRule('subtractAllocatedExp.' + ability, ability + 'Adjust', '=', 'source * (source - 1) * 1.5');
+    rules.defineRule('allocatedAbilityExp.' + ability,
       ability + 'Adjust', '=', '3 * source',
       ability, '*', null,
-      'subtractAllocatedExp.' + ability, '+', null
+      'subtractAllocatedExp.' + ability, '+', '-source'
     );
     rules.defineRule
-      ('experienceceUsed', 'allocatedExp.' + ability, '+', null);
+      ('allocatedExp.Abilities', 'allocatedAbilityExp.' + ability, '+=', null);
   }
 
   // Effects of ability modifiers
@@ -562,8 +569,8 @@ HybridD20.combatRules = function(rules) {
     'skills.Combat (Fire)', '^=', null
   );
   rules.defineRule('initiative', 'dexterityModifier', '=', null);
-  rules.defineRule('meleeAttack', 'skills.Combat (Fire)', '=', null);
-  rules.defineRule('rangedAttack', 'skills.Combat (HTH)', '=', null);
+  rules.defineRule('meleeAttack', 'skills.Combat (HTH)', '=', null);
+  rules.defineRule('rangedAttack', 'skills.Combat (Fire)', '=', null);
   rules.defineRule('save.Fortitude', 'constitutionModifier', '=', null);
   rules.defineRule('save.Reflex', 'dexterityModifier', '=', null);
   rules.defineRule('save.Will', 'wisdomModifier', '=', null);
@@ -572,6 +579,8 @@ HybridD20.combatRules = function(rules) {
 
 /* Defines the rules related to feats. */
 HybridD20.featRules = function(rules, feats) {
+
+  rules.defineRule('experienceUsed', 'allocatedExp.Feats', '+', null);
 
   for(var i = 0; i < feats.length; i++) {
 
@@ -658,7 +667,16 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Far Shot') {
       // TODO
     } else if(feat == 'Fast Stealth') {
-      // TODO
+      notes = [
+        'skillNotes.fastStealthFeature:-%V Stealth at full speed',
+        'validationNotes.fastStealthFeatSkills:Requires Stealth >= %1'
+      ];
+      rules.defineRule('skillNotes.fastStealthFeature',
+        'feats.Fast Stealth', '=', '5 - source'
+      );
+      rules.defineRule('validationNotes.fastStealthFeatSkills.1',
+        'feats.Fast Stealth', '=', 'source * 2'
+      );
     } else if(feat == 'Favored Enemy') {
       // TODO
     } else if(feat == 'Favored Terrain') {
@@ -752,7 +770,14 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Mighty Throw') {
       // TODO
     } else if(feat == 'Mind Over Body') {
-      // TODO
+      notes = [
+        'featureNotes.mindOverBodyFeature:Heal %V ability damage/day',
+        'validationNotes.mindOverBodyFeatAbility:Requires Constitution >= 13'
+      ];
+      rules.defineRule('featureNotes.mindOverBodyFeature',
+        'feats.Mind Over Body', '=', '1 + source',
+        'constitutionModifier', 'v', null
+      );
     } else if(feat == 'Mobility') {
       // TODO
     } else if(feat == 'Mounted Archery') {
@@ -788,7 +813,12 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Riposte') {
       // TODO
     } else if(feat == 'Rogue Crawl') {
-      // TODO
+      notes = [
+        "abilityNotes.rogueCrawlFeature:Crawl %V'/rd"
+      ];
+      rules.defineRule('abilityNotes.rogueCrawlFeature',
+        'feats.Rogue Crawl', '=', 'source * 5 + 5'
+      );
     } else if(feat == 'Shield Cover') {
       // TODO
     } else if(feat == 'Shield Deflection') {
@@ -843,7 +873,10 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Whirlwind Attack') {
       // TODO
     } else if(feat == 'Wild Empathy') {
-      // TODO
+      notes = [
+        'skillNotes.wildEmpathyFeature:Diplomacy with animals',
+        'validationNotes.wildEmpathyFeatSkills:Requires Handle Animal'
+      ];
     } else
       continue;
     rules.defineChoice('feats', feat);
@@ -851,8 +884,8 @@ HybridD20.featRules = function(rules, feats) {
     if(notes != null)
       rules.defineNote(notes);
 
-    rules.defineRule('allocatedExp.' + feat, 'feats.' + feat, '=', 'source * (source + 1) + 3');
-    rules.defineRule('experienceUsed', 'allocatedExp.' + feat, '+', null);
+    rules.defineRule
+      ('allocatedExp.Feats', 'feats.' + feat, '=', 'source * (source + 1) + 3');
 
   }
 
@@ -967,19 +1000,23 @@ HybridD20.randomizeOneAttribute = function(attributes, attribute) {
     var useUpTo = xpUsed + ScribeUtils.random(0, xpTotal - xpUsed) / 2;
     var skill = null;
     while(xpUsed <= useUpTo) {
-      skill = ScribeUtils.randomKey(choices);
-      if(!attributes['skills.' + skill])
-        attributes['skills.' + skill] = 0;
-      attributes['skills.' + skill]++;
+      skill = !attributes['skills.Combat (HTH)'] ? 'skills.Combat (HTH)' :
+              !attributes['skills.Combat (Fire)'] ? 'skills.Combat (Fire)' :
+              ('skills.' + ScribeUtils.randomKey(choices));
+      if(!attributes[skill])
+        attributes[skill] = 0;
+      else if(attributes[skill] >= attributes['maxAllowedSkillPoints'])
+        continue;
+      attributes[skill]++;
       attrs = this.applyRules(attributes);
       xpUsed = attrs['experienceUsed'];
     }
     if(!skill || xpUsed < xpTotal) {
       // empty
-    } else if(attributes['skills.' + skill] == 1) {
-      delete attributes['skills.' + skill];
+    } else if(attributes[skill] == 1) {
+      delete attributes[skill];
     } else {
-      attributes['skills.' + skill]--;
+      attributes[skill]--;
     }
   } else {
     SRD35.randomizeOneAttribute(attributes, attribute);
@@ -988,6 +1025,9 @@ HybridD20.randomizeOneAttribute = function(attributes, attribute) {
 
 /* Defines the rules related to skills. */
 HybridD20.skillRules = function(rules, skills) {
+
+  rules.defineRule('experienceUsed', 'allocatedExp.Skills', '+', null);
+  rules.defineRule('maxAllowedSkillPoints', 'level', '=', null);
 
   var abilityNames = {
     'cha':'charisma', 'con':'constitution', 'dex':'dexterity',
@@ -1005,8 +1045,7 @@ HybridD20.skillRules = function(rules, skills) {
       'skills.' + skill, '=', 'source + 3',
       abilityNames[ability] + 'Modifier', '+', null
     );
-    rules.defineRule('allocatedExp.' + skill, 'skills.' + skill, '=', 'source * (source + 1) + 3');
-    rules.defineRule('experienceUsed', 'allocatedExp.' + skill, '+', null);
+    rules.defineRule('allocatedExp.Skills', 'skills.' + skill, '+=', 'source * (source + 1) + 3');
   }
 
   // TODO Skill specialization
