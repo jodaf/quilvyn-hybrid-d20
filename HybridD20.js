@@ -35,23 +35,18 @@ function HybridD20() {
   }
 
   var rules = new ScribeRules('HybridD20', HybridD20_VERSION);
-  rules.editorElements = SRD35.initialEditorElements();
+  rules.editorElements = HybridD20.initialEditorElements();
   SRD35.createViewers(rules, SRD35.VIEWERS);
-  // Remove some editor and character sheet elements that don't apply
-  rules.defineEditorElement('experience', 'Experience', 'text', [8], 'levels');
-  rules.defineSheetElement('ExperienceInfo', 'Level', null, '');
-  rules.defineSheetElement('Experience', 'ExperienceInfo/', '<b>Experience/Spent/Needed</b>: %V');
-  rules.defineSheetElement('Experience Spent', 'ExperienceInfo/', '/%V');
-  rules.defineSheetElement('Experience Needed', 'ExperienceInfo/', '/%V');
-  rules.defineRule('level', 'experienceSpent', '=', 'Math.floor(Math.log(source / 1000 + 1) / Math.log(1.1))');
-  rules.defineRule('experienceNeeded', 'level', '=', 'Math.floor(1000 * (Math.pow(1.1, source + 1) - 1))');
-  rules.defineEditorElement('levels');
-  rules.defineEditorElement('specialize');
-  rules.defineEditorElement('prohibit');
-  rules.defineEditorElement('feats');
-  rules.defineEditorElement('feats', 'Feats', 'bag', 'feats', 'skills');
+  // Remove some character sheet elements that don't apply
   rules.defineSheetElement('Levels');
-  rules.randomizeOneAttribute = SRD35.randomizeOneAttribute;
+  rules.defineSheetElement('ExperienceInfo', 'Level', null, '');
+  rules.defineSheetElement('Experience', 'ExperienceInfo/', '<b>Experience/Used/Needed</b>: %V');
+  rules.defineSheetElement('Experience Used', 'ExperienceInfo/', '/%V');
+  rules.defineSheetElement('Experience Needed', 'ExperienceInfo/', '/%V');
+  rules.defineSheetElement('Allocated Exp', 'Level', null, '; ');
+  rules.defineRule('level', 'experienceUsed', '=', 'Math.floor(Math.log(source / 1000 + 1) / Math.log(1.1))');
+  rules.defineRule('experienceNeeded', 'level', '=', 'Math.floor(1000 * (Math.pow(1.1, source + 1) - 1))');
+  rules.randomizeOneAttribute = HybridD20.randomizeOneAttribute;
   rules.makeValid = SRD35.makeValid;
   rules.ruleNotes = HybridD20.ruleNotes;
   HybridD20.abilityRules(rules);
@@ -63,7 +58,7 @@ function HybridD20() {
     (rules, SRD35.ARMORS, SRD35.GOODIES, SRD35.SHIELDS, SRD35.WEAPONS);
   HybridD20.combatRules(rules);
   SRD35.movementRules(rules);
-  HybridD20.magicRules(rules, SRD35.DOMAINS, SRD35.SCHOOLS);
+  HybridD20.magicRules(rules, SRD35.SCHOOLS);
   HybridD20.spellDescriptionRules(rules);
   rules.defineChoice('random', HybridD20.RANDOMIZABLE_ATTRIBUTES);
   Scribe.addRuleSet(rules);
@@ -103,8 +98,9 @@ HybridD20.FEATS = [
 // random characters
 HybridD20.RANDOMIZABLE_ATTRIBUTES = [
   'charisma', 'constitution', 'dexterity', 'intelligence', 'strength', 'wisdom',
-  'name', 'race', 'gender', 'alignment', 'deity', 'feats', 'skills',
-  'languages', 'hitPoints', 'armor', 'shield', 'weapons', 'spells', 'goodies'
+  'name', 'race', 'gender', 'alignment', 'experience', 'deity', 'feats',
+  'skills', 'languages', 'hitPoints', 'armor', 'shield', 'weapons', 'spells',
+  'goodies'
 ];
 HybridD20.SPELLS = {
 
@@ -500,7 +496,7 @@ HybridD20.SKILLS = [
 /* Defines the rules related to character abilities. */
 HybridD20.abilityRules = function(rules) {
 
-  rules.defineRule('experienceSpent', '', '=', '0');
+  rules.defineRule('experienceUsed', '', '=', '-1');
 
   // Ability modifier computation
   for(var ability in {'charisma':'', 'constitution':'', 'dexterity':'',
@@ -512,14 +508,14 @@ HybridD20.abilityRules = function(rules) {
     rules.defineRule(ability + '.1', ability + 'Modifier', '=', null);
     // Experience bump costs 3 * new value for each increment, so
     // cost(new, bumps) = bumps * new * 3 - (bumps * (bumps - 1) * 0.5) * 3
-    rules.defineRule('subtractExperienceSpentOn' + ability, ability + 'Adjust', '=', 'source * (source - 1) * -1.5');
-    rules.defineRule('experienceSpentOn' + ability,
+    rules.defineRule('subtractAllocatedExp.' + ability, ability + 'Adjust', '=', 'source * (source - 1) * -1.5');
+    rules.defineRule('allocatedExp.' + ability,
       ability + 'Adjust', '=', '3 * source',
       ability, '*', null,
-      'subtractExperienceSpentOn' + ability, '+', null
+      'subtractAllocatedExp.' + ability, '+', null
     );
     rules.defineRule
-      ('experienceSpent', 'experienceSpentOn' + ability, '+', null);
+      ('experienceceUsed', 'allocatedExp.' + ability, '+', null);
   }
 
   // Effects of ability modifiers
@@ -554,8 +550,24 @@ HybridD20.abilityRules = function(rules) {
 
 /* Defines the rules related to combat. */
 HybridD20.combatRules = function(rules) {
-  SRD35.combatRules(rules);
-  // TODO
+
+  rules.defineRule('armorClass',
+    '', '=', '10',
+    'armor', '+', 'SRD35.armorsArmorClassBonuses[source]',
+    'shield', '+', 'source == "None" ? null : ' +
+                   'source == "Tower" ? 4 : source.match(/Heavy/) ? 2 : 1'
+  );
+  rules.defineRule('baseAttack',
+    'skills.Combat (HTH)', '=', null,
+    'skills.Combat (Fire)', '^=', null
+  );
+  rules.defineRule('initiative', 'dexterityModifier', '=', null);
+  rules.defineRule('meleeAttack', 'skills.Combat (Fire)', '=', null);
+  rules.defineRule('rangedAttack', 'skills.Combat (HTH)', '=', null);
+  rules.defineRule('save.Fortitude', 'constitutionModifier', '=', null);
+  rules.defineRule('save.Reflex', 'dexterityModifier', '=', null);
+  rules.defineRule('save.Will', 'wisdomModifier', '=', null);
+
 };
 
 /* Defines the rules related to feats. */
@@ -569,13 +581,13 @@ HybridD20.featRules = function(rules, feats) {
 
     if(feat == 'Advance') {
       notes = [
-        'combatNotes.advanceFeatFeature:' +
+        'combatNotes.advanceFeature:' +
           "Move through %V' of threatened area without AOO",
         'validationNotes.advanceFeatAbility:Requires Dexterity >= 15',
         'validationNotes.advanceFeatSkills:Requires Dodge >= %1/Mobility >= %2'
       ];
       rules.defineRule
-        ('combatNotes.advanceFeatFeature', 'feats.Advance', '=', 'source * 5');
+        ('combatNotes.advanceFeature', 'feats.Advance', '=', 'source * 5');
       rules.defineRule
         ('validationNotes.advanceFeatSkills.1', 'feats.Advance', '=', null);
       rules.defineRule
@@ -589,9 +601,32 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Blind-Fight') {
       // TODO
     } else if(feat == 'Bravery') {
-      // TODO
+      notes = [
+        'saveNotes.braveryFeature:+%V vs. fear',
+        'validationNotes.braveryFeatPrereq:Requires Combat (HTH) skill >= %1||Iron Will feat >= %2'
+      ];
+      rules.defineRule('saveNotes.braveryFeature', 'feats.Bravery', '=', null);
+      rules.defineRule('validationNotes.braveryFeatPrereq.1',
+        'feats.Bravery', '=', 'source > 1 ? source * 4 - 2 : 2'
+      );
+      rules.defineRule('validationNotes.braveryFeatPrereq.2',
+        'validationNotes.braveryFeatPrereq.1', '=', null
+      );
+      rules.defineRule('validationNotes.braveryFeatPrereq.3',
+        'feats.Bravery', '=', '0', 
+        'skills.Combat (HTH)', '^', null,
+        'feats.Iron Will', '^', null
+      );
+      rules.defineRule('validationNotes.braveryFeatPrereq',
+        'validationNotes.braveryFeatPrereq.1', '=', null,
+        'validationNotes.braveryFeatPrereq.3', '+', '-source',
+        '', '^', '0'
+      );
     } else if(feat == 'Camouflage') {
-      // TODO
+      notes = [
+        'featureNotes.camouflageFeature:Hide in any natural terrain',
+        'validationNotes.camouflageFeatSkills:Requires Stealth >= 13/Survival >= 13'
+      ];
     } else if(feat == 'Canny Defense') {
       // TODO
     } else if(feat == 'Cleave') {
@@ -633,7 +668,13 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Follow-Through') {
       // TODO
     } else if(feat == 'Great Fortitude') {
-      // TODO
+      notes = [
+        'saveNotes.greatFortitudeFeature:+%V Fortitude'
+      ];
+      rules.defineRule
+        ('saveNotes.greatFortitudeFeature', 'feats.Great Fortitude', '=', null);
+      rules.defineRule
+        ('save.Fortitude', 'saveNotes.greatFortitudeFeature', '+', null);
     } else if(feat == 'Hidden Weapons') {
       // TODO
     } else if(feat == 'Improve Grapple') {
@@ -651,7 +692,14 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Improved Great Fortitude') {
       // TODO
     } else if(feat == 'Improved Initiative') {
-      // TODO
+      notes = [
+        'combatNotes.improvedInitiativeFeature:+%V Initiative'
+      ];
+      rules.defineRule('combatNotes.improvedInitiativeFeature',
+        'feats.Improved Initiative', '=', 'Math.floor((source + 1) / 2)'
+      );
+      rules.defineRule
+        ('initiative', 'combatNotes.improvedInitiativeFeature', '+', null);
     } else if(feat == 'Improved Iron Will') {
       // TODO
     } else if(feat == 'Improved Lightning Reflexes') {
@@ -671,13 +719,32 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Insightful Defense') {
       // TODO
     } else if(feat == 'Intimidating Prowess') {
-      // TODO
+      notes = [
+        'skillNotes.intimidatingProwessFeature:' +
+          '+%V Bluff to intimidate or demoralize'
+      ];
+      rules.defineRule('skillNotes.intimidatingProwessFeature',
+        'strengthModifier', '=', null,
+        'charismaModifier', '+', '-source'
+      );
     } else if(feat == 'Iron Will') {
-      // TODO
+      notes = [
+        'saveNotes.ironWillFeature:+%V Will'
+      ];
+      rules.defineRule
+        ('saveNotes.ironWillFeature', 'feats.Iron Will', '=', null);
+      rules.defineRule('save.Will', 'saveNotes.ironWillFeature', '+', null);
     } else if(feat == 'Ledge Walker') {
       // TODO
     } else if(feat == 'Lightning Reflexes') {
-      // TODO
+      notes = [
+        'saveNotes.lightningReflexesFeature:+%V Reflex'
+      ];
+      rules.defineRule('saveNotes.lightningReflexesFeature',
+        'feats.Lightning Reflexes', '=', null
+      );
+      rules.defineRule
+        ('save.Reflex', 'saveNotes.lightningReflexesFeature', '+', null);
     } else if(feat == 'Lunge') {
       // TODO
     } else if(feat == 'Manyshot') {
@@ -751,7 +818,12 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Throw Anything') {
       // TODO
     } else if(feat == 'Toughness') {
-      // TODO
+      notes = [
+        'combatNotes.toughnessFeature:+%V HP'
+      ];
+      rules.defineRule
+        ('combatNotes.toughnessFeature', 'feats.Toughness', '=', 'source + 3');
+      rules.defineRule('hitPoints', 'combatNotes.toughnessFeature', '+', null);
     } else if(feat == 'Trap Sense') {
       // TODO
     } else if(feat == 'Two-Weapon Defense') {
@@ -779,17 +851,58 @@ HybridD20.featRules = function(rules, feats) {
     if(notes != null)
       rules.defineNote(notes);
 
-    rules.defineRule('experienceSpentOn' + feat, 'feats.' + feat, '=', 'source * (source + 1) + 3');
-    rules.defineRule('experienceSpent', 'experienceSpentOn' + feat, '+', null);
+    rules.defineRule('allocatedExp.' + feat, 'feats.' + feat, '=', 'source * (source + 1) + 3');
+    rules.defineRule('experienceUsed', 'allocatedExp.' + feat, '+', null);
 
   }
 
 };
 
-/* Defines the rules related to spells and domains. */
-HybridD20.magicRules = function(rules, domains, schools) {
+/* Returns the elements in a basic SRD character editor. */
+HybridD20.initialEditorElements = function() {
+  var abilityChoices = [
+    3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
+  ];
+  var editorElements = [
+    ['name', 'Name', 'text', [20]],
+    ['race', 'Race', 'select-one', 'races'],
+    ['imageUrl', 'Image URL', 'text', [20]],
+    ['strength', 'Strength/Adjust', 'select-one', abilityChoices],
+    ['strengthAdjust', '', 'text', [3]],
+    ['intelligence', 'Intelligence/Adjust', 'select-one', abilityChoices],
+    ['intelligenceAdjust', '', 'text', [3]],
+    ['wisdom', 'Wisdom/Adjust', 'select-one', abilityChoices],
+    ['wisdomAdjust', '', 'text', [3]],
+    ['dexterity', 'Dexterity/Adjust', 'select-one', abilityChoices],
+    ['dexterityAdjust', '', 'text', [3]],
+    ['constitution', 'Constitution/Adjust', 'select-one', abilityChoices],
+    ['constitutionAdjust', '', 'text', [3]],
+    ['charisma', 'Charisma/Adjust', 'select-one', abilityChoices],
+    ['charismaAdjust', '', 'text', [3]],
+    ['experience', 'Experience', 'text', [7]],
+    ['player', 'Player', 'text', [20]],
+    ['alignment', 'Alignment', 'select-one', 'alignments'],
+    ['gender', 'Gender', 'select-one', 'genders'],
+    ['deity', 'Deity', 'select-one', 'deities'],
+    ['origin', 'Origin', 'text', [20]],
+    ['feats', 'Feats', 'bag', 'feats'],
+    ['skills', 'Skills', 'bag', 'skills'],
+    ['languages', 'Languages', 'set', 'languages'],
+    ['hitPoints', 'Hit Points', 'text', [4]],
+    ['armor', 'Armor', 'select-one', 'armors'],
+    ['shield', 'Shield', 'select-one', 'shields'],
+    ['weapons', 'Weapons', 'bag', 'weapons'],
+    ['spells', 'Spells', 'fset', 'spells'],
+    ['goodies', 'Goodies', 'bag', 'goodies'],
+    ['notes', 'Notes', 'textarea', [40,10]],
+    ['hiddenNotes', 'Hidden Notes', 'textarea', [40,10]]
+  ];
+  return editorElements;
+};
 
-  rules.defineChoice('domains', domains);
+/* Defines the rules related to spells. */
+HybridD20.magicRules = function(rules, schools) {
+
   rules.defineChoice('schools', schools);
 
   rules.defineRule
@@ -828,6 +941,51 @@ HybridD20.raceRules = function(rules, languages, races) {
 
 };
 
+HybridD20.randomizeOneAttribute = function(attributes, attribute) {
+  var attrs;
+  var choices;
+  if(attribute == 'experience') {
+    var level = attributes['level'] || 1;
+    var max = 1000 * (Math.pow(1.1, level + 1) - 1) - 1;
+    var min = 1000 * (Math.pow(1.1, level) - 1);
+    attributes['experience'] = ScribeUtils.random(min, max);
+  } else if(attribute == 'feats') {
+    // TODO
+  } else if(attribute == 'hitPoints') {
+    attrs = this.applyRules(attributes);
+    var hitDice = attrs['baseAttack'] || 0;
+    var hitPoints = 0;
+    for(var i = 1; i <= hitDice; i++) {
+      hitPoints += i == 1 ? 10 : ScribeUtils.random(1, 10);
+    }
+    attributes['hitPoints'] = hitPoints;
+  } else if(attribute == 'skills') {
+    attrs = this.applyRules(attributes);
+    var choices = this.getChoices('skills');
+    var xpTotal = attrs['experience'] || 0;
+    var xpUsed = attrs['experienceUsed'] || 0;
+    var useUpTo = xpUsed + ScribeUtils.random(0, xpTotal - xpUsed) / 2;
+    var skill = null;
+    while(xpUsed <= useUpTo) {
+      skill = ScribeUtils.randomKey(choices);
+      if(!attributes['skills.' + skill])
+        attributes['skills.' + skill] = 0;
+      attributes['skills.' + skill]++;
+      attrs = this.applyRules(attributes);
+      xpUsed = attrs['experienceUsed'];
+    }
+    if(!skill || xpUsed < xpTotal) {
+      // empty
+    } else if(attributes['skills.' + skill] == 1) {
+      delete attributes['skills.' + skill];
+    } else {
+      attributes['skills.' + skill]--;
+    }
+  } else {
+    SRD35.randomizeOneAttribute(attributes, attribute);
+  }
+}
+
 /* Defines the rules related to skills. */
 HybridD20.skillRules = function(rules, skills) {
 
@@ -847,8 +1005,8 @@ HybridD20.skillRules = function(rules, skills) {
       'skills.' + skill, '=', 'source + 3',
       abilityNames[ability] + 'Modifier', '+', null
     );
-    rules.defineRule('experienceSpentOn' + skill, 'skills.' + skill, '=', 'source * (source + 1) + 3');
-    rules.defineRule('experienceSpent', 'experienceSpentOn' + skill, '+', null);
+    rules.defineRule('allocatedExp.' + skill, 'skills.' + skill, '=', 'source * (source + 1) + 3');
+    rules.defineRule('experienceUsed', 'allocatedExp.' + skill, '+', null);
   }
 
   // TODO Skill specialization
