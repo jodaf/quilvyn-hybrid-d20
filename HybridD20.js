@@ -52,7 +52,7 @@ function HybridD20() {
   HybridD20.skillRules(rules, HybridD20.SKILLS);
   HybridD20.featRules(rules, HybridD20.FEATS);
   SRD35.descriptionRules(rules, SRD35.ALIGNMENTS, SRD35.DEITIES, SRD35.GENDERS);
-  SRD35.equipmentRules
+  HybridD20.equipmentRules
     (rules, SRD35.ARMORS, SRD35.GOODIES, SRD35.SHIELDS, SRD35.WEAPONS);
   HybridD20.combatRules(rules);
   SRD35.movementRules(rules);
@@ -577,6 +577,16 @@ HybridD20.combatRules = function(rules) {
 
 };
 
+/* Defines the rules related to equipment. */
+HybridD20.equipmentRules = function(rules, armors, goodies, shields, weapons) {
+
+  rules.defineRule('armorProficiencyLevel', '', '=', SRD35.PROFICIENCY_NONE);
+  rules.defineRule('shieldProficiencyLevel', '', '=', SRD35.PROFICIENCY_NONE);
+  rules.defineRule('weaponProficiencyLevel', '', '=', SRD35.PROFICIENCY_LIGHT);
+  SRD35.equipmentRules(rules, armors, goodies, shields, weapons);
+
+}
+
 /* Defines the rules related to feats. */
 HybridD20.featRules = function(rules, feats) {
 
@@ -680,7 +690,21 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Favored Enemy') {
       // TODO
     } else if(feat == 'Favored Terrain') {
-      // TODO
+      notes = [
+        'combatNotes.favoredTerrainFeature:+%V Initiative in chosen terrain',
+        'skillNotes.favoredTerrainFeature:' +
+          '+%V Perception, Survival in chosen terrain',
+        'validationNotes.favoredTerrainFeatSkills:Requires Survival >= %1'
+      ];
+      rules.defineRule('combatNotes.favoredTerrainFeature',
+        'feats.Favored Terrain', '=', 'Math.floor(source / 2)'
+      );
+      rules.defineRule('skillNotes.favoredTerrainFeature',
+        'feats.Favored Terrain', '=', null
+      );
+      rules.defineRule('validationNotes.favoredTerrainFeatSkills',
+        'feats.Favored Terrain', '=', null
+      );
     } else if(feat == 'Flurry Of Blows') {
       // TODO
     } else if(feat == 'Follow-Through') {
@@ -708,7 +732,16 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Improved Feint') {
       // TODO
     } else if(feat == 'Improved Great Fortitude') {
-      // TODO
+      notes = [
+        'saveNotes.improvedGreatFortitudeFeature:Reroll Fort %V/day',
+        'validationNotes.improvedGreatFortitudeFeatFeatures:Requires Great Fortitude >= %1'
+      ];
+      rules.defineRule('saveNotes.improvedGreatFortitudeFeature',
+        'feats.Improved Great Fortitude', '=', 'Math.floor((source + 3) / 4)'
+      );
+      rules.defineRule('validationNotes.improvedGreatFortitudeFeatFeatures',
+        'feats.Improved Great Fortitude', '=', null
+      );
     } else if(feat == 'Improved Initiative') {
       notes = [
         'combatNotes.improvedInitiativeFeature:+%V Initiative'
@@ -719,9 +752,27 @@ HybridD20.featRules = function(rules, feats) {
       rules.defineRule
         ('initiative', 'combatNotes.improvedInitiativeFeature', '+', null);
     } else if(feat == 'Improved Iron Will') {
-      // TODO
+      notes = [
+        'saveNotes.improvedIronWillFeature:Reroll Will %V/day',
+        'validationNotes.improvedIronWillFeatFeatures:Requires Iron Will >= %1'
+      ];
+      rules.defineRule('saveNotes.improvedIronWillFeature',
+        'feats.Improved Iron Will', '=', 'Math.floor((source + 3) / 4)'
+      );
+      rules.defineRule('validationNotes.improvedIronWillFeatFeatures',
+        'feats.Improved Iron Will', '=', null
+      );
     } else if(feat == 'Improved Lightning Reflexes') {
-      // TODO
+      notes = [
+        'saveNotes.improvedLightningReflexesFeature:Reroll Reflex %V/day',
+        'validationNotes.improvedLightningReflexesFeatFeatures:Requires Lightning Reflexes >= %1'
+      ];
+      rules.defineRule('saveNotes.improvedLightningReflexesFeature',
+        'feats.Improved Lightning Reflexes', '=', 'Math.floor((source + 3) / 4)'
+      );
+      rules.defineRule('validationNotes.improvedLightningReflexesFeatFeatures',
+        'feats.Improved Lightning Reflexes', '=', null
+      );
     } else if(feat == 'Improved Overrun') {
       // TODO
     } else if(feat == 'Improved Shield Bash') {
@@ -753,7 +804,17 @@ HybridD20.featRules = function(rules, feats) {
         ('saveNotes.ironWillFeature', 'feats.Iron Will', '=', null);
       rules.defineRule('save.Will', 'saveNotes.ironWillFeature', '+', null);
     } else if(feat == 'Ledge Walker') {
-      // TODO
+      notes = [
+        "abilityNotes.ledgeWalkerFeature:%V' movement across narrow surfaces",
+        'validationNotes.ledgeWalkerFeatSkills:Requires Acrobatics >= %1'
+      ];
+      rules.defineRule('abilityNotes.ledgeWalkerFeature',
+        'speed', '=', 'Math.floor(source / 2)',
+        'feats.Ledge Walker', '+', '5 * source'
+      );
+      rules.defineRule('validationNotes.ledgeWalkerFeatSkills.1',
+        'feats.Ledge Walker', '=', 'source * 2'
+      );
     } else if(feat == 'Lightning Reflexes') {
       notes = [
         'saveNotes.lightningReflexesFeature:+%V Reflex'
@@ -785,7 +846,18 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Mounted Combat') {
       // TODO
     } else if(feat == 'Nimble Step') {
-      // TODO
+      notes = [
+        'abilityNotes.nimbleStepFeature:' +
+          "Full speed through %V' of difficult terrain",
+        'validationNotes.ledgeWalkerFeatAbility:Requires Dexterity >= 13',
+        'validationNotes.ledgeWalkerFeatSkills:Requires Acrobatics >= %1'
+      ];
+      rules.defineRule('abilityNotes.nimbleStepFeature',
+        'feats.Nimble Step', '=', '5 * source'
+      );
+      rules.defineRule('validationNotes.nimbleStepFeatSkills.1',
+        'feats.Nimble Step', '=', null
+      );
     } else if(feat == 'No Retreat') {
       // TODO
     } else if(feat == 'Opportunist') {
@@ -844,7 +916,19 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Surprise Attacks') {
       // TODO
     } else if(feat == 'Swift Tracker') {
-      // TODO
+      notes = [
+        'skillNotes.swiftTrackerFeature:%V/%1 track at normal/double speed',
+        'validationNotes.swiftTrackerFeatSkills:Requires Survival >= %1'
+      ];
+      rules.defineRule('skillNotes.swiftTrackerFeature',
+        'feats.Swift Tracker', '=', 'source - 5'
+      );
+      rules.defineRule('skillNotes.swiftTrackerFeature.1',
+        'feats.Swift Tracker', '=', '(source * 2) - 20'
+      );
+      rules.defineRule('validationNotes.swiftTrackerFeatSkills',
+        'feats.Swift Tracker', '=', null
+      );
     } else if(feat == 'Throw Anything') {
       // TODO
     } else if(feat == 'Toughness') {
@@ -855,7 +939,22 @@ HybridD20.featRules = function(rules, feats) {
         ('combatNotes.toughnessFeature', 'feats.Toughness', '=', 'source + 3');
       rules.defineRule('hitPoints', 'combatNotes.toughnessFeature', '+', null);
     } else if(feat == 'Trap Sense') {
-      // TODO
+      notes = [
+        'combatNotes.trapSenseFeature:+%V AC vs. traps',
+        'saveNotes.trapSenseFeature:+%V Reflex vs. traps',
+        'validationNotes.trapSenseFeatFeatures:Requires Lightning Reflexes >= %1',
+        'validationNotes.trapSenseFeatSkills:Requires Perception >= %1'
+      ];
+      rules.defineRule
+        ('combatNotes.trapSenseFeature', 'feats.Trap Sense', '=', null);
+      rules.defineRule
+        ('saveNotes.trapSenseFeature', 'feats.Trap Sense', '=', null);
+      rules.defineRule('validationNotes.trapSenseFeatFeatures.1',
+        'feats.Trap Sense', '=', null
+      );
+      rules.defineRule('validationNotes.trapSenseFeatSkills.1',
+        'feats.Trap Sense', '=', null
+      );
     } else if(feat == 'Two-Weapon Defense') {
       // TODO
     } else if(feat == 'Two-Weapon Fighting') {
@@ -955,7 +1054,7 @@ HybridD20.raceRules = function(rules, languages, races) {
 
   rules.defineChoice('languages', languages);
   rules.defineChoice('races', races);
-  rules.defineRule('languageCount', 'race', '=', '1');
+  rules.defineRule('languageCount', '', '=', '1');
   rules.defineRule('languages.Common', '', '=', '1');
   rules.defineNote
     ('validationNotes.languageAllocation:%1 available vs. %2 allocated');
