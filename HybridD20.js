@@ -50,7 +50,7 @@ function HybridD20() {
   HybridD20.abilityRules(rules);
   HybridD20.raceRules(rules, SRD35.LANGUAGES, SRD35.RACES);
   HybridD20.skillRules(rules, HybridD20.SKILLS);
-  HybridD20.featRules(rules, HybridD20.FEATS);
+  HybridD20.featRules(rules, HybridD20.FEATS.concat(HybridD20.POWERS));
   SRD35.descriptionRules(rules, SRD35.ALIGNMENTS, SRD35.DEITIES, SRD35.GENDERS);
   HybridD20.equipmentRules
     (rules, SRD35.ARMORS, SRD35.GOODIES, SRD35.SHIELDS, SRD35.WEAPONS);
@@ -90,7 +90,11 @@ HybridD20.FEATS = [
   'Surprise Attacks', 'Swift Tracker', 'Throw Anything', 'Toughness',
   'Trap Sense', 'Two-Weapon Defense', 'Two-Weapon Fighting', 'Uncanny Dodge',
   'Vital Strike', 'Weapon Finesse', 'Weapon Proficiency (Martial)',
-  'Weapon Training', 'Whirlwind Attack', 'Wild Empathy'
+  'Weapon Training', 'Whirlwind Attack', 'Wild Empathy',
+  // Metamagic Feats
+  'Empower Spell', 'Enlarge Spell', 'Extend Spell', 'Heighten Spell',
+  'Maximize Spell', 'Quicken Spell', 'Silent Spell', 'Still Spell',
+  'Widen Spell'
 ];
 // Note: the order here handles dependencies among attributes when generating
 // random characters
@@ -99,6 +103,43 @@ HybridD20.RANDOMIZABLE_ATTRIBUTES = [
   'name', 'race', 'gender', 'alignment', 'deity', 'experience', 'feats',
   'skills', 'languages', 'hitPoints', 'armor', 'shield', 'weapons', 'spells',
   'goodies'
+];
+// TODO: Are these just more feats with unique costs or separate?
+// TODO Domain Powers, Immunity, School Focus, School Specialization
+HybridD20.POWERS = [
+  'Animal Form', 'Arcane Arrow', 'Arcane Sight', 'Arcane Strike',
+  'Arcane Theurgy', 'Armored Skin', 'Augment Summoning', 'Bardic Performance',
+  'Blinding Speed', 'Blindsight', 'Bloodline Abilities', 'Call To Mind',
+  'Clerical Ordainment', 'Combat Focus', 'Critical Feats (Bleeding)',
+  'Critical Feats (Blinding)', 'Critical Feats (Deafening)',
+  'Critical Feats (Devastating)', 'Critical Feats (Exhausting)',
+  'Critical Feats (Sickening)', 'Critical Feats (Spell)',
+  'Critical Feats (Staggering)', 'Critical Feats (Stunning)',
+  'Critical Feats (Tiring)', 'Damage Reduction', 'Darkvision',
+  'Dazzling Display', 'Deathless', 'Defensive Precognition', 
+  'Defensive Prescience', 'Dimension Spring Attack', 'Druidical Initiation',
+  'Energy Resistance', 'Eschew Materials', 'Fast Healing', 'Fey Touched',
+  'Font Of Power', 'Free Casting', 'Free Manifesting',
+  'Greater Arcane Resistance', 'Greater Dispelling Attack',
+  'Greater Reaving Dispelling Attack', 'Hand Of The Apprentice',
+  'Impromptu Sneak Attack', 'Inertial Armor', 'Ki Mastery', 'Know Direction',
+  'Lay On Hands', 'Lesser Arcane Resistance', "Lion's Charge",
+  'Low-Light Vision', 'Luck', 'Metamagic Adept', 'Metamagic Mastery',
+  'Mind Over Body (Power)', 'Natural Spell', 'Offensive Precognition',
+  'Offensive Prescience', 'Opportunistic Strike', 'Perfect Self',
+  'Power Over Shadow', 'Pierce The Fog Of War', 'Psionic Awareness',
+  'Psychic Warrior', 'Rage', 'Ranged Legerdemain', 'Reaving Dispelling Attack',
+  'Regeneration', 'Scent', 'School Defense', 'Selective Channeling',
+  'Slippery Mind', 'Smite Evil', 'Sorcery', 'Soulknife', 'Speak With Animals',
+  'Spectral Tendril', 'Spell Immunity', 'Spell Mastery', 'Spell Penetration',
+  'Spell Repertoire (Bard)', 'Spell Repertoire (Divine)',
+  'Spell Repertoire (Druidical)', 'Spell Repertoire (Sorcerer)',
+  'Spell Repertoire (Wizard)', 'Spell Resistance', 'Spell Synthesis',
+  'Spell Theurgy', 'Spellcasting (Arcane)', 'Spellcasting (Divine)',
+  'Spellcasting (Druidical)', 'Spontaneous Casting', 'Surprise Spells',
+  'Tenacious Magic', 'Timeless Body', 'Touch Of Death', 'Trackless Step',
+  'Trollborn', 'Turn Outsider', 'Turn Elemental', 'Wand Expertise',
+  'Wild Shape', 'Wild Surge', 'Wizardry', 'Woodland Stride'
 ];
 HybridD20.SPELLS = {
 
@@ -568,6 +609,21 @@ HybridD20.combatRules = function(rules) {
     'skills.Combat (HTH)', '=', null,
     'skills.Combat (Fire)', '^=', null
   );
+  rules.defineRule('combatManeuverBonus',
+    'baseAttack', '=', null,
+    'strengthModifier', '+', null
+  );
+  rules.defineRule('combatManeuverDefense',
+    'baseAttack', '=', null,
+    'strengthModifier', '+', null,
+    'dexterityModifier', '+', null
+  );
+  rules.defineSheetElement(
+    'CombatManeuver', 'CombatStats/',
+    '<b>Combat Maneuver Bonus/Defense</b>: %V', '/'
+  );
+  rules.defineSheetElement('Combat Maneuver Bonus', 'CombatManeuver/', '%V');
+  rules.defineSheetElement('Combat Maneuver Defense', 'CombatManeuver/', '%V');
   rules.defineRule('initiative', 'dexterityModifier', '=', null);
   rules.defineRule('meleeAttack', 'skills.Combat (HTH)', '=', null);
   rules.defineRule('rangedAttack', 'skills.Combat (Fire)', '=', null);
@@ -612,13 +668,63 @@ HybridD20.featRules = function(rules, feats) {
       rules.defineRule
         ('validationNotes.advanceFeatSkills.2', 'feats.Advance', '=', null);
     } else if(feat == 'Agile Maneuvers') {
-      // TODO
+      notes = [
+        'combatNotes.agileManeuversFeature:+%V CMB (dex instead of str)',
+        'sanityNotes.agileManeuversFeatAbility:' +
+          'Implies Agile Maneuvers rank exceeds Strength Modifier',
+        'validationNotes.agileManeuversFeatMax:May not exceed Dex modifier'
+      ];
+      rules.defineRule('combatNotes.agileManeuversFeature',
+        'feats.Agile Maneuvers', '=', null,
+        'strengthModifier', '+', '-source'
+      );
+      rules.defineRule
+        ('combatManeuverBonus', 'combatNotes.agileManeuversFeature', '+', null);
+      rules.defineRule('sanityNotes.agileManeuversFeatAbility',
+        'feats.Agile Maneuvers', '=', null,
+        'strengthModifier', '+', '-source - 1',
+        '', 'v', '0'
+      );
+      rules.defineRule('validationNotes.agileManeuversFeatMax',
+        'feats.Agile Maneuvers', '=', null,
+        'dexterityModifier', '+', '-source',
+        '', '^', '0'
+      );
     } else if(feat == 'Arcane Armor Training') {
       // TODO
     } else if(feat == 'Armor Proficiency') {
-      // TODO
+      notes = [
+        'validationNotes.armorProficiencyFeatSkills:Requires Combat (HTH) >= %1'
+      ];
+      rules.defineRule('armorProficiencyLevel',
+        'feats.Armor Proficiency', '^', 'source >= 3 ? ' + SRD35.PROFICIENCY_HEAVY + ' : source == 2 ? ' + SRD35.PROFICIENCY_MEDIUM + ' : ' + SRD35.PROFICIENCY_LIGHT
+      );
+      rules.defineRule('validationNotes.armorProficiencyFeatSkills',
+        'feats.Armor Proficiency', '=', 'source > 2 ? source - 2 : null'
+      );
+      // TODO Armor training, optimization, defense, and mastery
     } else if(feat == 'Blind-Fight') {
-      // TODO
+      notes = [
+        'abilityNotes.blind-FightFeature:+%V movement in poor visibility',
+        'combatNotes.blind-FightFeature:' +
+          'Reroll concealed miss, no bonus to invisible foe, retain %V Dex ' +
+          'bonus to AC vs. invisible foe',
+        'validationNotes.blind-FightFeatSkills:Requires Combat (HTH) >= %1/Perception >= %2'
+      ];
+      rules.defineRule('abilityNotes.blind-FightFeature',
+        'feats.Blind-Fight', '=', 'source * 5',
+        'speed', 'v', 'source / 2'
+      );
+      rules.defineRule('combatNotes.blind-FightFeature',
+        'feats.Blind-Fight', '=', null,
+        'dexterityModifier', 'v', null
+      );
+      rules.defineRule('validationNotes.blind-FightFeatSkills.1',
+        'feats.Blind-Fight', '=', null
+      );
+      rules.defineRule('validationNotes.blind-FightFeatSkills.2',
+        'feats.Blind-Fight', '=', null
+      );
     } else if(feat == 'Bravery') {
       notes = [
         'saveNotes.braveryFeature:+%V vs. fear',
@@ -976,6 +1082,236 @@ HybridD20.featRules = function(rules, feats) {
         'skillNotes.wildEmpathyFeature:Diplomacy with animals',
         'validationNotes.wildEmpathyFeatSkills:Requires Handle Animal'
       ];
+    // Metamagic Feats
+    } else if(feat == 'Empower Spell') {
+      // TODO
+    } else if(feat == 'Enlarge Spell') {
+      // TODO
+    } else if(feat == 'Extend Spell') {
+      // TODO
+    } else if(feat == 'Heighten Spell') {
+      // TODO
+    } else if(feat == 'Maximize Spell') {
+      // TODO
+    } else if(feat == 'Quicken Spell') {
+      // TODO
+    } else if(feat == 'Silent Spell') {
+      // TODO
+    } else if(feat == 'Still Spell') {
+      // TODO
+    } else if(feat == 'Widen Spell') {
+      // TODO
+    // Powers
+    } else if(feat == 'Animal Form') {
+      // TODO
+    } else if(feat == 'Arcane Arrow') {
+      // TODO
+    } else if(feat == 'Arcane Sight') {
+      // TODO
+    } else if(feat == 'Arcane Strike') {
+      // TODO
+    } else if(feat == 'Arcane Theurgy') {
+      // TODO
+    } else if(feat == 'Armored Skin') {
+      // TODO
+    } else if(feat == 'Augment Summoning') {
+      // TODO
+    } else if(feat == 'Bardic Performance') {
+      // TODO
+    } else if(feat == 'Blinding Speed') {
+      // TODO
+    } else if(feat == 'Blindsight') {
+      // TODO
+    } else if(feat == 'Bloodline Abilities') {
+      // TODO
+    } else if(feat == 'Call To Mind') {
+      // TODO
+    } else if(feat == 'Clerical Ordainment') {
+      // TODO
+    } else if(feat == 'Combat Focus') {
+      // TODO
+    } else if(feat == 'Critical Feats (Bleeding)') {
+      // TODO
+    } else if(feat == 'Critical Feats (Blinding)') {
+      // TODO
+    } else if(feat == 'Critical Feats (Deafening)') {
+      // TODO
+    } else if(feat == 'Critical Feats (Devastating)') {
+      // TODO
+    } else if(feat == 'Critical Feats (Exhausting)') {
+      // TODO
+    } else if(feat == 'Critical Feats (Sickening)') {
+      // TODO
+    } else if(feat == 'Critical Feats (Spell)') {
+      // TODO
+    } else if(feat == 'Critical Feats (Staggering)') {
+      // TODO
+    } else if(feat == 'Critical Feats (Stunning)') {
+      // TODO
+    } else if(feat == 'Critical Feats (Tiring)') {
+      // TODO
+    } else if(feat == 'Damage Reduction') {
+      // TODO
+    } else if(feat == 'Darkvision') {
+      // TODO
+    } else if(feat == 'Dazzling Display') {
+      // TODO
+    } else if(feat == 'Deathless') {
+      // TODO
+    } else if(feat == 'Defensive Precognition') {
+      // TODO
+    } else if(feat == 'Defensive Prescience') {
+      // TODO
+    } else if(feat == 'Dimension Spring Attack') {
+      // TODO
+    } else if(feat == 'Druidical Initiation') {
+      // TODO
+    } else if(feat == 'Energy Resistance') {
+      // TODO
+    } else if(feat == 'Eschew Materials') {
+      // TODO
+    } else if(feat == 'Fast Healing') {
+      // TODO
+    } else if(feat == 'Fey Touched') {
+      // TODO
+    } else if(feat == 'Font Of Power') {
+      // TODO
+    } else if(feat == 'Free Casting') {
+      // TODO
+    } else if(feat == 'Free Manifesting') {
+      // TODO
+    } else if(feat == 'Greater Arcane Resistance') {
+      // TODO
+    } else if(feat == 'Greater Dispelling Attack') {
+      // TODO
+    } else if(feat == 'Greater Reaving Dispelling Attack') {
+      // TODO
+    } else if(feat == 'Hand Of The Apprentice') {
+      // TODO
+    } else if(feat == 'Impromptu Sneak Attack') {
+      // TODO
+    } else if(feat == 'Inertial Armor') {
+      // TODO
+    } else if(feat == 'Ki Mastery') {
+      // TODO
+    } else if(feat == 'Know Direction') {
+      // TODO
+    } else if(feat == 'Lay On Hands') {
+      // TODO
+    } else if(feat == 'Lesser Arcane Resistance') {
+      // TODO
+    } else if(feat == "Lion's Charge") {
+      // TODO
+    } else if(feat == 'Low-Light Vision') {
+      // TODO
+    } else if(feat == 'Luck') {
+      // TODO
+    } else if(feat == 'Metamagic Adept') {
+      // TODO
+    } else if(feat == 'Metamagic Mastery') {
+      // TODO
+    } else if(feat == 'Mind Over Body (Power)') {
+      // TODO
+    } else if(feat == 'Natural Spell') {
+      // TODO
+    } else if(feat == 'Offensive Precognition') {
+      // TODO
+    } else if(feat == 'Offensive Prescience') {
+      // TODO
+    } else if(feat == 'Opportunistic Strike') {
+      // TODO
+    } else if(feat == 'Perfect Self') {
+      // TODO
+    } else if(feat == 'Power Over Shadow') {
+      // TODO
+    } else if(feat == 'Pierce The Fog Of War') {
+      // TODO
+    } else if(feat == 'Psionic Awareness') {
+      // TODO
+    } else if(feat == 'Psychic Warrior') {
+      // TODO
+    } else if(feat == 'Rage') {
+      // TODO
+    } else if(feat == 'Ranged Legerdemain') {
+      // TODO
+    } else if(feat == 'Reaving Dispelling Attack') {
+      // TODO
+    } else if(feat == 'Regeneration') {
+      // TODO
+    } else if(feat == 'Scent') {
+      // TODO
+    } else if(feat == 'School Defense') {
+      // TODO
+    } else if(feat == 'Selective Channeling') {
+      // TODO
+    } else if(feat == 'Slippery Mind') {
+      // TODO
+    } else if(feat == 'Smite Evil') {
+      // TODO
+    } else if(feat == 'Sorcery') {
+      // TODO
+    } else if(feat == 'Soulknife') {
+      // TODO
+    } else if(feat == 'Speak With Animals') {
+      // TODO
+    } else if(feat == 'Spectral Tendril') {
+      // TODO
+    } else if(feat == 'Spell Immunity') {
+      // TODO
+    } else if(feat == 'Spell Mastery') {
+      // TODO
+    } else if(feat == 'Spell Penetration') {
+      // TODO
+    } else if(feat == 'Spell Repertoire (Bard)') {
+      // TODO
+    } else if(feat == 'Spell Repertoire (Divine)') {
+      // TODO
+    } else if(feat == 'Spell Repertoire (Druidical)') {
+      // TODO
+    } else if(feat == 'Spell Repertoire (Sorcerer)') {
+      // TODO
+    } else if(feat == 'Spell Repertoire (Wizard)') {
+      // TODO
+    } else if(feat == 'Spell Resistance') {
+      // TODO
+    } else if(feat == 'Spell Synthesis') {
+      // TODO
+    } else if(feat == 'Spell Theurgy') {
+      // TODO
+    } else if(feat == 'Spellcasting (Arcane)') {
+      // TODO
+    } else if(feat == 'Spellcasting (Divine)') {
+      // TODO
+    } else if(feat == 'Spellcasting (Druidical)') {
+      // TODO
+    } else if(feat == 'Spontaneous Casting') {
+      // TODO
+    } else if(feat == 'Surprise Spells') {
+      // TODO
+    } else if(feat == 'Tenacious Magic') {
+      // TODO
+    } else if(feat == 'Timeless Body') {
+      // TODO
+    } else if(feat == 'Touch Of Death') {
+      // TODO
+    } else if(feat == 'Trackless Step') {
+      // TODO
+    } else if(feat == 'Trollborn') {
+      // TODO
+    } else if(feat == 'Turn Outsider') {
+      // TODO
+    } else if(feat == 'Turn Elemental') {
+      // TODO
+    } else if(feat == 'Wand Expertise') {
+      // TODO
+    } else if(feat == 'Wild Shape') {
+      // TODO
+    } else if(feat == 'Wild Surge') {
+      // TODO
+    } else if(feat == 'Wizardry') {
+      // TODO
+    } else if(feat == 'Woodland Stride') {
+      // TODO
     } else
       continue;
     rules.defineChoice('feats', feat);
@@ -1225,7 +1561,7 @@ HybridD20.ruleNotes = function() {
     '<p>\n' +
     '<ul>\n' +
     '  <li>\n' +
-    '    TOOD\n' +
+    '    TODO\n' +
     '  </li>\n' +
     '</ul>\n' +
     '</p>\n' +
