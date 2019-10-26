@@ -659,14 +659,12 @@ HybridD20.featRules = function(rules, feats) {
         'combatNotes.advanceFeature:' +
           "Move through %V' of threatened area without AOO",
         'validationNotes.advanceFeatAbility:Requires Dexterity >= 15',
-        'validationNotes.advanceFeatSkills:Requires Dodge >= %1/Mobility >= %2'
+        'validationNotes.advanceFeatSkills:Requires Dodge >= %1/Mobility >= %1'
       ];
       rules.defineRule
         ('combatNotes.advanceFeature', 'feats.Advance', '=', 'source * 5');
       rules.defineRule
         ('validationNotes.advanceFeatSkills.1', 'feats.Advance', '=', null);
-      rules.defineRule
-        ('validationNotes.advanceFeatSkills.2', 'feats.Advance', '=', null);
     } else if(feat == 'Agile Maneuvers') {
       notes = [
         'combatNotes.agileManeuversFeature:+%V CMB (dex instead of str)',
@@ -709,7 +707,7 @@ HybridD20.featRules = function(rules, feats) {
         'combatNotes.blind-FightFeature:' +
           'Reroll concealed miss, no bonus to invisible foe, retain %V Dex ' +
           'bonus to AC vs. invisible foe',
-        'validationNotes.blind-FightFeatSkills:Requires Combat (HTH) >= %1/Perception >= %2'
+        'validationNotes.blind-FightFeatSkills:Requires Combat (HTH) >= %1/Perception >= %1'
       ];
       rules.defineRule('abilityNotes.blind-FightFeature',
         'feats.Blind-Fight', '=', 'source * 5',
@@ -722,20 +720,14 @@ HybridD20.featRules = function(rules, feats) {
       rules.defineRule('validationNotes.blind-FightFeatSkills.1',
         'feats.Blind-Fight', '=', null
       );
-      rules.defineRule('validationNotes.blind-FightFeatSkills.2',
-        'feats.Blind-Fight', '=', null
-      );
     } else if(feat == 'Bravery') {
       notes = [
         'saveNotes.braveryFeature:+%V vs. fear',
-        'validationNotes.braveryFeatPrereq:Requires Combat (HTH) skill >= %1||Iron Will feat >= %2'
+        'validationNotes.braveryFeatPrereq:Requires Combat (HTH) skill >= %1||Iron Will feat >= %1'
       ];
       rules.defineRule('saveNotes.braveryFeature', 'feats.Bravery', '=', null);
       rules.defineRule('validationNotes.braveryFeatPrereq.1',
         'feats.Bravery', '=', 'source > 1 ? source * 4 - 2 : 2'
-      );
-      rules.defineRule('validationNotes.braveryFeatPrereq.2',
-        'validationNotes.braveryFeatPrereq.1', '=', null
       );
       rules.defineRule('validationNotes.braveryFeatPrereq.3',
         'feats.Bravery', '=', '0', 
@@ -753,11 +745,42 @@ HybridD20.featRules = function(rules, feats) {
         'validationNotes.camouflageFeatSkills:Requires Stealth >= 13/Survival >= 13'
       ];
     } else if(feat == 'Canny Defense') {
-      // TODO
+      notes = [
+        'combatNotes.cannyDefenseFeature:+%V AC when unarmored',
+        'validationNotes.cannyDefenseFeatAbility:Requires Intelligence >= 13',
+        'validationNotes.cannyDefenseFeatBaseAttack:Requires Base Attack >= 7',
+        'validationNotes.cannyDefenseFeatFeatures:' +
+          'Requires Dodge >= %1/Mobility >= %1/Weapon Finesse >= %1'
+      ];
+      rules.defineRule('combatNotes.cannyDefenseFeature',
+        'feats.Canny Defense', '=', null,
+        'intelligenceModifier', 'v', null
+      );
+      rules.defineRule('validationNotes.cannyDefenseFeatFeatures.1',
+        'feats.Canny Defense', '=', null
+      );
     } else if(feat == 'Cleave') {
-      // TODO
+      notes = [
+        'combatNotes.cleaveFeature:%V extra attack(s) when foe(s) drops',
+        'validationNotes.cleaveFeatAbility:Requires Strength >= 13',
+        'validationNotes.cleaveFeatFeatures:Requires Power Attack',
+        'validationNotes.cleaveFeatSkills:Requires Combat (HTH) >= %1'
+      ];
+      rules.defineRule('combatNotes.cleaveFeature', 'feats.Cleave', '=', null);
+      rules.defineRule
+        ('validationNotes.cleaveFeatSkills', 'feats.Cleave', '=', null);
     } else if(feat == 'Combat Reflexes') {
-      // TODO
+      notes = [
+        'combatNotes.combatReflexesFeature:Flatfooted AOO, up to %V AOO/round',
+        'validationNotes.combatReflexesFeatSkills:Requires Combat (HTH) >= %1'
+      ];
+      rules.defineRule('validationNotes.combatReflexesFeature',
+        'feats.CombatReflexes', '=', null,
+        'dexterityModifier', 'v', 'source + 1'
+      );
+      rules.defineRule('validationNotes.combatReflexesFeatSkills',
+        'feats.Combat Reflexes', '=', null
+      );
     } else if(feat == 'Deadly Aim') {
       // TODO
     } else if(feat == 'Deadly Precision') {
@@ -765,7 +788,20 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Death Attack') {
       // TODO
     } else if(feat == 'Defensive Combat Training') {
-      // TODO
+      notes = [
+        'combatNotes.defensiveCombatTrainingFeature:+%V CMD',
+        'validationNotes.defensiveCombatTrainingFeatSkills:' +
+          'Requires Combat (HTH) >= %1'
+      ];
+      rules.defineRule('combatManeuverDefense',
+        'combatNotes.defensiveCombatTraining', '+', null
+      );
+      rules.defineRule('combatNotes.defensiveCombatTrainingFeature',
+        'feats.Defensive Combat Training', '=', null
+      );
+      rules.defineRule('validationNotes.defensiveCombatTrainingFeatSkills',
+        'feats.Defensive Combat Training', '=', null
+      );
     } else if(feat == 'Defensive Roll') {
       // TODO
     } else if(feat == 'Defensive Training') {
@@ -832,7 +868,20 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Improved Critical') {
       // TODO
     } else if(feat == 'Improved Defensive Fighting') {
-      // TODO
+      notes = [
+        'combatNotes.defensiveCombatTrainingFeature:-%1 attack/+%V AC',
+        'validationNotes.improvedDefensiveFightingFeatSkills:' +
+          'Requires Combat (HTH) >= %1'
+      ];
+      rules.defineRule('combatNotes.defensiveCombatTrainingFeature',
+        'feats.Defensive Combat Training', '=', null
+      );
+      rules.defineRule('combatNotes.defensiveCombatTrainingFeature.1',
+        'feats.Defensive Combat Training', '=', 'source < 7 ? source : Math.floor(source / 2)'
+      );
+      rules.defineRule('validationNotes.improvedDefensiveFightingFeature',
+        'feats.Improved Defensive Fighting', '=', null
+      );
     } else if(feat == 'Improved Disarm') {
       // TODO
     } else if(feat == 'Improved Feint') {
