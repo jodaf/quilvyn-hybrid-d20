@@ -58,6 +58,7 @@ function HybridD20() {
   SRD35.movementRules(rules);
   HybridD20.magicRules(rules, SRD35.SCHOOLS);
   HybridD20.spellDescriptionRules(rules);
+  rules.defineChoice('preset', 'race', 'level');
   rules.defineChoice('random', HybridD20.RANDOMIZABLE_ATTRIBUTES);
   Scribe.addRuleSet(rules);
   HybridD20.rules = rules;
@@ -535,8 +536,21 @@ HybridD20.SKILLS = [
 /* Defines the rules related to character abilities. */
 HybridD20.abilityRules = function(rules) {
 
+  // Since reaching each new level requires 1.1 times the experience to reach
+  // the prior level, the minimum experience for level N can be computed using
+  // the sum of the geometric series [1.1^0, 1.1^1, 1.1^2, ... 1.1^N]
+  //   exp(N) = 100 * sum[i=0..N-1]1.1^i
+  //          = 100 * ((1.1^N - 1) / (1.1 - 1))
+  //          = 100 * ((1.1^N - 1) * 10)
+  //          = 1000 * 1.1^N - 1000
+  // and the level for a given experience can be determined by solving the
+  // above equation for N
+  //   1000 * 1.1^N - 1000 = exp
+  //   1.1^N = (exp + 1000) / 1000 = exp / 1000 + 1
+  //   N = log[1.1](exp / 1000 + 1)
+  //
   rules.defineRule('experienceNeeded',
-    'level', '=', 'Math.floor(1000 * (Math.pow(1.1, source + 1) - 1))'
+    'level', '=', 'Math.floor(1000 * Math.pow(1.1, source + 1) - 1000)'
   );
   rules.defineRule('experienceUsed',
     '', '=', '0',
@@ -742,7 +756,8 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Camouflage') {
       notes = [
         'featureNotes.camouflageFeature:Hide in any natural terrain',
-        'validationNotes.camouflageFeatSkills:Requires Stealth >= 13/Survival >= 13'
+        'validationNotes.camouflageFeatSkills:' +
+          'Requires Stealth >= 13/Survival >= 13'
       ];
     } else if(feat == 'Canny Defense') {
       notes = [
@@ -784,9 +799,43 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Deadly Aim') {
       // TODO
     } else if(feat == 'Deadly Precision') {
-      // TODO
+      notes = [
+        'combatNotes.deadlyPrecisionFeature:' +
+          'Reroll sneak attack damage die le %V, min die %1',
+        'validationNotes.deadlyPrecisionFeatAbility:Requires Dexterity >= 15',
+        'validationNotes.deadlyPrecisionFeatFeatures:' +
+           'Requires Sneak Attack >= %1',
+        'validationNotes.deadlyPrecisionFeatSkills:Requires Combat (HTH) >= %1'
+      ];
+      rules.defineRule('combatNotes.deadlyPrecisionFeature',
+        'feats.Deadly Precision', '=', 'Math.floor(source / 4)'
+      );
+      rules.defineRule('combatNotes.deadlyPrecisionFeature.1',
+        'feats.Deadly Precision', '=', 'Math.floor((source + 6) / 4)'
+      );
+      rules.defineRule('validationNotes.deadlyPrecisionFeatFeatures',
+        'feats.Deadly Precision', '=', null
+      );
+      rules.defineRule('validationNotes.deadlyPrecisionFeatSkills',
+        'feats.Deadly Precision', '=', 'source + 4'
+      );
     } else if(feat == 'Death Attack') {
-      // TODO
+      notes = [
+        'combatNotes.deathAttackFeature:' +
+          'Target studied 3+ rd paralyzed d6+%1 rd or killed when struck (DC %V Fort neg)',
+        'validationNotes.deathAttackFeatFeatures:Requires Sneak Attack >= %1',
+        'validationNotes.deathAttackFeatSkills:Requires Stealth >= 5'
+      ];
+      rules.defineRule('combatNotes.deathAttackFeature',
+        'intelligenceModifier', '=', 'source + 10',
+        'feats.Death Attack', '+', null
+      );
+      rules.defineRule('combatNotes.deathAttackFeature.1',
+        'feats.Death Attack', '+', 'source - 1'
+      );
+      rules.defineRule('validationNotes.deathAttackFeatSkills',
+        'feats.Death Attack', '=', 'source + 1'
+      );
     } else if(feat == 'Defensive Combat Training') {
       notes = [
         'combatNotes.defensiveCombatTrainingFeature:+%V CMD',
@@ -803,15 +852,52 @@ HybridD20.featRules = function(rules, feats) {
         'feats.Defensive Combat Training', '=', null
       );
     } else if(feat == 'Defensive Roll') {
-      // TODO
+      notes = [
+        'combatNotes.defensiveRollFeature:' +
+          'DC damage Ref save vs. lethal blow for %V% damage',
+        'validationNotes.defensiveRollFeatFeatures:' +
+          'Requires Lightning Reflexes >= %1/Evasion >= 10'
+      ];
+      rules.defineRule('combatNotes.defensiveRollFeature',
+        'feats.Defensive Roll', '=', '5 * source'
+      );
+      rules.defineRule('validationNotes.defensiveRollFeatFeatures.1',
+        'feats.Defensive Roll', '=', null
+      );
     } else if(feat == 'Defensive Training') {
-      // TODO
+      notes = [
+        'combatNotes.defensiveTrainingFeature:+%V AC vs. Giant type',
+        'validationNotes.defensiveTrainingFeatureRace:' +
+          'Requires Race =~ Dwarf|Gnome'
+      ];
+      rules.defineRule('combatNotes.defensiveTrainingFeature',
+        'feats.Defensive Training', '=', 'Math.min(source, 4)'
+      );
     } else if(feat == 'Deflect Arrows') {
       // TODO
     } else if(feat == 'Disruptive') {
       // TODO
     } else if(feat == 'Dodge') {
-      // TODO
+      notes = [
+        'combatNotes.dodgeFeature:+%V AC%1%2',
+        'validationNotes.dodgeFeatAbility:Requires Dexterity >= 13',
+        'validationNotes.dodgeFeatSkills:' +
+          'Requires Combat (Fire) >= %1 || Combat (HTH) >= %1'
+      ];
+      rules.defineRule('armorClass', 'combatNotes.dodgeFeature', '+', null);
+      rules.defineRule('combatNotes.dodgeFeature',
+        'feats.Dodge', '=', 'Math.floor(source / 4) + 1'
+      );
+      rules.defineRule('combatNotes.dodgeFeature.1',
+        'feats.Dodge', '=', 'source < 6 ? "" : ", 20% conceal for 1 rd after 5\' move"',
+        'dexterity', '=', 'source >= 15 ? null : ""'
+      );
+      rules.defineRule('combatNotes.dodgeFeature.2',
+        'feats.Dodge', '=', 'source < 11 ? "" : ", 50% conceal for 1 rd after 2 move or withdraw"',
+        'dexterity', '=', 'source >= 17 ? null : ""'
+      );
+      rules.defineRule
+        ('validationNotes.dodgeFeatureSkills.1', 'feats.Dodge', '=', null);
     } else if(feat == 'Double Slice') {
       // TODO
     } else if(feat == 'Evasion') {
@@ -1463,8 +1549,8 @@ HybridD20.randomizeOneAttribute = function(attributes, attribute) {
   var choices;
   if(attribute == 'experience') {
     var level = attributes['level'] || 1;
-    var max = 1000 * (Math.pow(1.1, level + 1) - 1) - 1;
-    var min = 1000 * (Math.pow(1.1, level) - 1);
+    var max = Math.floor(1000 * Math.pow(1.1, level + 1) - 1001);
+    var min = Math.floor(1000 * Math.pow(1.1, level) - 1000);
     attributes['experience'] = ScribeUtils.random(min, max);
   } else if(attribute == 'feats') {
     // TODO
@@ -1503,7 +1589,7 @@ HybridD20.randomizeOneAttribute = function(attributes, attribute) {
       attributes[skill]--;
     }
   } else {
-    SRD35.randomizeOneAttribute(attributes, attribute);
+    SRD35.randomizeOneAttribute.apply(this, [attributes, attribute]);
   }
 }
 
