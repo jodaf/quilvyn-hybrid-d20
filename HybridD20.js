@@ -75,23 +75,24 @@ HybridD20.FEATS = [
   'Flurry Of Blows', 'Follow-Through', 'Great Fortitude', 'Hidden Weapons',
   'Improve Grapple', 'Improved Bull Rush', 'Improved Critical',
   'Improved Defensive Fighting', 'Improved Disarm', 'Improved Feint',
-  'Improved Great Fortitude', 'Improved Initiative', 'Improved Iron Will',
-  'Improved Lightning Reflexes', 'Improved Overrun', 'Improved Shield Bash',
-  'Improved Sunder', 'Improved Trip', 'Improved Unarmed Strike',
-  'Improvised Weapon Use', 'Insightful Defense', 'Intimidating Prowess',
-  'Iron Will', 'Ledge Walker', 'Lightning Reflexes', 'Lunge', 'Manyshot',
-  'Mighty Throw', 'Mind Over Body', 'Mobility', 'Mounted Archery',
-  'Mounted Combat', 'Nimble Step', 'No Retreat', 'Opportunist', 'Overhand Chop',
-  'Penetrating Strike', 'Power Attack', 'Precise Shot', 'Precise Strike',
-  'Quiet Death', 'Quivering Palm', 'Rapid Reload', 'Rapid Shot', 'Resiliency',
-  'Riposte', 'Rogue Crawl', 'Shield Cover', 'Shield Deflection',
-  'Shield Proficiency', 'Sidestep Charge', 'Slow Reactions', 'Snatch Arrows',
-  'Sneak Attack', 'Sneak Attack (Bleeding Attack)',
-  'Sneak Attack (Crippling Strike)', 'Stunning Fist', 'Successive Fire',
-  'Surprise Attacks', 'Swift Tracker', 'Throw Anything', 'Toughness',
-  'Trap Sense', 'Two-Weapon Defense', 'Two-Weapon Fighting', 'Uncanny Dodge',
-  'Vital Strike', 'Weapon Finesse', 'Weapon Proficiency (Martial)',
-  'Weapon Training', 'Whirlwind Attack', 'Wild Empathy',
+  'Improved Grapple', 'Improved Great Fortitude', 'Improved Initiative',
+  'Improved Iron Will', 'Improved Lightning Reflexes', 'Improved Overrun',
+  'Improved Shield Bash', 'Improved Sunder', 'Improved Trip',
+  'Improved Unarmed Strike', 'Improvised Weapon Use', 'Insightful Defense',
+  'Intimidating Prowess', 'Iron Will', 'Ledge Walker', 'Lightning Reflexes',
+  'Lunge', 'Manyshot', 'Mighty Throw', 'Mind Over Body', 'Mobility',
+  'Mounted Archery', 'Mounted Combat', 'Nimble Step', 'No Retreat',
+  'Opportunist', 'Overhand Chop', 'Penetrating Strike', 'Power Attack',
+  'Precise Shot', 'Precise Strike', 'Quiet Death', 'Quivering Palm',
+  'Rapid Reload', 'Rapid Shot', 'Resiliency', 'Riposte', 'Rogue Crawl',
+  'Shield Cover', 'Shield Deflection', 'Shield Proficiency', 'Sidestep Charge',
+  'Slow Reactions', 'Snatch Arrows', 'Sneak Attack',
+  'Sneak Attack (Bleeding Attack)', 'Sneak Attack (Crippling Strike)',
+  'Stunning Fist', 'Successive Fire', 'Surprise Attacks', 'Swift Tracker',
+  'Throw Anything', 'Toughness', 'Trap Sense', 'Two-Weapon Defense',
+  'Two-Weapon Fighting', 'Uncanny Dodge', 'Vital Strike', 'Weapon Finesse',
+  'Weapon Proficiency (Martial)', 'Weapon Training', 'Whirlwind Attack',
+  'Wild Empathy',
   // Metamagic Feats
   'Empower Spell', 'Enlarge Spell', 'Extend Spell', 'Heighten Spell',
   'Maximize Spell', 'Quicken Spell', 'Silent Spell', 'Still Spell',
@@ -761,7 +762,7 @@ HybridD20.featRules = function(rules, feats) {
       ];
     } else if(feat == 'Canny Defense') {
       notes = [
-        'combatNotes.cannyDefenseFeature:+%V AC when unarmored',
+        'combatNotes.cannyDefenseFeature:+%V unarmored AC',
         'validationNotes.cannyDefenseFeatAbility:Requires Intelligence >= 13',
         'validationNotes.cannyDefenseFeatBaseAttack:Requires Base Attack >= 7',
         'validationNotes.cannyDefenseFeatFeatures:' +
@@ -974,7 +975,15 @@ HybridD20.featRules = function(rules, feats) {
         'feats.Lightning Reflexes', '=', null
       );
     } else if(feat == 'Far Shot') {
-      // TODO
+      notes = [
+        'combatNotes.farShotFeature:-%V range penalty',
+        'validationNotes.farShotFeatFeatures:Requires Point Blank Shot',
+        'validationNotes.farShotFeatSkills:Requires Combat (Fire) >= %1'
+      ];
+      rules.defineRule
+        ('combatNotes.farShotFeature', 'feats.Far Shot', '=', null);
+      rules.defineRule
+        ('validationNotes.farShotFeatSkills', 'feats.Far Shot', '=', null);
     } else if(feat == 'Fast Stealth') {
       notes = [
         'skillNotes.fastStealthFeature:-%V Stealth at full speed',
@@ -1005,9 +1014,35 @@ HybridD20.featRules = function(rules, feats) {
         'feats.Favored Terrain', '=', null
       );
     } else if(feat == 'Flurry Of Blows') {
-      // TODO
+      notes = [
+        'combatNotes.flurryOfBlowsFeature:%1 extra light attack at -%V',
+        'validationNotes.flurryOfBlowsFeatFeatures:' +
+          'Requires Improved Unarmed Strike >= %1',
+        'validationNotes.flurryOfBlowsFeatSkills:Requires Combat (HTH) >= %1'
+       ];
+       rules.defineRule('combatNotes.flurryOfBlowsFeature',
+         'feats.Flurry Of Blows', '=', 'source < 3 ? 3 - source : 0'
+       );
+       rules.defineRule('combatNotes.flurryOfBlowsFeature.1',
+         'feats.Flurry Of Blows', '=', 'source < 4 ? 1 : 2'
+       );
+       rules.defineRule('validationNotes.flurryOfBlowsFeatFeatures.1',
+         'feats.Flurry Of Blows', '=', 'source * 3'
+       );
+       rules.defineRule('validationNotes.flurryOfBlowsFeatSkills.1',
+         'feats.Flurry Of Blows', '=', 'source * 3'
+       );
     } else if(feat == 'Follow-Through') {
-      // TODO
+      notes = [
+        'combatNotes.follow-ThroughFeature:Reduce second attack penalty by %V',
+        'validationNotes.follow-ThroughFeatSkills:Requires Combat (HTH) >= %1'
+      ];
+      rules.defineRule('combatNotes.follow-ThroughFeature',
+        'feats.Follow-Through', '=', null
+      );
+      rules.defineRule('validationNotes.follow-ThroughFeatSkills',
+        'feats.Follow-Through', '=', 'source + 5'
+      );
     } else if(feat == 'Great Fortitude') {
       notes = [
         'saveNotes.greatFortitudeFeature:+%V Fortitude'
@@ -1017,11 +1052,63 @@ HybridD20.featRules = function(rules, feats) {
       rules.defineRule
         ('save.Fortitude', 'saveNotes.greatFortitudeFeature', '+', null);
     } else if(feat == 'Hidden Weapons') {
-      // TODO
-    } else if(feat == 'Improve Grapple') {
-      // TODO
+      notes = [
+        'skillNotes.hiddenWeaponsFeature:+%V Sleight Of Hand to conceal weapon',
+        'validationNotes.hiddenWeaponsFeatSkills:Requires Sleight Of Hand >= %1'
+      ];
+      rules.defineRule
+        ('skillNotes.hiddenWeaponsFeature', 'feats.Hidden Weapons', '=', null);
+      rules.defineRule('validationNotes.hiddenWeaponsFeatSkills.1',
+        'feats.Hidden Weapons', '=', null
+      );
+    } else if(feat == 'Improved Grapple') {
+      notes = [
+        'combatNotes.improvedGrappleFeature:' +
+          'No AOO on Grapple, grapples +%1%2%3%4%5%6',
+        'validationNotes.improvedGrappleFeatAbility:Requires Dexterity >= 13',
+        'validationNotes.improvedGrappleFeatFeatures:' +
+          'Requires Improved Unarmed Strike',
+        'validationNotes.improvedGrappleFeatSkills:Requires Combat (HTH) >= %1'
+      ];
+      rules.defineRule('combatNotes.improvedGrappleFeature.1',
+        'feats.Improved Grapple', '=', 'source < 16 ? Math.floor(source / 4) + (source == 1 ? 0 : 1) : 4'
+      );
+      rules.defineRule('combatNotes.improvedGrappleFeature.2',
+        'combatNotes.improvedGrappleFeature.1', '=', '"/" + (source - 5)',
+        'feats.Improved Grapple', '=', 'source < 6 ? "" : null'
+      );
+      rules.defineRule('combatNotes.improvedGrappleFeature.3',
+        'combatNotes.improvedGrappleFeature.1', '=', '"/" + (source - 10)',
+        'feats.Improved Grapple', '=', 'source < 11 ? "" : null'
+      );
+      rules.defineRule('combatNotes.improvedGrappleFeature.4',
+        'combatNotes.improvedGrappleFeature.1', '=', '"/" + (source - 15)',
+        'feats.Improved Grapple', '=', 'source < 16 ? "" : null'
+      );
+      rules.defineRule('combatNotes.improvedGrappleFeature.5',
+        'feats.Improved Grapple', '=', 'source >= 10 ? ", " + (source < 20 ? source - 20 : "-0") + " one-handed" : ""'
+      );
+      rules.defineRule('validationNotes.improvedGrappleFeatSkills',
+        'feats.Improved Grapple', '=', null
+      );
+      // NOTE: Adept Wrestling not described; feature from Reaping Mauler
+      // prestige class seems to overlap basic Improved Grapple feature
+      // TODO Devastating Grapple
     } else if(feat == 'Improved Bull Rush') {
-      // TODO
+      notes = [
+        'combatNotes.improvedBullRushFeature:' +
+          'No AOO on Bull Rush, +%V strength check%1',
+        'validationNotes.improvedBullRushFeatAbility:Requires Strength >= 13',
+        'validationNotes.improvedBullRushFeatSkills:Requires Combat (HTH) >= %1'
+      ];
+      rules.defineRule
+        ('combatNotes.improvedBullRush', 'feats.Improved Bull Rush', '=', null);
+      rules.defineRule('combatNotes.improvedBullRush.1',
+        'feats.improvedBullRush', '=', 'source<6 ? "" : ", foe move draws AOO"'
+      );
+      rules.defineRule('validationNotes.improvedBullRushFeatSkills',
+        'feats.Improved Bull Rush', '=', null
+      );
     } else if(feat == 'Improved Critical') {
       // TODO
     } else if(feat == 'Improved Defensive Fighting') {
@@ -1040,9 +1127,44 @@ HybridD20.featRules = function(rules, feats) {
         'feats.Improved Defensive Fighting', '=', null
       );
     } else if(feat == 'Improved Disarm') {
-      // TODO
+      notes = [
+        'combatNotes.improvedDisarmFeature:No AOO on disarm, +%V attack%1',
+        'validationNotes.improvedDisarmFeatAbility:Requires Intelligence >= 13',
+        'validationNotes.improvedDisarmFeatFeatures:' +
+          'Requires Combat Expertise >= %1',
+        'validationNotes.improvedDisarmFeatSkills:Requires Combat (HTH) >= %1'
+      ];
+      rules.defineRule
+        ('combatNotes.improvedDisarm', 'feats.Improved Disarm', '=', null);
+      rules.defineRule('combatNotes.improvedDisarm.1',
+        'feats.improvedDisarm', '=', 'source<6 ? "" : ", weapon thrown 15\'"'
+      );
+      rules.defineRule('validationNotes.improvedDisarmFeatFeatures',
+        'feats.Improved Disarm', '=', null
+      );
+      rules.defineRule('validationNotes.improvedDisarmFeatSkills',
+        'feats.Improved Disarm', '=', null
+      );
     } else if(feat == 'Improved Feint') {
-      // TODO
+      notes = [
+        'combatNotes.improvedFeintFeature:' +
+          'Bluff check to Feint as move action %V/rd%1',
+        'validationNotes.improvedFeintFeatAbility:Requires Intelligence >= 13',
+        'validationNotes.improvedFeintFeatFeatures:' +
+          'Requires Combat Expertise >= %1',
+        'validationNotes.improvedFeintFeatSkills:Requires Bluff >= %1'
+      ];
+      rules.defineRule
+        ('combatNotes.improvedFeintFeature', 'feats.Improved Feint', '=', null);
+      rules.defineRule('combatNotes.improvedFeintFeature.1',
+        'feats.Improved Feint', '=', '(source < 6 ? "" : ", foe flat-footed full turn") + (source < 11 ? "" : ", feint free action") + (source < 16 ? "" : ", take 10")'
+      );
+      rules.defineRule('validationNotes.improvedFeintFeatFeatures',
+        'feats.Improved Feint', '=', null
+      );
+      rules.defineRule('validationNotes.improvedFeintFeatSkills',
+        'feats.Improved Feint', '=', null
+      );
     } else if(feat == 'Improved Great Fortitude') {
       notes = [
         'saveNotes.improvedGreatFortitudeFeature:Reroll Fort %V/day',
@@ -1086,7 +1208,18 @@ HybridD20.featRules = function(rules, feats) {
         'feats.Improved Lightning Reflexes', '=', null
       );
     } else if(feat == 'Improved Overrun') {
-      // TODO
+      notes = [
+        'combatNotes.improvedOverrunFeature:' +
+          '+%V Overrun check, foes cannot avoid%1',
+        'validationNotes.improvedOverrunFeatAbility:Requires Strength >= 13',
+        'validationNotes.improvedOverrunFeatFeatures:Requires Power Attack'
+      ];
+      rules.defineRule('combatNotes.improvedOverrunFeature',
+        'feats.Improved Overrun', '=', null
+      );
+      rules.defineRule('combatNotes.improvedOverrunFeature.1',
+        'feats.Improved Overrun', '=', 'source < 6 ? "" : ", floored foes AOO"'
+      );
     } else if(feat == 'Improved Shield Bash') {
       // TODO
     } else if(feat == 'Improved Sunder') {
@@ -1098,7 +1231,20 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Improvised Weapon Use') {
       // TODO
     } else if(feat == 'Insightful Defense') {
-      // TODO
+      notes = [
+        'combatNotes.insightfulDefenseFeature:' +
+          '+%V unarmored AC, even if flat-footed',
+        'validationNotes.insightfulDefenseFeatAbility:Requires Wisdom >= 13',
+        'validationNotes.insightfulDefenseFeatSkills:' +
+           'Requires Combat (HTH) >= %1/Perception >= %1'
+      ];
+      rules.defineRule('combatNotes.insightfulDefenseFeature',
+        'feats.Insightful Defense', '=', null,
+        'wisdomModifier', 'v', null
+      );
+      rules.defineRule('validationNotes.insightluDefenseFeatSkills.1',
+        'feats.Insightful Defense', '=', null
+      );
     } else if(feat == 'Intimidating Prowess') {
       notes = [
         'skillNotes.intimidatingProwessFeature:' +
