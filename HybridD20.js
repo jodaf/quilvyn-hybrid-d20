@@ -797,7 +797,19 @@ HybridD20.featRules = function(rules, feats) {
         'feats.Combat Reflexes', '=', null
       );
     } else if(feat == 'Deadly Aim') {
-      // TODO
+      notes = [
+        'combatNotes.deadlyAimFeature:-%V attack/+%1 damage w/projectiles',
+        'validationNotes.deadlyAimFeatAbility:Requires Dexterity >= 13',
+        'validationNotes.deadlyAimFeatSkills:Requires Combat (Fire) >= %1'
+      ];
+      rules.defineRule
+        ('combatNotes.deadlyAimFeature', 'feats.Deadly Aim', '=', null);
+      rules.defineRule('combatNotes.deadlyAimFeature.1',
+        'feats.Deadly Aim', '=', '2 * source'
+      );
+      rules.defineRule('validationNotes.deadlyAimFeatSkills.1',
+        'feats.Deadly Aim', '=', null
+      );
     } else if(feat == 'Deadly Precision') {
       notes = [
         'combatNotes.deadlyPrecisionFeature:' +
@@ -867,16 +879,45 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Defensive Training') {
       notes = [
         'combatNotes.defensiveTrainingFeature:+%V AC vs. Giant type',
-        'validationNotes.defensiveTrainingFeatureRace:' +
+        'validationNotes.defensiveTrainingFeatRace:' +
           'Requires Race =~ Dwarf|Gnome'
       ];
       rules.defineRule('combatNotes.defensiveTrainingFeature',
         'feats.Defensive Training', '=', 'Math.min(source, 4)'
       );
     } else if(feat == 'Deflect Arrows') {
-      // TODO
+      notes = [
+        'combatNotes.deflectArrowsFeature:Deflect ranged %V/round',
+        // NOTE: DA >= 6, Dex >= 21, Wis >= 19 deflect all range + magic
+        'validationNotes.deflectArrowsFeatAbility:Requires Dexterity >= 13',
+        'validationNotes.deflectArrowsFeatFeatures:' +
+          'Requires Lightning Reflexes >= %1/Improved Unarmed Strike >= %2',
+        'validationNotes.deflectArrowsFeatSkills:Requires Combat (Fire) >= %1'
+      ];
+      rules.defineRule
+        ('combatNotes.deflectArrowsFeature', 'feats.Deflect Arrows', '=', null);
+      rules.defineRule('validationNotes.deflectArrowsFeatFeatures.1',
+        'feats.Deflect Arrows', '=', 'source * 2'
+      );
+      rules.defineRule('validationNotes.deflectArrowsFeatFeatures.2',
+        'feats.Deflect Arrows', '=', null
+      );
+      rules.defineRule('validationNotes.deflectArrowsFeatSkills.1',
+        'feats.Deflect Arrows', '=', null
+      );
     } else if(feat == 'Disruptive') {
-      // TODO
+      notes = [
+        "combatNotes.disruptiveFeature:+%V foes' defensive spell DC%1",
+        'validationNotes.disruptiveFeatSkills:Requires Combat (HTH) >= %1'
+      ]
+      rules.defineRule
+        ('combatNotes.disruptiveFeature', 'feats.Disruptive', '=', null);
+      rules.defineRule('combatNotes.disruptiveFeature.1',
+        'feats.Disruptive', '=', 'source < 10 ? "" : ", provoke AOO"'
+      );
+      rules.defineRule('validationNotes.disruptiveFeatSkills',
+        'feats.Disruptive', '=', 'source + 5'
+      );
     } else if(feat == 'Dodge') {
       notes = [
         'combatNotes.dodgeFeature:+%V AC%1%2',
@@ -897,11 +938,41 @@ HybridD20.featRules = function(rules, feats) {
         'dexterity', '=', 'source >= 17 ? null : ""'
       );
       rules.defineRule
-        ('validationNotes.dodgeFeatureSkills.1', 'feats.Dodge', '=', null);
+        ('validationNotes.dodgeFeatSkills.1', 'feats.Dodge', '=', null);
     } else if(feat == 'Double Slice') {
-      // TODO
+      notes = [
+        'combatNotes.doubleSliceFeature:+%V off-hand damage',
+        'validationNotes.doubleSliceFeatAbility:Requires Dexterity >= 13',
+        'validationNotes.doubleSliceFeatFeatures:' +
+          'Requires Two-Weapon Fighting >= %1',
+        'validationNotes.doubleSliceFeatSkills:Requires Combat (HTH) >= %1'
+      ];
+      rules.defineRule('combatNotes.doubleSliceFeature',
+        'feats.Double Slice', '=', null,
+        // NOTE: should top off at strengthModifier
+        'strengthModifier', '+', 'Math.floor(source / 2)'
+      );
+      rules.defineRule('validationNotes.doubleSliceFeatFeatures.1',
+        'feats.Double Slice', '=', null
+      );
+      rules.defineRule('validationNotes.doubleSliceFeatSkills.1',
+        'feats.Double Slice', '=', null
+      );
     } else if(feat == 'Evasion') {
-      // TODO
+      notes = [
+        'saveNotes.evasionFeature:' +
+          '%V% damage on successful Reflex save instead of half, %1% on fail',
+        'validationNotes.evasionFeatFeatures:Requires Lightning Reflexes >= %1'
+      ];
+      rules.defineRule('saveNotes.evasionFeature',
+        'feats.Evasion', '=', 'Math.min(0, 50 - source * 5)'
+      );
+      rules.defineRule('saveNotes.evasionFeature.1',
+        'feats.Evasion', '=', 'source >= 11 ? 100 - 5 * (source - 10) : 100'
+      );
+      rules.defineRule('validationNotes.evasionFeatFeatures',
+        'feats.Lightning Reflexes', '=', null
+      );
     } else if(feat == 'Far Shot') {
       // TODO
     } else if(feat == 'Fast Stealth') {
@@ -1211,7 +1282,20 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Weapon Training') {
       // TODO
     } else if(feat == 'Whirlwind Attack') {
-      // TODO
+      notes = [
+        'combatNotes.whirlwindAttackFeature:Attack all foes w/in reach',
+        'validationNotes.whirlwindAttackFeatAbility:' +
+          'Requires Dexterity >= 13/Intelligence >= 13',
+        'validationNotes.whirlwindAttackFeatSkills:Requires Combat (HTH) >= %1',
+        'validationNotes.whirlwindAttackFeatFeatures:' +
+          'Requires Combat Expertise >= %1/Dodge >= %1/Mobility >= 4'
+      ];
+      rules.defineRule('validationNotes.whirlwindAttackFeatFeatures.1',
+        'feats.Whirlwind Attack', '=', null
+      );
+      rules.defineRule('validationNotes.whirlwindAttackFeatSkills.1',
+        'feats.Whirlwind Attack', '=', null
+      );
     } else if(feat == 'Wild Empathy') {
       notes = [
         'skillNotes.wildEmpathyFeature:Diplomacy with animals',
@@ -1219,23 +1303,57 @@ HybridD20.featRules = function(rules, feats) {
       ];
     // Metamagic Feats
     } else if(feat == 'Empower Spell') {
-      // TODO
+      notes = [
+        'magicNotes.empowerSpellFeature:' +
+          'x1.5 designated spell variable effects uses +2 spell slot',
+        'sanityNotes.empowerSpellFeatCasterLevel:Implies Caster Level >= 1'
+      ];
     } else if(feat == 'Enlarge Spell') {
-      // TODO
+      notes = [
+        'magicNotes.enlargeSpellFeature:' +
+          'x2 designated spell range uses +1 spell slot',
+        'sanityNotes.enlargeSpellFeatCasterLevel:Implies Caster Level >= 1'
+      ];
     } else if(feat == 'Extend Spell') {
-      // TODO
+      notes = [
+        'magicNotes.extendSpellFeature:' +
+          'x2 designated spell duration uses +1 spell slot',
+        'sanityNotes.extendSpellFeatCasterLevel:Implies Caster Level >= 1'
+      ];
     } else if(feat == 'Heighten Spell') {
-      // TODO
+      notes = [
+        'magicNotes.heightenSpellFeature:Increase designated spell level',
+        'sanityNotes.heightenSpellFeatCasterLevel:Implies Caster Level >= 1'
+      ];
     } else if(feat == 'Maximize Spell') {
-      // TODO
+      notes = [
+        'magicNotes.maximizeSpellFeature:' +
+          'Maximize all designated spell variable effects uses +3 spell slot',
+        'sanityNotes.maximizeSpellFeatCasterLevel:Implies Caster Level >= 1'
+      ];
     } else if(feat == 'Quicken Spell') {
-      // TODO
+      notes = [
+        'magicNotes.quickenSpellFeature:' +
+          'Free action casting 1/round uses +4 spell slot',
+        'sanityNotes.quickenSpellFeatCasterLevel:Implies Caster Level >= 1'
+      ];
     } else if(feat == 'Silent Spell') {
-      // TODO
+      notes = [
+        'magicNotes.silentSpellFeature:' +
+          'Cast spell w/out speech uses +1 spell slot',
+        'sanityNotes.silentSpellFeatCasterLevel:Implies Caster Level >= 1'
+      ];
     } else if(feat == 'Still Spell') {
-      // TODO
+      notes = [
+        'magicNotes.stillSpellFeature:' +
+          'Cast spell w/out movement uses +1 spell slot',
+        'sanityNotes.stillSpellFeatCasterLevel:Implies Caster Level >= 1'
+      ];
     } else if(feat == 'Widen Spell') {
-      // TODO
+      notes = [
+        'magicNotes.widenSpellFeature:x2 area of affect uses +3 spell slot',
+        'sanityNotes.widenSpellFeatCasterLevel:Implies Caster Level >= 1'
+      ];
     // Powers
     } else if(feat == 'Animal Form') {
       // TODO
