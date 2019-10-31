@@ -84,11 +84,11 @@ HybridD20.FEATS = [
   'Intimidating Prowess', 'Iron Will', 'Ledge Walker', 'Lightning Reflexes',
   'Lunge', 'Manyshot', 'Mighty Throw', 'Mind Over Body', 'Mobility',
   'Mounted Archery', 'Mounted Combat', 'Nimble Step', 'No Retreat',
-  'Opportunist', 'Overhand Chop', 'Penetrating Strike', 'Power Attack',
-  'Precise Shot', 'Precise Strike', 'Quiet Death', 'Quivering Palm',
-  'Rapid Reload', 'Rapid Shot', 'Resiliency', 'Riposte', 'Rogue Crawl',
-  'Shield Cover', 'Shield Deflection', 'Shield Proficiency', 'Sidestep Charge',
-  'Slow Reactions', 'Snatch Arrows', 'Sneak Attack',
+  'Opportunist', 'Overhand Chop', 'Penetrating Strike', 'Point Blank Shot',
+  'Power Attack', 'Precise Shot', 'Precise Strike', 'Quiet Death',
+  'Quivering Palm', 'Rapid Reload', 'Rapid Shot', 'Resiliency', 'Riposte',
+  'Rogue Crawl', 'Shield Cover', 'Shield Deflection', 'Shield Proficiency',
+  'Sidestep Charge', 'Slow Reactions', 'Snatch Arrows', 'Sneak Attack',
   'Sneak Attack (Bleeding Attack)', 'Sneak Attack (Crippling Strike)',
   'Stunning Fist', 'Successive Fire', 'Surprise Attacks', 'Swift Tracker',
   'Throw Anything', 'Toughness', 'Trap Sense', 'Two-Weapon Defense',
@@ -1355,11 +1355,44 @@ HybridD20.featRules = function(rules, feats) {
       rules.defineRule
         ('save.Reflex', 'saveNotes.lightningReflexesFeature', '+', null);
     } else if(feat == 'Lunge') {
-      // TODO
+      notes = [
+        "combatNotes.lungeFeature:%1 AC to increase attack reach by 5'",
+        'validationNotes.lungeFeatSkills:Requires Combat (HTH) >= %1'
+      ];
+      rules.defineRule
+        ('combatNotes.lungeFeature.1', 'feats.Lunge', '=', 'source - 6');
+      rules.defineRule
+        ('validationNotes.lungeFeatSkills', 'feats.Lunge', '=', 'source + 5');
     } else if(feat == 'Manyshot') {
-      // TODO
+      notes = [
+        'combatNotes.manyshotFeature:' +
+          'Fire %V arrows simultaneously at %1 attack',
+        'validationNotes.manyshotFeatAbility:Requires Dexterity >= 17',
+        'validationNotes.manyshotFeatFeatures:' +
+          'Requires Point Blank Shot >= %1/Rapid Shot',
+        'validationNotes.manyshotFeatSkills:Requires Combat (Fire) >= 6'
+      ];
+      rules.defineRule('combatNotes.manyshotFeature',
+        'combatNotes.manyshotFeature.2', '=', '"2/3/4".slice(0, source*2-3)'
+      );
+      rules.defineRule('combatNotes.manyshotFeature.1',
+        'combatNotes.manyshotFeature.2', '=', '"-4/-6/-8".slice(0, source*3-4)'
+      );
+      rules.defineRule('combatNotes.manyshotFeature.2',
+         'skills.Combat (Fire)', '=', 'source >= 16 ? 4 : source >= 11 ? 3 : 2',
+         'feats.Manyshot', 'v', 'source + 1'
+      );
+      rules.defineRule
+        ('validationNotes.manyshotFeatFeatures', 'feats.Manyshot', '=', null);
     } else if(feat == 'Mighty Throw') {
-      // TODO
+      notes = [
+        'combatNotes.mightyThrowFeature:+%V attack w/thrown weapon',
+        'validationNotes.mightyThrowFeatAbility:Requires Strength >= 13'
+      ];
+      rules.defineRule('combatNotes.mightyThrowFeature',
+        'feats.Mighty Throw', '=', null,
+        'strengthModifier', 'v', null
+      );
     } else if(feat == 'Mind Over Body') {
       notes = [
         'featureNotes.mindOverBodyFeature:Heal %V ability damage/day',
@@ -1370,11 +1403,60 @@ HybridD20.featRules = function(rules, feats) {
         'constitutionModifier', 'v', null
       );
     } else if(feat == 'Mobility') {
-      // TODO
+      notes = [
+        'combatNotes.mobilityFeature:+%V AC vs. movement AOO',
+        'validationNotes.mobilityFeatAbility:Requires Dexterity >= 13',
+        'validationNotes.mobilityFeatFeatures:Requires Dodge >= %1',
+        'validationNotes.mobilityFeatSkills:Requires Combat (HTH) >= %1'
+      ];
+      rules.defineRule
+        ('combatNotes.mobilityFeature', 'feats.Mobility', '=', null);
+      rules.defineRule
+        ('validationNotes.mobilityFeatFeatures', 'feats.Mobility', '=', null);
+      rules.defineRule
+        ('validationNotes.mobilityFeatSkills', 'feats.Mobility', '=', null);
     } else if(feat == 'Mounted Archery') {
-      // TODO
+      notes = [
+        'combatNotes.mountedArcheryFeature:Reduce mounted ranged penalty by %V',
+        'validationNotes.mountedArcheryFeatFeatures:' +
+          'Requires Mounted Combat >= %1',
+        'validationNotes.mountedArcheryFeatSkills:Requires Handle Animal >= %1'
+      ];
+      rules.defineRule('combatNotes.mountedArcheryFeature',
+        'feats.Mounted Archery', '=', null
+      );
+      rules.defineRule('validationNotes.mountedArcheryFeatFeatures',
+        'feats.Mounted Archery', '=', null
+      );
+      rules.defineRule('validationNotes.mountedArcheryFeatSkills',
+        'feats.Mounted Archery', '=', null
+      );
     } else if(feat == 'Mounted Combat') {
-      // TODO
+      notes = [
+        'combatNotes.mountedCombatFeature:' +
+          'Handle Animal save vs. mount damage %V/rd%1%2%3%4',
+        'validationNotes.mountedCombatFeatSkills:' +
+          'Requires Combat (HTH) >= %1/Handle Animal >= %1'
+      ];
+      rules.defineRule('combatNotes.mountedCombatFeature',
+        'feats.Mounted Combat', '=', 'Math.floor((source + 1) / 2)'
+      );
+      rules.defineRule('combatNotes.mountedCombatFeature.1',
+        'feats.Mounted Combat', '=', 'source >= 2 ? ", mounted Overrun" + (source >= 9 ? " multiple foes" : "") + " unavoidable, bonus hoof attack" : ""'
+      );
+      rules.defineRule('combatNotes.mountedCombatFeature.2',
+        'feats.Mounted Combat', '=', 'source >= 3 ? ", move before and after mounted attack" : ""'
+      );
+      rules.defineRule('combatNotes.mountedCombatFeature.3',
+        'feats.Mounted Combat', '=', 'source >= 4 ? ", +" + source + " damage from mounted charge" : ""'
+      );
+      rules.defineRule('combatNotes.mountedCombatFeature.4',
+        'feats.Mounted Combat', '=', 'source >= 7 ? ", Bull Rush to unhorse foe" : ""'
+      );
+      rules.defineRule('validationNote.mountedCombatFeatSkills.1',
+        'feats.Mounted Combat', '=', null
+      );
+      // TODO Full Mounted Atack, Mounted Fighting, Burst of Speed, Deadly Charge
     } else if(feat == 'Nimble Step') {
       notes = [
         'abilityNotes.nimbleStepFeature:' +
@@ -1389,13 +1471,78 @@ HybridD20.featRules = function(rules, feats) {
         'feats.Nimble Step', '=', null
       );
     } else if(feat == 'No Retreat') {
-      // TODO
+      notes = [
+        'combatNotes.noRetreatFeature:AOO on withdrawing foe',
+        'validationNotes.noRetreatFeatFeatures:Requires Riposte',
+        'validationNotes.noRetreatFeatSkills:Requires Combat (HTH) >= 15'
+      ];
     } else if(feat == 'Opportunist') {
-      // TODO
+      notes = [
+        'combatNotes.opportunistFeature:' +
+          'AOO vs. foe struck by ally, +%1d6 Sneak Attack damage',
+        'validationNotes.opportunistFeatFeatures:' +
+          'Requires Lightning Reflexes >= 7/Sneak Attack >= 10',
+        'validationNotes.opportunistFeatSkills:Requires Combat (HTH) >= 7'
+      ];
+      rules.defineRule('combatNotes.opportunistFeature',
+        'feats.Opportunist', '=', 'Math.floor(source / 2)'
+      );
     } else if(feat == 'Overhand Chop') {
-      // TODO
+      notes = [
+        'combatNotes.overhandChopFeature:+%V two-handed damage%1%2',
+        'validationNotes.overhandChopFeatAbility:Requires Strength >= 12',
+        'validationNotes.overhandChopFeatSkills:Requires Combat (HTH) >= %1'
+      ];
+      rules.defineRule('combatNotes.overhandChopFeature.3',
+        'feats.Overhand Chop', '=', 'source >= 11 ? 1.5 : 0.5',
+        'strengthModifier', '*', null
+      );
+      rules.defineRule('combatNotes.overhandChopFeature',
+        'feats.Overhand Chop', '=', null,
+        'combatNotes.overhandChopFeature.3', 'v', 'Math.floor(source)'
+      );
+      rules.defineRule('combatNotes.overhandChopFeature.1',
+        'feats.Overhand Chop', '=', 'source >= 6 ? ", apply to first of full-attack" : ""'
+      );
+      rules.defineRule('combatNotes.overhandChopFeature.2',
+        'feats.Overhand Chop', '=', 'source >= 11 ? ", " + (source < 16 ? source - 16 : "-0") + " attack for auto-crit" : ""'
+      );
+      rules.defineRule('validationNotes.overhandChopFeatSkills',
+        'feats.Overhand Chop', '=', null
+      );
     } else if(feat == 'Penetrating Strike') {
-      // TODO
+      notes = [
+        'combatNotes.penetratingStrikeFeature:' +
+          'Focused weapons ignore DR %V/anything',
+        'validationNotes.penetratingStrikeFeatFeatures:' +
+          'Requires Weapon Focus/Weapon Training >= %1',
+        'validationNotes.penetratingStrikeFeatSkills:' +
+          'Requires Combat (Fire) >= %1 || Combat (HTH) >= %1'
+      ];
+      rules.defineRule('combatNotes.penetratingStrikeFeature',
+        'feats.Penetrating Strike', '=', null
+      );
+      rules.defineRule('validationNotes.penetratingStrikeFeatFeatures.1',
+        'feats.Penetrating Strike', '=', null
+      );
+      rules.defineRule('validationNotes.penetratingStrikeFeatSkills.1',
+        'feats.Penetrating Strike', '=', 'source + 10'
+      );
+    } else if(feat == 'Point Blank Shot') {
+      notes = [
+        'combatNotes.pointBlankShotFeature:' +
+          "+%V/+%1 ranged attack/damage w/in 30'",
+        'validationNotes.pointBlankShotSkills:Requires Combat (Fire) >= %1'
+      ];
+      rules.defineRule('combatNotes.pointBlankShotFeature',
+        'feats.Point Blank Shot', '=', 'Math.floor((source + 1) / 2)'
+      );
+      rules.defineRule('combatNotes.pointBlankShotFeature.1',
+        'feats.Point Blank Shot', '=', 'Math.floor(source / 2)'
+      );
+      rules.defineRule('validationNotes.pointBlankShotSkills',
+        'feats.Point Blank Shot', '=', null
+      );
     } else if(feat == 'Power Attack') {
       // TODO
     } else if(feat == 'Precise Shot') {
@@ -1409,7 +1556,12 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Rapid Reload') {
       // TODO
     } else if(feat == 'Rapid Shot') {
-      // TODO
+      notes = [
+        'combatNotes.rapidShotFeature:Normal and extra ranged -2 attacks',
+        'validationNotes.rapidShotFeatAbility:Requires Dexterity >= 13',
+        'validationNotes.rapidShotFeatFeatures:Requires Point Blank Shot',
+        'validationNotes.rapidShotFeatSkills:Requires Combat (Fire)'
+      ];
     } else if(feat == 'Resiliency') {
       // TODO
     } else if(feat == 'Riposte') {
