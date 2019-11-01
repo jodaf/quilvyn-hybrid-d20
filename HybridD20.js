@@ -68,36 +68,40 @@ function HybridD20() {
 
 // Arrays of choices
 HybridD20.FEATS = [
-  'Advance', 'Agile Maneuvers', 'Arcane Armor Training', 'Armor Proficiency',
-  'Blind-Fight', 'Bravery', 'Camouflage', 'Canny Defense', 'Cleave',
-  'Combat Reflexes', 'Deadly Aim', 'Deadly Precision', 'Death Attack',
-  'Defensive Combat Training', 'Defensive Roll', 'Defensive Training',
-  'Deflect Arrows', 'Disruptive', 'Dodge', 'Double Slice', 'Evasion',
-  'Far Shot', 'Fast Stealth', 'Favored Enemy', 'Favored Terrain',
-  'Flurry Of Blows', 'Follow-Through', 'Great Fortitude', 'Hidden Weapons',
-  'Improve Grapple', 'Improved Bull Rush', 'Improved Critical',
-  'Improved Defensive Fighting', 'Improved Disarm', 'Improved Feint',
-  'Improved Grapple', 'Improved Great Fortitude', 'Improved Initiative',
-  'Improved Iron Will', 'Improved Lightning Reflexes', 'Improved Overrun',
-  'Improved Shield Bash', 'Improved Sunder', 'Improved Trip',
-  'Improved Unarmed Strike', 'Improvised Weapon Use', 'Insightful Defense',
-  'Intimidating Prowess', 'Iron Will', 'Ledge Walker', 'Lightning Reflexes',
-  'Lunge', 'Manyshot', 'Mighty Throw', 'Mind Over Body', 'Mobility',
-  'Mounted Archery', 'Mounted Combat', 'Nimble Step', 'No Retreat',
-  'Opportunist', 'Overhand Chop', 'Penetrating Strike', 'Point Blank Shot',
-  'Power Attack', 'Precise Shot', 'Precise Strike', 'Quiet Death',
-  'Quivering Palm', 'Rapid Reload', 'Rapid Shot', 'Resiliency', 'Riposte',
-  'Rogue Crawl', 'Shield Cover', 'Shield Deflection', 'Shield Proficiency',
-  'Sidestep Charge', 'Slow Reactions', 'Snatch Arrows', 'Sneak Attack',
-  'Sneak Attack (Bleeding Attack)', 'Sneak Attack (Crippling Strike)',
-  'Stunning Fist', 'Successive Fire', 'Surprise Attacks', 'Swift Tracker',
-  'Throw Anything', 'Toughness', 'Trap Sense', 'Two-Weapon Defense',
-  'Two-Weapon Fighting', 'Uncanny Dodge', 'Vital Strike', 'Weapon Finesse',
-  'Weapon Proficiency (Martial)', 'Weapon Training', 'Whirlwind Attack',
+  // General Feats
+  'Bravery', 'Camouflage', 'Fast Stealth', 'Great Fortitude',
+  'Improved Great Fortitude', 'Improved Initiative', 'Intimidating Prowess',
+  'Iron Will', 'Improved Iron Will', 'Ledge Walker', 'Lightning Reflexes',
+  'Improved Lightning Reflexes', 'Mind Over Body', 'Nimble Step',
+  'Rogue Crawl', 'Swift Tracker', 'Favored Terrain', 'Toughness', 'Trap Sense',
   'Wild Empathy',
+  // General Combat Feats
+  'Improved Critical', 'Deadly Precision', 'Death Attack', 'Defensive Roll',
+  'Defensive Training', 'Dodge', 'Evasion', 'Favored Enemy',
+  'Penetrating Strike', 'Resiliency', 'Slow Reactions', 'Sneak Attack',
+  'Sneak Attack (Bleeding Attack)', 'Sneak Attack (Crippling Strike)',
+  'Surprise Attacks', 'Uncanny Dodge', 'Weapon Proficiency', 'Weapon Training',
+  // HTH Combat Feats
+  'Advance', 'Agile Maneuvers', 'Arcane Armor Training', 'Armor Proficiency',
+  'Blind-Fight', 'Improved Bull Rush', 'Canny Defense', 'Cleave',
+  'Combat Reflexes', 'Defensive Combat Training', 'Improved Defensive Fighting',
+  'Improved Disarm', 'Disruptive', 'Double Slice', 'Improved Feint',
+  'Flurry Of Blows', 'Follow-Through', 'Hidden Weapons',
+  'Improvised Weapon Use', 'Insightful Defense', 'Improved Grapple', 'Lunge',
+  'Mobility', 'Mounted Combat', 'No Retreat', 'Opportunist', 'Overhand Chop',
+  'Improved Overrun', 'Power Attack', 'Precise Strike', 'Quiet Death',
+  'Quivering Palm', 'Riposte', 'Improved Shield Bash', 'Shield Cover',
+  'Shield Deflection', 'Shield Proficiency', 'Sidestep Charge', 'Stunning Fist',
+  'Improved Sunder', 'Improved Trip', 'Two-Weapon Defense',
+  'Two-Weapon Fighting', 'Improved Unarmed Strike', 'Vital Strike',
+  'Weapon Finesse', 'Whirlwind Attack',
+  // Fire Combat Feats
+  'Deadly Aim', 'Deflect Arrows', 'Far Shot', 'Mighty Throw', 'Mounted Archery',
+  'Point Blank Shot', 'Precise Shot', 'Rapid Reload', 'Rapid Shot',
+  'Manyshot', 'Snatch Arrows', 'Successive Fire', 'Throw Anything',
   // Metamagic Feats
   'Empower Spell', 'Enlarge Spell', 'Extend Spell', 'Heighten Spell',
-  'Maximize Spell', 'Quicken Spell', 'Silent Spell', 'Still Spell',
+  'Maximize Spell', 'Silent Spell', 'Still Spell', 'Quicken Spell',
   'Widen Spell'
 ];
 // Note: the order here handles dependencies among attributes when generating
@@ -675,12 +679,11 @@ HybridD20.featRules = function(rules, feats) {
         'combatNotes.advanceFeature:' +
           "Move through %V' of threatened area without AOO",
         'validationNotes.advanceFeatAbility:Requires Dexterity >= 15',
-        'validationNotes.advanceFeatSkills:Requires Dodge >= %1/Mobility >= %1'
+        'validationNotes.advanceFeatSkills:' +
+          'Requires Dodge >= Advance/Mobility >= Advance'
       ];
       rules.defineRule
         ('combatNotes.advanceFeature', 'feats.Advance', '=', 'source * 5');
-      rules.defineRule
-        ('validationNotes.advanceFeatSkills.1', 'feats.Advance', '=', null);
     } else if(feat == 'Agile Maneuvers') {
       notes = [
         'combatNotes.agileManeuversFeature:+%V CMB (dex instead of str)',
@@ -708,13 +711,11 @@ HybridD20.featRules = function(rules, feats) {
       // TODO
     } else if(feat == 'Armor Proficiency') {
       notes = [
-        'validationNotes.armorProficiencyFeatSkills:Requires Combat (HTH) >= %1'
+        'validationNotes.armorProficiencyFeatSkills:' +
+          'Requires Combat (HTH) >= Armor Proficiency - 2'
       ];
       rules.defineRule('armorProficiencyLevel',
         'feats.Armor Proficiency', '^', 'source >= 3 ? ' + SRD35.PROFICIENCY_HEAVY + ' : source == 2 ? ' + SRD35.PROFICIENCY_MEDIUM + ' : ' + SRD35.PROFICIENCY_LIGHT
-      );
-      rules.defineRule('validationNotes.armorProficiencyFeatSkills',
-        'feats.Armor Proficiency', '=', 'source > 2 ? source - 2 : null'
       );
       // TODO Armor training, optimization, defense, and mastery
     } else if(feat == 'Blind-Fight') {
@@ -723,7 +724,8 @@ HybridD20.featRules = function(rules, feats) {
         'combatNotes.blind-FightFeature:' +
           'Reroll concealed miss, no bonus to invisible foe, retain %V Dex ' +
           'bonus to AC vs. invisible foe',
-        'validationNotes.blind-FightFeatSkills:Requires Combat (HTH) >= %1/Perception >= %1'
+        'validationNotes.blind-FightFeatSkills:' +
+          'Requires Combat (HTH) >= Blind-Fight/Perception >= Blind-Fight'
       ];
       rules.defineRule('abilityNotes.blind-FightFeature',
         'feats.Blind-Fight', '=', 'source * 5',
@@ -733,28 +735,13 @@ HybridD20.featRules = function(rules, feats) {
         'feats.Blind-Fight', '=', null,
         'dexterityModifier', 'v', null
       );
-      rules.defineRule('validationNotes.blind-FightFeatSkills.1',
-        'feats.Blind-Fight', '=', null
-      );
     } else if(feat == 'Bravery') {
       notes = [
         'saveNotes.braveryFeature:+%V vs. fear',
-        'validationNotes.braveryFeatPrereq:Requires Combat (HTH) skill >= %1||Iron Will feat >= %1'
+        'validationNotes.braveryFeatPrereq:' +
+           'Requires Combat (HTH) skill >= Bravery * 4 - 2|Iron Will feat >= Bravery * 4 - 2'
       ];
       rules.defineRule('saveNotes.braveryFeature', 'feats.Bravery', '=', null);
-      rules.defineRule('validationNotes.braveryFeatPrereq.1',
-        'feats.Bravery', '=', 'source > 1 ? source * 4 - 2 : 2'
-      );
-      rules.defineRule('validationNotes.braveryFeatPrereq.3',
-        'feats.Bravery', '=', '0', 
-        'skills.Combat (HTH)', '^', null,
-        'feats.Iron Will', '^', null
-      );
-      rules.defineRule('validationNotes.braveryFeatPrereq',
-        'validationNotes.braveryFeatPrereq.1', '=', null,
-        'validationNotes.braveryFeatPrereq.3', '+', '-source',
-        '', '^', '0'
-      );
     } else if(feat == 'Camouflage') {
       notes = [
         'featureNotes.camouflageFeature:Hide in any natural terrain',
@@ -767,50 +754,41 @@ HybridD20.featRules = function(rules, feats) {
         'validationNotes.cannyDefenseFeatAbility:Requires Intelligence >= 13',
         'validationNotes.cannyDefenseFeatBaseAttack:Requires Base Attack >= 7',
         'validationNotes.cannyDefenseFeatFeatures:' +
-          'Requires Dodge >= %1/Mobility >= %1/Weapon Finesse >= %1'
+          'Requires Dodge >= Canny Defense/Mobility >= Canny Defense/Weapon Finesse >= Canny Defense'
       ];
       rules.defineRule('combatNotes.cannyDefenseFeature',
         'feats.Canny Defense', '=', null,
         'intelligenceModifier', 'v', null
-      );
-      rules.defineRule('validationNotes.cannyDefenseFeatFeatures.1',
-        'feats.Canny Defense', '=', null
       );
     } else if(feat == 'Cleave') {
       notes = [
         'combatNotes.cleaveFeature:%V extra attack(s) when foe(s) drops',
         'validationNotes.cleaveFeatAbility:Requires Strength >= 13',
         'validationNotes.cleaveFeatFeatures:Requires Power Attack',
-        'validationNotes.cleaveFeatSkills:Requires Combat (HTH) >= %1'
+        'validationNotes.cleaveFeatSkills:Requires Combat (HTH) >= Cleave'
       ];
       rules.defineRule('combatNotes.cleaveFeature', 'feats.Cleave', '=', null);
-      rules.defineRule
-        ('validationNotes.cleaveFeatSkills', 'feats.Cleave', '=', null);
     } else if(feat == 'Combat Reflexes') {
       notes = [
         'combatNotes.combatReflexesFeature:Flatfooted AOO, up to %V AOO/round',
-        'validationNotes.combatReflexesFeatSkills:Requires Combat (HTH) >= %1'
+        'validationNotes.combatReflexesFeatSkills:' +
+          'Requires Combat (HTH) >= Combat Reflexes'
       ];
-      rules.defineRule('validationNotes.combatReflexesFeature',
+      rules.defineRule('cobatNotes.combatReflexesFeature',
         'feats.CombatReflexes', '=', null,
         'dexterityModifier', 'v', 'source + 1'
-      );
-      rules.defineRule('validationNotes.combatReflexesFeatSkills',
-        'feats.Combat Reflexes', '=', null
       );
     } else if(feat == 'Deadly Aim') {
       notes = [
         'combatNotes.deadlyAimFeature:-%V attack/+%1 damage w/projectiles',
         'validationNotes.deadlyAimFeatAbility:Requires Dexterity >= 13',
-        'validationNotes.deadlyAimFeatSkills:Requires Combat (Fire) >= %1'
+        'validationNotes.deadlyAimFeatSkills:' +
+          'Requires Combat (Fire) >= Deadly Aim'
       ];
       rules.defineRule
         ('combatNotes.deadlyAimFeature', 'feats.Deadly Aim', '=', null);
       rules.defineRule('combatNotes.deadlyAimFeature.1',
         'feats.Deadly Aim', '=', '2 * source'
-      );
-      rules.defineRule('validationNotes.deadlyAimFeatSkills.1',
-        'feats.Deadly Aim', '=', null
       );
     } else if(feat == 'Deadly Precision') {
       notes = [
@@ -818,8 +796,9 @@ HybridD20.featRules = function(rules, feats) {
           'Reroll sneak attack damage die le %V, min die %1',
         'validationNotes.deadlyPrecisionFeatAbility:Requires Dexterity >= 15',
         'validationNotes.deadlyPrecisionFeatFeatures:' +
-           'Requires Sneak Attack >= %1',
-        'validationNotes.deadlyPrecisionFeatSkills:Requires Combat (HTH) >= %1'
+           'Requires Sneak Attack >= Deadly Precision',
+        'validationNotes.deadlyPrecisionFeatSkills:' +
+          'Requires Combat (HTH) >= Deadly Precision + 4'
       ];
       rules.defineRule('combatNotes.deadlyPrecisionFeature',
         'feats.Deadly Precision', '=', 'Math.floor(source / 4)'
@@ -827,34 +806,23 @@ HybridD20.featRules = function(rules, feats) {
       rules.defineRule('combatNotes.deadlyPrecisionFeature.1',
         'feats.Deadly Precision', '=', 'Math.floor((source + 6) / 4)'
       );
-      rules.defineRule('validationNotes.deadlyPrecisionFeatFeatures',
-        'feats.Deadly Precision', '=', null
-      );
-      rules.defineRule('validationNotes.deadlyPrecisionFeatSkills',
-        'feats.Deadly Precision', '=', 'source + 4'
-      );
     } else if(feat == 'Death Attack') {
       notes = [
         'combatNotes.deathAttackFeature:' +
           'Target studied 3+ rd paralyzed d6+%1 rd or killed when struck (DC %V Fort neg)',
-        'validationNotes.deathAttackFeatFeatures:Requires Sneak Attack >= %1',
+        'validationNotes.deathAttackFeatFeatures:' +
+           'Requires Sneak Attack >= Death Attack',
         'validationNotes.deathAttackFeatSkills:Requires Stealth >= 5'
       ];
       rules.defineRule('combatNotes.deathAttackFeature',
         'intelligenceModifier', '=', 'source + 10',
         'feats.Death Attack', '+', null
       );
-      rules.defineRule('combatNotes.deathAttackFeature.1',
-        'feats.Death Attack', '+', 'source - 1'
-      );
-      rules.defineRule('validationNotes.deathAttackFeatSkills',
-        'feats.Death Attack', '=', 'source + 1'
-      );
     } else if(feat == 'Defensive Combat Training') {
       notes = [
         'combatNotes.defensiveCombatTrainingFeature:+%V CMD',
         'validationNotes.defensiveCombatTrainingFeatSkills:' +
-          'Requires Combat (HTH) >= %1'
+          'Requires Combat (HTH) >= Defensive Combat Training'
       ];
       rules.defineRule('combatManeuverDefense',
         'combatNotes.defensiveCombatTraining', '+', null
@@ -862,21 +830,15 @@ HybridD20.featRules = function(rules, feats) {
       rules.defineRule('combatNotes.defensiveCombatTrainingFeature',
         'feats.Defensive Combat Training', '=', null
       );
-      rules.defineRule('validationNotes.defensiveCombatTrainingFeatSkills',
-        'feats.Defensive Combat Training', '=', null
-      );
     } else if(feat == 'Defensive Roll') {
       notes = [
         'combatNotes.defensiveRollFeature:' +
           'DC damage Ref save vs. lethal blow for %V% damage',
         'validationNotes.defensiveRollFeatFeatures:' +
-          'Requires Lightning Reflexes >= %1/Evasion >= 10'
+          'Requires Lightning Reflexes >= Defensive Roll/Evasion >= 10'
       ];
       rules.defineRule('combatNotes.defensiveRollFeature',
         'feats.Defensive Roll', '=', '5 * source'
-      );
-      rules.defineRule('validationNotes.defensiveRollFeatFeatures.1',
-        'feats.Defensive Roll', '=', null
       );
     } else if(feat == 'Defensive Training') {
       notes = [
@@ -893,39 +855,28 @@ HybridD20.featRules = function(rules, feats) {
         // NOTE: DA >= 6, Dex >= 21, Wis >= 19 deflect all range + magic
         'validationNotes.deflectArrowsFeatAbility:Requires Dexterity >= 13',
         'validationNotes.deflectArrowsFeatFeatures:' +
-          'Requires Lightning Reflexes >= %1/Improved Unarmed Strike >= %2',
-        'validationNotes.deflectArrowsFeatSkills:Requires Combat (Fire) >= %1'
+          'Requires Lightning Reflexes >= Deflect Arrows * 2/Improved Unarmed Strike >= Deflect Arrows',
+        'validationNotes.deflectArrowsFeatSkills:Requires Combat (Fire) >= Deflect Arrows'
       ];
       rules.defineRule
         ('combatNotes.deflectArrowsFeature', 'feats.Deflect Arrows', '=', null);
-      rules.defineRule('validationNotes.deflectArrowsFeatFeatures.1',
-        'feats.Deflect Arrows', '=', 'source * 2'
-      );
-      rules.defineRule('validationNotes.deflectArrowsFeatFeatures.2',
-        'feats.Deflect Arrows', '=', null
-      );
-      rules.defineRule('validationNotes.deflectArrowsFeatSkills.1',
-        'feats.Deflect Arrows', '=', null
-      );
     } else if(feat == 'Disruptive') {
       notes = [
         "combatNotes.disruptiveFeature:+%V foes' defensive spell DC%1",
-        'validationNotes.disruptiveFeatSkills:Requires Combat (HTH) >= %1'
+        'validationNotes.disruptiveFeatSkills:' +
+          'Requires Combat (HTH) >= Disruptive + 5'
       ]
       rules.defineRule
         ('combatNotes.disruptiveFeature', 'feats.Disruptive', '=', null);
       rules.defineRule('combatNotes.disruptiveFeature.1',
         'feats.Disruptive', '=', 'source < 10 ? "" : ", provoke AOO"'
       );
-      rules.defineRule('validationNotes.disruptiveFeatSkills',
-        'feats.Disruptive', '=', 'source + 5'
-      );
     } else if(feat == 'Dodge') {
       notes = [
         'combatNotes.dodgeFeature:+%V AC%1%2',
         'validationNotes.dodgeFeatAbility:Requires Dexterity >= 13',
         'validationNotes.dodgeFeatSkills:' +
-          'Requires Combat (Fire) >= %1 || Combat (HTH) >= %1'
+          'Requires Combat (Fire) >= Dodge | Combat (HTH) >= Dodge'
       ];
       rules.defineRule('armorClass', 'combatNotes.dodgeFeature', '+', null);
       rules.defineRule('combatNotes.dodgeFeature',
@@ -939,32 +890,26 @@ HybridD20.featRules = function(rules, feats) {
         'feats.Dodge', '=', 'source < 11 ? "" : ", 50% conceal for 1 rd after 2 move or withdraw"',
         'dexterity', '=', 'source >= 17 ? null : ""'
       );
-      rules.defineRule
-        ('validationNotes.dodgeFeatSkills.1', 'feats.Dodge', '=', null);
     } else if(feat == 'Double Slice') {
       notes = [
         'combatNotes.doubleSliceFeature:+%V off-hand damage',
         'validationNotes.doubleSliceFeatAbility:Requires Dexterity >= 13',
         'validationNotes.doubleSliceFeatFeatures:' +
-          'Requires Two-Weapon Fighting >= %1',
-        'validationNotes.doubleSliceFeatSkills:Requires Combat (HTH) >= %1'
+          'Requires Two-Weapon Fighting >= Double Slice',
+        'validationNotes.doubleSliceFeatSkills:' +
+          'Requires Combat (HTH) >= Double Slice'
       ];
       rules.defineRule('combatNotes.doubleSliceFeature',
         'feats.Double Slice', '=', null,
         // NOTE: should top off at strengthModifier
         'strengthModifier', '+', 'Math.floor(source / 2)'
       );
-      rules.defineRule('validationNotes.doubleSliceFeatFeatures.1',
-        'feats.Double Slice', '=', null
-      );
-      rules.defineRule('validationNotes.doubleSliceFeatSkills.1',
-        'feats.Double Slice', '=', null
-      );
     } else if(feat == 'Evasion') {
       notes = [
         'saveNotes.evasionFeature:' +
           '%V% damage on successful Reflex save instead of half, %1% on fail',
-        'validationNotes.evasionFeatFeatures:Requires Lightning Reflexes >= %1'
+        'validationNotes.evasionFeatFeatures:' +
+          'Requires Lightning Reflexes >= Lightning Reflexes'
       ];
       rules.defineRule('saveNotes.evasionFeature',
         'feats.Evasion', '=', 'Math.min(0, 50 - source * 5)'
@@ -972,29 +917,22 @@ HybridD20.featRules = function(rules, feats) {
       rules.defineRule('saveNotes.evasionFeature.1',
         'feats.Evasion', '=', 'source >= 11 ? 100 - 5 * (source - 10) : 100'
       );
-      rules.defineRule('validationNotes.evasionFeatFeatures',
-        'feats.Lightning Reflexes', '=', null
-      );
     } else if(feat == 'Far Shot') {
       notes = [
         'combatNotes.farShotFeature:-%V range penalty',
         'validationNotes.farShotFeatFeatures:Requires Point Blank Shot',
-        'validationNotes.farShotFeatSkills:Requires Combat (Fire) >= %1'
+        'validationNotes.farShotFeatSkills:Requires Combat (Fire) >= Far Shot'
       ];
       rules.defineRule
         ('combatNotes.farShotFeature', 'feats.Far Shot', '=', null);
-      rules.defineRule
-        ('validationNotes.farShotFeatSkills', 'feats.Far Shot', '=', null);
     } else if(feat == 'Fast Stealth') {
       notes = [
         'skillNotes.fastStealthFeature:-%V Stealth at full speed',
-        'validationNotes.fastStealthFeatSkills:Requires Stealth >= %1'
+        'validationNotes.fastStealthFeatSkills:' +
+          'Requires Stealth >= Fast Stealth * 2'
       ];
       rules.defineRule('skillNotes.fastStealthFeature',
         'feats.Fast Stealth', '=', '5 - source'
-      );
-      rules.defineRule('validationNotes.fastStealthFeatSkills.1',
-        'feats.Fast Stealth', '=', 'source * 2'
       );
     } else if(feat == 'Favored Enemy') {
       // TODO
@@ -1003,7 +941,8 @@ HybridD20.featRules = function(rules, feats) {
         'combatNotes.favoredTerrainFeature:+%V Initiative in chosen terrain',
         'skillNotes.favoredTerrainFeature:' +
           '+%V Perception, Survival in chosen terrain',
-        'validationNotes.favoredTerrainFeatSkills:Requires Survival >= %1'
+        'validationNotes.favoredTerrainFeatSkills:' +
+          'Requires Survival >= Favored Terrain'
       ];
       rules.defineRule('combatNotes.favoredTerrainFeature',
         'feats.Favored Terrain', '=', 'Math.floor(source / 2)'
@@ -1011,15 +950,13 @@ HybridD20.featRules = function(rules, feats) {
       rules.defineRule('skillNotes.favoredTerrainFeature',
         'feats.Favored Terrain', '=', null
       );
-      rules.defineRule('validationNotes.favoredTerrainFeatSkills',
-        'feats.Favored Terrain', '=', null
-      );
     } else if(feat == 'Flurry Of Blows') {
       notes = [
         'combatNotes.flurryOfBlowsFeature:%1 extra light attack at -%V',
         'validationNotes.flurryOfBlowsFeatFeatures:' +
-          'Requires Improved Unarmed Strike >= %1',
-        'validationNotes.flurryOfBlowsFeatSkills:Requires Combat (HTH) >= %1'
+          'Requires Improved Unarmed Strike >= Flurry Of Blows * 3',
+        'validationNotes.flurryOfBlowsFeatSkills:' +
+          'Requires Combat (HTH) >= Flurry Of Blows * 3'
        ];
        rules.defineRule('combatNotes.flurryOfBlowsFeature',
          'feats.Flurry Of Blows', '=', 'source < 3 ? 3 - source : 0'
@@ -1027,22 +964,14 @@ HybridD20.featRules = function(rules, feats) {
        rules.defineRule('combatNotes.flurryOfBlowsFeature.1',
          'feats.Flurry Of Blows', '=', 'source < 4 ? 1 : 2'
        );
-       rules.defineRule('validationNotes.flurryOfBlowsFeatFeatures.1',
-         'feats.Flurry Of Blows', '=', 'source * 3'
-       );
-       rules.defineRule('validationNotes.flurryOfBlowsFeatSkills.1',
-         'feats.Flurry Of Blows', '=', 'source * 3'
-       );
     } else if(feat == 'Follow-Through') {
       notes = [
         'combatNotes.follow-ThroughFeature:Reduce second attack penalty by %V',
-        'validationNotes.follow-ThroughFeatSkills:Requires Combat (HTH) >= %1'
+        'validationNotes.follow-ThroughFeatSkills:' +
+          'Requires Combat (HTH) >= Follow-Through + 5'
       ];
       rules.defineRule('combatNotes.follow-ThroughFeature',
         'feats.Follow-Through', '=', null
-      );
-      rules.defineRule('validationNotes.follow-ThroughFeatSkills',
-        'feats.Follow-Through', '=', 'source + 5'
       );
     } else if(feat == 'Great Fortitude') {
       notes = [
@@ -1055,13 +984,11 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Hidden Weapons') {
       notes = [
         'skillNotes.hiddenWeaponsFeature:+%V Sleight Of Hand to conceal weapon',
-        'validationNotes.hiddenWeaponsFeatSkills:Requires Sleight Of Hand >= %1'
+        'validationNotes.hiddenWeaponsFeatSkills:' +
+          'Requires Sleight Of Hand >= Hidden Weapons'
       ];
       rules.defineRule
         ('skillNotes.hiddenWeaponsFeature', 'feats.Hidden Weapons', '=', null);
-      rules.defineRule('validationNotes.hiddenWeaponsFeatSkills.1',
-        'feats.Hidden Weapons', '=', null
-      );
     } else if(feat == 'Improved Grapple') {
       notes = [
         'combatNotes.improvedGrappleFeature:' +
@@ -1069,7 +996,8 @@ HybridD20.featRules = function(rules, feats) {
         'validationNotes.improvedGrappleFeatAbility:Requires Dexterity >= 13',
         'validationNotes.improvedGrappleFeatFeatures:' +
           'Requires Improved Unarmed Strike',
-        'validationNotes.improvedGrappleFeatSkills:Requires Combat (HTH) >= %1'
+        'validationNotes.improvedGrappleFeatSkills:' +
+          'Requires Combat (HTH) >= Improved Grapple'
       ];
       rules.defineRule('combatNotes.improvedGrappleFeature.1',
         'feats.Improved Grapple', '=', 'source < 16 ? Math.floor(source / 4) + (source == 1 ? 0 : 1) : 4'
@@ -1089,9 +1017,6 @@ HybridD20.featRules = function(rules, feats) {
       rules.defineRule('combatNotes.improvedGrappleFeature.5',
         'feats.Improved Grapple', '=', 'source >= 10 ? ", " + (source < 20 ? source - 20 : "-0") + " one-handed" : ""'
       );
-      rules.defineRule('validationNotes.improvedGrappleFeatSkills',
-        'feats.Improved Grapple', '=', null
-      );
       // NOTE: Adept Wrestling not described; feature from Reaping Mauler
       // prestige class seems to overlap basic Improved Grapple feature
       // TODO Devastating Grapple
@@ -1100,15 +1025,13 @@ HybridD20.featRules = function(rules, feats) {
         'combatNotes.improvedBullRushFeature:' +
           'No AOO on Bull Rush, +%V strength check%1',
         'validationNotes.improvedBullRushFeatAbility:Requires Strength >= 13',
-        'validationNotes.improvedBullRushFeatSkills:Requires Combat (HTH) >= %1'
+        'validationNotes.improvedBullRushFeatSkills:' +
+          'Requires Combat (HTH) >= Improved Bull Rush'
       ];
       rules.defineRule
         ('combatNotes.improvedBullRush', 'feats.Improved Bull Rush', '=', null);
       rules.defineRule('combatNotes.improvedBullRush.1',
         'feats.improvedBullRush', '=', 'source<6 ? "" : ", foe move draws AOO"'
-      );
-      rules.defineRule('validationNotes.improvedBullRushFeatSkills',
-        'feats.Improved Bull Rush', '=', null
       );
     } else if(feat == 'Improved Critical') {
       // TODO
@@ -1116,7 +1039,7 @@ HybridD20.featRules = function(rules, feats) {
       notes = [
         'combatNotes.defensiveCombatTrainingFeature:-%1 attack/+%V AC',
         'validationNotes.improvedDefensiveFightingFeatSkills:' +
-          'Requires Combat (HTH) >= %1'
+          'Requires Combat (HTH) >= Improved Defensive Fighting'
       ];
       rules.defineRule('combatNotes.defensiveCombatTrainingFeature',
         'feats.Defensive Combat Training', '=', null
@@ -1124,27 +1047,19 @@ HybridD20.featRules = function(rules, feats) {
       rules.defineRule('combatNotes.defensiveCombatTrainingFeature.1',
         'feats.Defensive Combat Training', '=', 'source < 7 ? source : Math.floor(source / 2)'
       );
-      rules.defineRule('validationNotes.improvedDefensiveFightingFeature',
-        'feats.Improved Defensive Fighting', '=', null
-      );
     } else if(feat == 'Improved Disarm') {
       notes = [
         'combatNotes.improvedDisarmFeature:No AOO on disarm, +%V attack%1',
         'validationNotes.improvedDisarmFeatAbility:Requires Intelligence >= 13',
         'validationNotes.improvedDisarmFeatFeatures:' +
-          'Requires Combat Expertise >= %1',
-        'validationNotes.improvedDisarmFeatSkills:Requires Combat (HTH) >= %1'
+          'Requires Combat Expertise >= Improved Disarm',
+        'validationNotes.improvedDisarmFeatSkills:' +
+          'Requires Combat (HTH) >= Improved Disarm'
       ];
       rules.defineRule
         ('combatNotes.improvedDisarm', 'feats.Improved Disarm', '=', null);
       rules.defineRule('combatNotes.improvedDisarm.1',
         'feats.improvedDisarm', '=', 'source<6 ? "" : ", weapon thrown 15\'"'
-      );
-      rules.defineRule('validationNotes.improvedDisarmFeatFeatures',
-        'feats.Improved Disarm', '=', null
-      );
-      rules.defineRule('validationNotes.improvedDisarmFeatSkills',
-        'feats.Improved Disarm', '=', null
       );
     } else if(feat == 'Improved Feint') {
       notes = [
@@ -1152,30 +1067,23 @@ HybridD20.featRules = function(rules, feats) {
           'Bluff check to Feint as move action %V/rd%1',
         'validationNotes.improvedFeintFeatAbility:Requires Intelligence >= 13',
         'validationNotes.improvedFeintFeatFeatures:' +
-          'Requires Combat Expertise >= %1',
-        'validationNotes.improvedFeintFeatSkills:Requires Bluff >= %1'
+          'Requires Combat Expertise >= Improved Feint',
+        'validationNotes.improvedFeintFeatSkills:' +
+          'Requires Bluff >= Improved Feint'
       ];
       rules.defineRule
         ('combatNotes.improvedFeintFeature', 'feats.Improved Feint', '=', null);
       rules.defineRule('combatNotes.improvedFeintFeature.1',
         'feats.Improved Feint', '=', '(source < 6 ? "" : ", foe flat-footed full turn") + (source < 11 ? "" : ", feint free action") + (source < 16 ? "" : ", take 10")'
       );
-      rules.defineRule('validationNotes.improvedFeintFeatFeatures',
-        'feats.Improved Feint', '=', null
-      );
-      rules.defineRule('validationNotes.improvedFeintFeatSkills',
-        'feats.Improved Feint', '=', null
-      );
     } else if(feat == 'Improved Great Fortitude') {
       notes = [
         'saveNotes.improvedGreatFortitudeFeature:Reroll Fort %V/day',
-        'validationNotes.improvedGreatFortitudeFeatFeatures:Requires Great Fortitude >= %1'
+        'validationNotes.improvedGreatFortitudeFeatFeatures:' +
+          'Requires Great Fortitude >= Improved Great Fortitude'
       ];
       rules.defineRule('saveNotes.improvedGreatFortitudeFeature',
         'feats.Improved Great Fortitude', '=', 'Math.floor((source + 3) / 4)'
-      );
-      rules.defineRule('validationNotes.improvedGreatFortitudeFeatFeatures',
-        'feats.Improved Great Fortitude', '=', null
       );
     } else if(feat == 'Improved Initiative') {
       notes = [
@@ -1189,24 +1097,20 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Improved Iron Will') {
       notes = [
         'saveNotes.improvedIronWillFeature:Reroll Will %V/day',
-        'validationNotes.improvedIronWillFeatFeatures:Requires Iron Will >= %1'
+        'validationNotes.improvedIronWillFeatFeatures:' +
+          'Requires Iron Will >= Improved Iron Will'
       ];
       rules.defineRule('saveNotes.improvedIronWillFeature',
         'feats.Improved Iron Will', '=', 'Math.floor((source + 3) / 4)'
       );
-      rules.defineRule('validationNotes.improvedIronWillFeatFeatures',
-        'feats.Improved Iron Will', '=', null
-      );
     } else if(feat == 'Improved Lightning Reflexes') {
       notes = [
         'saveNotes.improvedLightningReflexesFeature:Reroll Reflex %V/day',
-        'validationNotes.improvedLightningReflexesFeatFeatures:Requires Lightning Reflexes >= %1'
+        'validationNotes.improvedLightningReflexesFeatFeatures:' +
+          'Requires Lightning Reflexes >= Improved Lightning Reflexes'
       ];
       rules.defineRule('saveNotes.improvedLightningReflexesFeature',
         'feats.Improved Lightning Reflexes', '=', 'Math.floor((source + 3) / 4)'
-      );
-      rules.defineRule('validationNotes.improvedLightningReflexesFeatFeatures',
-        'feats.Improved Lightning Reflexes', '=', null
       );
     } else if(feat == 'Improved Overrun') {
       notes = [
@@ -1234,8 +1138,9 @@ HybridD20.featRules = function(rules, feats) {
         'combatNotes.improvedSunderFeature:No AOO on Sunder, +%V attack%1',
         'validationNotes.improvedSunderFeatAbility:Requires Strength >= 13',
         'validationNotes.improvedSunderFeatFeatures:' +
-          'Requires Power Attack >= %1',
-        'validationNotes.improvedSunderFeatSkills:Requires Combat (HTH) >= %1'
+          'Requires Power Attack >= Improved Sunder',
+        'validationNotes.improvedSunderFeatSkills:' +
+          'Requires Combat (HTH) >= Improved Sunder'
       ];
       rules.defineRule('combatNotes.improvedSunderFeature',
         'features.Improved Sunder', '=', null
@@ -1243,18 +1148,14 @@ HybridD20.featRules = function(rules, feats) {
       rules.defineRule('combatNotes.improvedSunderFeature.1',
         'features.Improved Sunder', '=', 'source < 6 ? "" : ", apply excess damage to wielder"'
       );
-      rules.defineRule('validationNotes.improvedSunderFeatFeatures.1',
-        'features.Improved Sunder', '=', null
-      );
-      rules.defineRule('validationNotes.improvedSunderFeatSkills.1',
-        'features.Improved Sunder', '=', null
-      );
     } else if(feat == 'Improved Trip') {
       notes = [
         'combatNotes.improvedTripFeature:No AOO on Trip, +%V Str check%1',
         'validationNotes.improvedTripFeatAbility:Requires Intelligence >= 13',
-        'validationNotes.improvedTripFeatFeats:Requires Combat Expertise >= %1',
-        'validationNotes.improvedTripFeatSkills:Requires Combat (HTH) >= %1'
+        'validationNotes.improvedTripFeatFeats:' +
+          'Requires Combat Expertise >= Improved Trip',
+        'validationNotes.improvedTripFeatSkills:' +
+          'Requires Combat (HTH) >= Improved Trip * 2'
       ];
       rules.defineRule('combatNotes.improvedTripFeature',
         'feats.Improved Trip', '=', null
@@ -1262,18 +1163,12 @@ HybridD20.featRules = function(rules, feats) {
       rules.defineRule('combatNotes.improvedTripFeature.1',
         'feats.Improved Trip', '=', 'source < 4 ? "" : ", attack after trip"'
       );
-      rules.defineRule('validationNotes.improvedTripFeatFeats',
-        'features.Improved Trip', '=', null
-      );
-      rules.defineRule('validationNotes.improvedTripFeatSkills',
-        'features.Improved Trip', '=', 'source * 2'
-      );
     } else if(feat == 'Improved Unarmed Strike') {
       notes = [
         'combatNotes.improvedUnarmedStrikeFeature:' +
           'No AOO on unarmed attack, %V damage may be lethal, +%1 AC',
         'validationNotes.improvedUnarmedStrikeFeatSkills:' +
-          'Requires Combat (HTH) >= %1'
+          'Requires Combat (HTH) >= Improved Unarmed Strike'
       ];
       rules.defineRule('combatNotes.improvedUnarmedStrikeFeature',
         'feats.Improved Unarmed Strike', '=', '(source < 9 ? "1d" : "2d") + "034688111668881111111".charAt(source).replace("1", "10")'
@@ -1281,20 +1176,14 @@ HybridD20.featRules = function(rules, feats) {
       rules.defineRule('combatNotes.improvedUnarmedStrikeFeature.1',
         'feats.Improved Unarmed Strike', '=', 'Math.floor((source+1)/4)'
       );
-      rules.defineRule('validationNotes.improvedUnarmedStrikeFeatSkills',
-        'feats.Improved Unarmed Strike', '=', null
-      );
     } else if(feat == 'Improvised Weapon Use') {
       notes = [
         'combatNotes.improvisedWeaponUseFeature:Foes flat-footed%1',
         'validationNotes.improvisedWeaponUseFeatSkills:' +
-          'Requires Combat (HTH) >= %1'
+          'Requires Combat (HTH) >= Improvised Weapon Use'
       ];
       rules.defineRule('combatNotes.improvisedWeaponUseFeature.1',
         'feats.Improvised Weapon Use', '=', 'source < 6 ? "" : ", damage +step"'
-      );
-      rules.defineRule('validationNotes.improvisedWeaponUseFeatSkills',
-        'feats.Improvised Weapon Use', '=', null
       );
       rules.defineRule('weaponAttackAdjustment.Improvised',
         'feats.Improvised Weapon Use', '+=', 'Math.min(source, 4)'
@@ -1308,14 +1197,11 @@ HybridD20.featRules = function(rules, feats) {
           '+%V unarmored AC, even if flat-footed',
         'validationNotes.insightfulDefenseFeatAbility:Requires Wisdom >= 13',
         'validationNotes.insightfulDefenseFeatSkills:' +
-           'Requires Combat (HTH) >= %1/Perception >= %1'
+           'Requires Combat (HTH) >= Insightful Defense/Perception >= Insightful Defense'
       ];
       rules.defineRule('combatNotes.insightfulDefenseFeature',
         'feats.Insightful Defense', '=', null,
         'wisdomModifier', 'v', null
-      );
-      rules.defineRule('validationNotes.insightluDefenseFeatSkills.1',
-        'feats.Insightful Defense', '=', null
       );
     } else if(feat == 'Intimidating Prowess') {
       notes = [
@@ -1336,14 +1222,12 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Ledge Walker') {
       notes = [
         "abilityNotes.ledgeWalkerFeature:%V' movement across narrow surfaces",
-        'validationNotes.ledgeWalkerFeatSkills:Requires Acrobatics >= %1'
+        'validationNotes.ledgeWalkerFeatSkills:' +
+          'Requires Acrobatics >= Ledge Walker * 2'
       ];
       rules.defineRule('abilityNotes.ledgeWalkerFeature',
         'speed', '=', 'Math.floor(source / 2)',
         'feats.Ledge Walker', '+', '5 * source'
-      );
-      rules.defineRule('validationNotes.ledgeWalkerFeatSkills.1',
-        'feats.Ledge Walker', '=', 'source * 2'
       );
     } else if(feat == 'Lightning Reflexes') {
       notes = [
@@ -1357,19 +1241,17 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Lunge') {
       notes = [
         "combatNotes.lungeFeature:%1 AC to increase attack reach by 5'",
-        'validationNotes.lungeFeatSkills:Requires Combat (HTH) >= %1'
+        'validationNotes.lungeFeatSkills:Requires Combat (HTH) >= Lunge + 5'
       ];
       rules.defineRule
         ('combatNotes.lungeFeature.1', 'feats.Lunge', '=', 'source - 6');
-      rules.defineRule
-        ('validationNotes.lungeFeatSkills', 'feats.Lunge', '=', 'source + 5');
     } else if(feat == 'Manyshot') {
       notes = [
         'combatNotes.manyshotFeature:' +
           'Fire %V arrows simultaneously at %1 attack',
         'validationNotes.manyshotFeatAbility:Requires Dexterity >= 17',
         'validationNotes.manyshotFeatFeatures:' +
-          'Requires Point Blank Shot >= %1/Rapid Shot',
+          'Requires Point Blank Shot >= Manyshot/Rapid Shot',
         'validationNotes.manyshotFeatSkills:Requires Combat (Fire) >= 6'
       ];
       rules.defineRule('combatNotes.manyshotFeature',
@@ -1382,8 +1264,6 @@ HybridD20.featRules = function(rules, feats) {
          'skills.Combat (Fire)', '=', 'source >= 16 ? 4 : source >= 11 ? 3 : 2',
          'feats.Manyshot', 'v', 'source + 1'
       );
-      rules.defineRule
-        ('validationNotes.manyshotFeatFeatures', 'feats.Manyshot', '=', null);
     } else if(feat == 'Mighty Throw') {
       notes = [
         'combatNotes.mightyThrowFeature:+%V attack w/thrown weapon',
@@ -1406,29 +1286,20 @@ HybridD20.featRules = function(rules, feats) {
       notes = [
         'combatNotes.mobilityFeature:+%V AC vs. movement AOO',
         'validationNotes.mobilityFeatAbility:Requires Dexterity >= 13',
-        'validationNotes.mobilityFeatFeatures:Requires Dodge >= %1',
-        'validationNotes.mobilityFeatSkills:Requires Combat (HTH) >= %1'
+        'validationNotes.mobilityFeatFeatures:Requires Dodge >= Mobility',
+        'validationNotes.mobilityFeatSkills:Requires Combat (HTH) >= Mobility'
       ];
       rules.defineRule
         ('combatNotes.mobilityFeature', 'feats.Mobility', '=', null);
-      rules.defineRule
-        ('validationNotes.mobilityFeatFeatures', 'feats.Mobility', '=', null);
-      rules.defineRule
-        ('validationNotes.mobilityFeatSkills', 'feats.Mobility', '=', null);
     } else if(feat == 'Mounted Archery') {
       notes = [
         'combatNotes.mountedArcheryFeature:Reduce mounted ranged penalty by %V',
         'validationNotes.mountedArcheryFeatFeatures:' +
-          'Requires Mounted Combat >= %1',
-        'validationNotes.mountedArcheryFeatSkills:Requires Handle Animal >= %1'
+          'Requires Mounted Combat >= Mounted Archery',
+        'validationNotes.mountedArcheryFeatSkills:' +
+          'Requires Handle Animal >= Mounted Archery'
       ];
       rules.defineRule('combatNotes.mountedArcheryFeature',
-        'feats.Mounted Archery', '=', null
-      );
-      rules.defineRule('validationNotes.mountedArcheryFeatFeatures',
-        'feats.Mounted Archery', '=', null
-      );
-      rules.defineRule('validationNotes.mountedArcheryFeatSkills',
         'feats.Mounted Archery', '=', null
       );
     } else if(feat == 'Mounted Combat') {
@@ -1436,7 +1307,7 @@ HybridD20.featRules = function(rules, feats) {
         'combatNotes.mountedCombatFeature:' +
           'Handle Animal save vs. mount damage %V/rd%1%2%3%4',
         'validationNotes.mountedCombatFeatSkills:' +
-          'Requires Combat (HTH) >= %1/Handle Animal >= %1'
+          'Requires Combat (HTH) >= Mounted Combat/Handle Animal >= Mounted Combat'
       ];
       rules.defineRule('combatNotes.mountedCombatFeature',
         'feats.Mounted Combat', '=', 'Math.floor((source + 1) / 2)'
@@ -1453,22 +1324,17 @@ HybridD20.featRules = function(rules, feats) {
       rules.defineRule('combatNotes.mountedCombatFeature.4',
         'feats.Mounted Combat', '=', 'source >= 7 ? ", Bull Rush to unhorse foe" : ""'
       );
-      rules.defineRule('validationNote.mountedCombatFeatSkills.1',
-        'feats.Mounted Combat', '=', null
-      );
       // TODO Full Mounted Atack, Mounted Fighting, Burst of Speed, Deadly Charge
     } else if(feat == 'Nimble Step') {
       notes = [
         'abilityNotes.nimbleStepFeature:' +
           "Full speed through %V' of difficult terrain",
         'validationNotes.ledgeWalkerFeatAbility:Requires Dexterity >= 13',
-        'validationNotes.ledgeWalkerFeatSkills:Requires Acrobatics >= %1'
+        'validationNotes.ledgeWalkerFeatSkills:' +
+          'Requires Acrobatics >= Nimble Step'
       ];
       rules.defineRule('abilityNotes.nimbleStepFeature',
         'feats.Nimble Step', '=', '5 * source'
-      );
-      rules.defineRule('validationNotes.nimbleStepFeatSkills.1',
-        'feats.Nimble Step', '=', null
       );
     } else if(feat == 'No Retreat') {
       notes = [
@@ -1491,7 +1357,8 @@ HybridD20.featRules = function(rules, feats) {
       notes = [
         'combatNotes.overhandChopFeature:+%V two-handed damage%1%2',
         'validationNotes.overhandChopFeatAbility:Requires Strength >= 12',
-        'validationNotes.overhandChopFeatSkills:Requires Combat (HTH) >= %1'
+        'validationNotes.overhandChopFeatSkills:' +
+          'Requires Combat (HTH) >= Overhand Chop'
       ];
       rules.defineRule('combatNotes.overhandChopFeature.3',
         'feats.Overhand Chop', '=', 'source >= 11 ? 1.5 : 0.5',
@@ -1507,41 +1374,30 @@ HybridD20.featRules = function(rules, feats) {
       rules.defineRule('combatNotes.overhandChopFeature.2',
         'feats.Overhand Chop', '=', 'source >= 11 ? ", " + (source < 16 ? source - 16 : "-0") + " attack for auto-crit" : ""'
       );
-      rules.defineRule('validationNotes.overhandChopFeatSkills',
-        'feats.Overhand Chop', '=', null
-      );
     } else if(feat == 'Penetrating Strike') {
       notes = [
         'combatNotes.penetratingStrikeFeature:' +
           'Focused weapons ignore DR %V/anything',
         'validationNotes.penetratingStrikeFeatFeatures:' +
-          'Requires Weapon Focus/Weapon Training >= %1',
+          'Requires Weapon Focus/Weapon Training >= Penetrating Strike',
         'validationNotes.penetratingStrikeFeatSkills:' +
-          'Requires Combat (Fire) >= %1 || Combat (HTH) >= %1'
+          'Requires Combat (Fire) >= Penetrating Strike * 10 | Combat (HTH) >= Penetrating Strike * 10'
       ];
       rules.defineRule('combatNotes.penetratingStrikeFeature',
         'feats.Penetrating Strike', '=', null
-      );
-      rules.defineRule('validationNotes.penetratingStrikeFeatFeatures.1',
-        'feats.Penetrating Strike', '=', null
-      );
-      rules.defineRule('validationNotes.penetratingStrikeFeatSkills.1',
-        'feats.Penetrating Strike', '=', 'source + 10'
       );
     } else if(feat == 'Point Blank Shot') {
       notes = [
         'combatNotes.pointBlankShotFeature:' +
           "+%V/+%1 ranged attack/damage w/in 30'",
-        'validationNotes.pointBlankShotSkills:Requires Combat (Fire) >= %1'
+        'validationNotes.pointBlankShotSkills:' +
+          'Requires Combat (Fire) >= Point Blank Shot'
       ];
       rules.defineRule('combatNotes.pointBlankShotFeature',
         'feats.Point Blank Shot', '=', 'Math.floor((source + 1) / 2)'
       );
       rules.defineRule('combatNotes.pointBlankShotFeature.1',
         'feats.Point Blank Shot', '=', 'Math.floor(source / 2)'
-      );
-      rules.defineRule('validationNotes.pointBlankShotSkills',
-        'feats.Point Blank Shot', '=', null
       );
     } else if(feat == 'Power Attack') {
       // TODO
@@ -1553,7 +1409,7 @@ HybridD20.featRules = function(rules, feats) {
       // TODO
     } else if(feat == 'Quivering Palm') {
       // TODO
-    } else if(feat == 'Rapid Reload') {
+    } else if((matchInfo = feat.match(/^Rapid Reload \((.*)\)$/))!=null) {
       // TODO
     } else if(feat == 'Rapid Shot') {
       notes = [
@@ -1600,16 +1456,14 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Swift Tracker') {
       notes = [
         'skillNotes.swiftTrackerFeature:%V/%1 track at normal/double speed',
-        'validationNotes.swiftTrackerFeatSkills:Requires Survival >= %1'
+        'validationNotes.swiftTrackerFeatSkills:' +
+          'Requires Survival >= Swift Tracker'
       ];
       rules.defineRule('skillNotes.swiftTrackerFeature',
         'feats.Swift Tracker', '=', 'source - 5'
       );
       rules.defineRule('skillNotes.swiftTrackerFeature.1',
         'feats.Swift Tracker', '=', '(source * 2) - 20'
-      );
-      rules.defineRule('validationNotes.swiftTrackerFeatSkills',
-        'feats.Swift Tracker', '=', null
       );
     } else if(feat == 'Throw Anything') {
       // TODO
@@ -1624,19 +1478,14 @@ HybridD20.featRules = function(rules, feats) {
       notes = [
         'combatNotes.trapSenseFeature:+%V AC vs. traps',
         'saveNotes.trapSenseFeature:+%V Reflex vs. traps',
-        'validationNotes.trapSenseFeatFeatures:Requires Lightning Reflexes >= %1',
-        'validationNotes.trapSenseFeatSkills:Requires Perception >= %1'
+        'validationNotes.trapSenseFeatFeatures:' +
+          'Requires Lightning Reflexes >= Trap Sense',
+        'validationNotes.trapSenseFeatSkills:Requires Perception >= Trap Sense'
       ];
       rules.defineRule
         ('combatNotes.trapSenseFeature', 'feats.Trap Sense', '=', null);
       rules.defineRule
         ('saveNotes.trapSenseFeature', 'feats.Trap Sense', '=', null);
-      rules.defineRule('validationNotes.trapSenseFeatFeatures.1',
-        'feats.Trap Sense', '=', null
-      );
-      rules.defineRule('validationNotes.trapSenseFeatSkills.1',
-        'feats.Trap Sense', '=', null
-      );
     } else if(feat == 'Two-Weapon Defense') {
       // TODO
     } else if(feat == 'Two-Weapon Fighting') {
@@ -1647,7 +1496,7 @@ HybridD20.featRules = function(rules, feats) {
       // TODO
     } else if(feat == 'Weapon Finesse') {
       // TODO
-    } else if(feat == 'Weapon Proficiency (Martial)') {
+    } else if((matchInfo = feat.match(/^Weapon Proficiency \((.*)\)$/))!=null) {
       // TODO
     } else if(feat == 'Weapon Training') {
       // TODO
@@ -1656,16 +1505,11 @@ HybridD20.featRules = function(rules, feats) {
         'combatNotes.whirlwindAttackFeature:Attack all foes w/in reach',
         'validationNotes.whirlwindAttackFeatAbility:' +
           'Requires Dexterity >= 13/Intelligence >= 13',
-        'validationNotes.whirlwindAttackFeatSkills:Requires Combat (HTH) >= %1',
+        'validationNotes.whirlwindAttackFeatSkills:' +
+          'Requires Combat (HTH) >= Whirlwind Attack',
         'validationNotes.whirlwindAttackFeatFeatures:' +
-          'Requires Combat Expertise >= %1/Dodge >= %1/Mobility >= 4'
+          'Requires Combat Expertise >= Whirlwind Attack/Dodge >= Whirlwind Attack/Mobility >= 4'
       ];
-      rules.defineRule('validationNotes.whirlwindAttackFeatFeatures.1',
-        'feats.Whirlwind Attack', '=', null
-      );
-      rules.defineRule('validationNotes.whirlwindAttackFeatSkills.1',
-        'feats.Whirlwind Attack', '=', null
-      );
     } else if(feat == 'Wild Empathy') {
       notes = [
         'skillNotes.wildEmpathyFeature:Diplomacy with animals',
