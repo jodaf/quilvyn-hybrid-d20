@@ -1400,17 +1400,68 @@ HybridD20.featRules = function(rules, feats) {
         'feats.Point Blank Shot', '=', 'Math.floor(source / 2)'
       );
     } else if(feat == 'Power Attack') {
-      // TODO
+      notes = [
+        'combatNotes.powerAttackFeature:Up to %V -attack/+damage',
+        'validationNotes.powerAttackFeatAbility:Requires Strength >= 13',
+        'validationNotes.powerAttackFeatSkills:' +
+          'Requires Combat (HTH) >= Power Attack'
+      ];
+      rules.defineRule
+        ('combatNotes.powerAttackFeature', 'feats.Power Attack', '=', null);
     } else if(feat == 'Precise Shot') {
-      // TODO
+      notes = [
+        'combatNotes.preciseShotFeature:' +
+          'Reduce penalty on shot into melee by %V, concealed miss chance by %1%',
+        'validationNotes.preciseShotFeatFeatures:' +
+          'Requires Point Blank Shot >= Precise Shot',
+        'validationNotes.preciseShotFeatSkills:' +
+          'Requires Combat (Fire) >= Precise Shot'
+      ];
+      rules.defineRule
+        ('combatNotes.preciseShotFeature', 'feats.Precise Shot', '=', null);
+      rules.defineRule('combatNotes.preciseShotFeature.1',
+        'feats.Precise Shot', '=', 'source * 5'
+      );
     } else if(feat == 'Precise Strike') {
-      // TODO
+      notes = [
+        'combatNotes.preciseStrikeFeature:+%V damage w/light weapon',
+        'validationNotes.preciseStrikeFeatFeatures:' +
+          'Requires Dodge/Weapon Finesse >= Precise Strike / 2',
+        'validationNotes.preciseStrikeFeatSkills:' +
+          'Requires Combat (HTH) >= Precise Strike + 6'
+      ];
+      rules.defineRule
+        ('combatNotes.preciseStrikeFeature', 'feats.Precise Strike', '=', null);
     } else if(feat == 'Quiet Death') {
-      // TODO
+      notes = [
+        'combatNotes.quietDeathFeature:Opposed Stealth to avoid id as killer',
+        'validationNotes.quietDeathFeatFeatures:' +
+           'Requires Death Attack >= 6/Sneak Attack >= 6',
+        'validationNotes.quietDeathFeatSkills:Requires Stealth >= 8'
+      ];
     } else if(feat == 'Quivering Palm') {
-      // TODO
+      notes = [
+        'combatNotes.quiveringPalmFeature:Foe DC %V Fort save or dies 1/week',
+        'validationNotes.quiveringPalmFeatFeatures:' +
+          'Requires Improved Unarmed Strike >= 11/Stunning Fist >= 5',
+        'validationNotes.quiveringPalmFeatSkills:Requires Combat (HTH) >= 11'
+      ];
+      rules.defineRule('combatNotes.quiveringPalmFeature',
+        'Improved Unarmed Strike', '=', '10 + Math.floor(source / 2)',
+        'wisdomModifier', '+', null
+      );
     } else if((matchInfo = feat.match(/^Rapid Reload \((.*)\)$/))!=null) {
-      // TODO
+      var weapon = matchInfo[1];
+      var weaponNoSpace = weapon.replace(/ /g, '');
+      notes = [
+        'combatNotes.rapidReload(' + weaponNoSpace + ')Feature:' +
+          'Reload ' + weapon + ' Crossbow as ' +
+          (weapon == 'Heavy' ? 'move' : 'free') + ' action',
+        'sanityNotes.rapidReload(' + weaponNoSpace + ')FeatWeapons:' +
+          'Implies ' + weapon + ' Crossbow',
+        'validationNotes.rapidReload(' + weaponNoSpace + ')FeatSkills:' +
+          'Requires Combat (Fire)'
+      ];
     } else if(feat == 'Rapid Shot') {
       notes = [
         'combatNotes.rapidShotFeature:Normal and extra ranged -2 attacks',
@@ -1419,9 +1470,16 @@ HybridD20.featRules = function(rules, feats) {
         'validationNotes.rapidShotFeatSkills:Requires Combat (Fire)'
       ];
     } else if(feat == 'Resiliency') {
-      // TODO
+      notes = [
+        'combatNotes.resiliencyFeature:%V temp HP/day to stay >= 0 for 1 min'
+      ];
+      rules.defineRule
+        ('combatNotes.resiliencyFeature', 'feats.Resiliency', '=', null);
     } else if(feat == 'Riposte') {
-      // TODO
+      notes = [
+        'combatNotes.riposteFeature:Make AOO after successful parry',
+        'validationNotes.riposteFeatureSkills:Requires Combat (HTH) >= 11'
+      ];
     } else if(feat == 'Rogue Crawl') {
       notes = [
         "abilityNotes.rogueCrawlFeature:Crawl %V'/rd"
@@ -1466,7 +1524,14 @@ HybridD20.featRules = function(rules, feats) {
         'feats.Swift Tracker', '=', '(source * 2) - 20'
       );
     } else if(feat == 'Throw Anything') {
-      // TODO
+      notes = [
+        'combatNotes.throwAnythingFeature:' +
+          'Reduce penalty for improvised ranged weapon by %V, +1 attack w/thrown splash',
+        'validationNotes.throwAnythingFeatSkills:' +
+          'Requires Combat (HTH) >= Throw Anything'
+      ];
+      rules.defineRule
+        ('combatNotes.throwAnythingFeature', 'feats.Throw Anything', '=', null);
     } else if(feat == 'Toughness') {
       notes = [
         'combatNotes.toughnessFeature:+%V HP'
