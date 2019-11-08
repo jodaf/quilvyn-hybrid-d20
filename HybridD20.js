@@ -114,39 +114,54 @@ HybridD20.RANDOMIZABLE_ATTRIBUTES = [
 ];
 // TODO Domain Powers, Immunity, School Focus, School Specialization
 HybridD20.POWERS = [
-  'Animal Form', 'Arcane Arrow', 'Arcane Sight', 'Arcane Strike',
-  'Arcane Theurgy', 'Armored Skin', 'Augment Summoning', 'Bardic Performance',
-  'Blinding Speed', 'Blindsight', 'Bloodline Abilities', 'Call To Mind',
-  'Clerical Ordainment', 'Combat Focus', 'Critical Feats (Bleeding)',
-  'Critical Feats (Blinding)', 'Critical Feats (Deafening)',
-  'Critical Feats (Devastating)', 'Critical Feats (Exhausting)',
-  'Critical Feats (Sickening)', 'Critical Feats (Spell)',
-  'Critical Feats (Staggering)', 'Critical Feats (Stunning)',
-  'Critical Feats (Tiring)', 'Damage Reduction', 'Darkvision',
-  'Dazzling Display', 'Deathless', 'Defensive Precognition', 
-  'Defensive Prescience', 'Dimension Spring Attack', 'Druidical Initiation',
-  'Energy Resistance', 'Eschew Materials', 'Fast Healing', 'Fey Touched',
-  'Font Of Power', 'Free Casting', 'Free Manifesting',
-  'Greater Arcane Resistance', 'Greater Dispelling Attack',
-  'Greater Reaving Dispelling Attack', 'Hand Of The Apprentice',
-  'Impromptu Sneak Attack', 'Inertial Armor', 'Ki Mastery', 'Know Direction',
-  'Lay On Hands', 'Lesser Arcane Resistance', "Lion's Charge",
-  'Low-Light Vision', 'Luck', 'Metamagic Adept', 'Metamagic Mastery',
-  'Mind Over Body (Power)', 'Natural Spell', 'Offensive Precognition',
-  'Offensive Prescience', 'Opportunistic Strike', 'Perfect Self',
-  'Power Over Shadow', 'Pierce The Fog Of War', 'Psionic Awareness',
-  'Psychic Warrior', 'Rage', 'Ranged Legerdemain', 'Reaving Dispelling Attack',
-  'Regeneration', 'Scent', 'School Defense', 'Selective Channeling',
-  'Slippery Mind', 'Smite Evil', 'Sorcery', 'Soulknife', 'Speak With Animals',
-  'Spectral Tendril', 'Spell Immunity', 'Spell Mastery', 'Spell Penetration',
-  'Spell Repertoire (Bard)', 'Spell Repertoire (Divine)',
-  'Spell Repertoire (Druidical)', 'Spell Repertoire (Sorcerer)',
-  'Spell Repertoire (Wizard)', 'Spell Resistance', 'Spell Synthesis',
-  'Spell Theurgy', 'Spellcasting (Arcane)', 'Spellcasting (Divine)',
-  'Spellcasting (Druidical)', 'Spontaneous Casting', 'Surprise Spells',
-  'Tenacious Magic', 'Timeless Body', 'Touch Of Death', 'Trackless Step',
-  'Trollborn', 'Turn Outsider', 'Turn Elemental', 'Wand Expertise',
-  'Wild Shape', 'Wild Surge', 'Wizardry', 'Woodland Stride'
+  'Acidic Ray',
+  'Added Summonings',
+  'Alien Resistance',
+  'Aligned Arrow', 'Animal Form', 'Arcane Arrow', 'Arcane Sight',
+  'Arcane Strike', 'Arrow Of Death', 'Arcane Theurgy', 'Armored Skin',
+  'Augment Summoning', 'Blinding Speed', 'Blindsight', 'Bloodline Abilities',
+  'Breath Weapon', 'Call To Mind', 'Channeling Smite', ,'Claws',
+  'Clerical Ordainment', 'Combat Focus', 'Conviction', 'Corrupting Touch',
+  'Countersong', 'Bleeding Critical', 'Blinding Critical',
+  'Deafening Critical', 'Devastating Critical',
+  'Exhausting Critical', 'Sickening Critical',
+  'Spell Critical', 'Staggering Critical',
+  'Stunning Critical', 'Tiring Critical', 'Damage Reduction',
+  'Darkvision', 'Dazzling Display', 'Deadly Performance',
+  "Death's Gift", 'Deathless', 'Defensive Precognition', 'Defensive Prescience',
+  'Destiny Realized', 'Dimension Spring Attack', 'Dirge Of Doom',
+  'Discordant Performance', 'Distance Arrow', 'Druidical Initiation',
+  'Elemental Blast', 'Elemental Ray', 'Energy Arrow', 'Energy Burst Arrow',
+  'Energy Resistance', 'Enhance Arrows', 'Eschew Materials', 'Fascinate',
+  'Fast Healing', 'Fated', 'Fey Magic', 'Fey Touched', 'Font Of Power',
+  'Free Casting', 'Free Manifesting', 'Frightening Tune', 'Grasp Of The Dead',
+  'Grave Touch', 'Greater Arcane Resistance', 'Greater Dispelling Attack',
+  'Greater Reaving Dispelling Attack', 'Hail Of Arrows',
+  'Hand Of The Apprentice', 'Heavenly Fire', 'Hellfire', 'Imbue Arrow',
+  'Impromptu Sneak Attack', 'Incorporeal Form', 'Inertial Armor',
+  'Inspire Competence', 'Inspire Courage', 'Inspire Greatness',
+  'Inspire Heroics', 'It Was Meant To Be', 'Ki Mastery', 'Know Direction',
+  'Laughing Touch', 'Lay On Hands', 'Lesser Arcane Resistance', "Lion's Charge",
+  'Long Limbs', 'Low-Light Vision', 'Luck', 'Mass Suggestion',
+  'Metamagic Adept', 'Metamagic Mastery', 'Mind Over Body (Power)',
+  'Natural Spell', 'Offensive Precognition', 'Offensive Prescience',
+  'One Of Us', 'Opportunistic Strike', 'Paralyzing Show', 'Perfect Self',
+  'Phase Arrow', 'Power Over Shadow', 'Pierce The Fog Of War',
+  'Psionic Awareness', 'Psychic Warrior', 'Rage', 'Ranged Legerdemain',
+  'Reaving Dispelling Attack', 'Regeneration', 'Scent', 'School Defense',
+  'Seeker Arrow', 'Selective Channeling', 'Slippery Mind', 'Smite Evil',
+  'Song Of Freedom', 'Soothing Performance', 'Sorcery', 'Soul Of The Fey',
+  'Soulknife', 'Speak With Animals', 'Spectral Tendril', 'Spell Immunity',
+  'Spell Mastery', 'Spell Penetration', 'Spell Repertoire (Bard)',
+  'Spell Repertoire (Divine)', 'Spell Repertoire (Druidical)',
+  'Spell Repertoire (Sorcerer)', 'Spell Repertoire (Wizard)',
+  'Spell Resistance', 'Spell Synthesis', 'Spell Theurgy',
+  'Spellcasting (Arcane)', 'Spellcasting (Divine)', 'Spellcasting (Druidical)',
+  'Spontaneous Casting', 'Suggestion', 'Surprise Spells', 'Tenacious Magic',
+  'Timeless Body', 'Touch Of Death', 'Touch Of Destiny', 'Trackless Step',
+  'Trollborn', 'Turn Outsider', 'Turn Elemental', 'Unusual Anatomy',
+  'Wand Expertise', 'Wild Shape', 'Wild Surge', 'Wings', 'Wings Of Heaven',
+  'Within Reach', 'Wizardry', 'Woodland Stride'
 ];
 HybridD20.SPELLS = {
 
@@ -722,7 +737,7 @@ HybridD20.featRules = function(rules, feats) {
       notes = [
         'combatNotes.bleedingSneakAttackFeature:' +
           'Sneak attack causes extra %V hp/round until healed',
-        'validationNotes.bleedingSneakAttackFeatures:' +
+        'validationNotes.bleedingSneakAttackFeatFeatures:' +
           'Requires Sneak Attack >= Bleeding Sneak Attack * 2'
       ];
       rules.defineRule('combatNote.bleedingSneakAttackFeature',
@@ -820,7 +835,7 @@ HybridD20.featRules = function(rules, feats) {
       notes = [
         'combatNotes.cripplingSneakAttackFeature: ' +
           '%V Strength damage from sneak attack',
-        'validationNotes.cripplingSneakAttackFeatures:' +
+        'validationNotes.cripplingSneakAttackFeatFeatures:' +
           'Requires Sneak Attack >= 10'
       ];
       rules.defineRule('combatNotes.cripplingSneakAttackFeature',
@@ -1498,7 +1513,7 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Riposte') {
       notes = [
         'combatNotes.riposteFeature:Make AOO after successful parry',
-        'validationNotes.riposteFeatureSkills:Requires HTH Combat >= 11'
+        'validationNotes.riposteFeatSkills:Requires HTH Combat >= 11'
       ];
     } else if(feat == 'Rogue Crawl') {
       notes = [
@@ -1578,9 +1593,9 @@ HybridD20.featRules = function(rules, feats) {
           'Sneak attack target DC %V Fort or sleep/paralyze/die',
         'combatNotes.sneakAttackFeature:' +
           '%Vd6 extra damage when surprising or flanking',
-        'validationNotes.sneakAttackFeatures:' +
+        'validationNotes.sneakAttackFeatFeatures:' +
            'Requires Lightning Reflexes >= Sneak Attack / 2 + 1',
-        'validationNotes.sneakAttackSkills:' +
+        'validationNotes.sneakAttackFeatSkills:' +
            'Requires HTH Combat >= Sneak Attack / 2 + 1'
       ];
       rules.defineRule('combatNotes.sneakAttackFeature',
@@ -1665,17 +1680,110 @@ HybridD20.featRules = function(rules, feats) {
       rules.defineRule
         ('saveNotes.trapSenseFeature', 'feats.Trap Sense', '=', null);
     } else if(feat == 'Two-Weapon Defense') {
-      // TODO
+      notes = [
+        'combatNotes.two-WeaponDefenseFeature:+%V AC w/two weapons',
+        'validationNotes.two-WeaponDefenseFeatAbility:Requires Dexterity >= 15',
+        'validationNotes.two-WeaponDefenseFeatFeatures:' +
+          'Requires Two-Weapon Fighting >= Two-Weapon Defense',
+        'validationNotes.two-WeaponDefenseFeatSkills:' +
+          'Requires HTH Combat >= Two-Weapon Defense'
+      ];
+      rules.defineRule('combatNotes.two-weaponDefenseFeature',
+        'feats.Two-Weapon Defense', '=', '1 + Math.floor(source / 4)'
+      );
     } else if(feat == 'Two-Weapon Fighting') {
-      // TODO
+      notes = [
+        'combatNotes.two-WeaponFightingFeature:' +
+          'Reduce primary/off-hand penalties to %1/%2%3',
+        'combatNotes.two-WeaponRendFeature:+1d%V+%1 when hit with both',
+        'combatNotes.two-WeaponPounceFeature:+%1 attack w/both on charge',
+        'validationNotes.two-WeaponFightingFeatAbility:' +
+          'Requires Dexterity >= 15',
+        'validationNotes.two-WeaponFightingFeatSkills:' +
+          'Requires HTH Combat >= Two-Weapon Fighting'
+      ];
+      rules.defineRule('combatNotes.two-weaponFightingFeature.1',
+        'feats.Two-Weapon Fighting', '=', 'source < 6 ? source - 6 : 0'
+      );
+      rules.defineRule('combatNotes.two-weaponFightingFeature.2',
+        'feats.Two-Weapon Fighting', '=', 'source < 10 ? source - 10 : 0'
+      );
+      rules.defineRule('combatNotes.two-weaponFightingFeature.3',
+        'feats.Two-Weapon Fighting', '=', 'source >= 6 ? "Additional off-hand -5" + (source >= 11 ? "/-10" : "") + (source >= 16 ? "/-15" : "") : ""'
+      );
+      rules.defineRule('combatNotes.two-weaponRendFeature',
+        'feats.Two-Weapon Fighting', '=', 'source<9 ? null : source<13 ? 6 : source<17 ? 8 : 10'
+      );
+      rules.defineRule('combatNotes.two-weaponRendFeature.1',
+        'strengthModifier', '=', 'Math.floor(source * 1.5)'
+      );
+      rules.defineRule('combatNotes.two-weaponPounceFeature',
+        'feats.Two-Weapon Fighting', '?', 'source >= 10'
+      );
+      rules.defineRule('combatNotes.two-weaponPounceFeature.1',
+        'feats.Two-Weapon Fighting', '=', 'source<14 ? 0 : source<18 ? 1 : 2'
+      );
     } else if(feat == 'Uncanny Dodge') {
-      // TODO
+      notes = [
+        'combatNotes.uncannyDodgeFeature:+%V flat-footed AC, -%V foe Sneak Attack%1',
+        'validationNotes.uncannyDodgeFeatFeatures:' +
+          'Requires Lightning Reflexes >= Uncanny Dodge'
+      ];
+      rules.defineRule('combatNotes.uncannyDodgeFeature',
+        'feats.Uncanny Dodge', '=', null,
+        'dexterityModifier', 'v', null
+      );
+      rules.defineRule('combatNotes.uncannyDodgeFeature.1',
+        'feats.Uncanny Dodge', '=', 'source >= 5 ? (source >= 6 ? ", -2" : ", -1") + " foe flanking attack" : ""'
+      );
     } else if(feat == 'Vital Strike') {
-      // TODO
+      notes = [
+        'combatNotes.vitalStrikeFeature:+%Vd6 damage on lone full-attack',
+        'validationNotes.vitalStrikeFeatSkills:' +
+          'Requires HTH Combat >= Vital Strike + 10'
+      ];
+      rules.defineRule('combatNotes.vitalStrikeFeature',
+        'feats.Vital Strike', '=', 'Math.min(Math.floor((source+1)/2), 5)',
+        'skills.HTH Combat', '*', 'source >= 16 ? 2 : null'
+      );
     } else if(feat == 'Weapon Finesse') {
-      // TODO
+      notes = [
+        'combatNotes.weaponFinesseFeature:' +
+          '+%V melee attack (dex instead of str)',
+        'sanityNotes.weaponFinesseFeatAbility:' +
+          'Implies Dexterity Modifier exceed Strength Modifier',
+        'validationNotes.weaponFinesseFeatAbility:Requires Dexterity >= 13'
+      ];
+      rules.defineRule('combatNotes.weaponFinesseFeature',
+        'combatNotes.weaponFinesseFeature.1', '=', null,
+        'strengthModifier', '+', '-source'
+      );
+      rules.defineRule('combatNotes.weaponFinesseFeature.1',
+        'feats.Weapon Finesse', '=', null,
+        'dexterityModifier', 'v', null
+      );
+      rules.defineRule
+        ('meleeAttack', 'combatNotes.weaponFinesseFeature', '+', null);
+      rules.defineRule('sanityNotes.weaponFinesseFeatAbility',
+        'feats.Weapon Finesse', '=', '-1',
+        'dexterityModifier', '+', 'source',
+        'strengthModifier', '+', '-source',
+        '', 'v', '0'
+      );
     } else if((matchInfo = feat.match(/^Weapon Proficiency \((.*)\)$/))!=null) {
-      // TODO
+      var weapon = matchInfo[1];
+      var weaponNoSpace = weapon.replace(/ /g, '');
+      notes = [
+        'validationNotes.weaponProficiency(' + weaponNoSpace + ')FeatSkills:' +
+          'Requires HTH Combat'
+      ];
+      if(weapon == 'Bastard Sword' || weapon == 'Dwarven Waraxe') {
+        notes = notes.concat([
+          'validationNotes.weaponProficiency(' + weaponNoSpace +
+            ')FeatAbility:Requires Strength >= 13'
+        ]);
+      }
+      // TODO Martial Weapon Proficiency
     } else if(feat == 'Weapon Training') {
       // TODO
     } else if(feat == 'Whirlwind Attack') {
@@ -1831,7 +1939,19 @@ HybridD20.powerRules = function(rules, powers) {
     var matchInfo;
     var notes = null;
 
-    if(power == 'Animal Form') {
+    if(power == 'Acidic Ray') {
+      cost = 10;
+      // TODO
+    } else if(power == 'Added Summonings') {
+      cost = 20;
+      // TODO
+    } else if(power == 'Alien Resistance') {
+      cost = 100;
+      // TODO
+    } else if(power == 'Aligned Arrow') {
+      cost = 40;
+      // TODO
+    } else if(power == 'Animal Form') {
       cost = 20;
       notes = [
         "abilityNotes.animalFormFeature:+4 Str/Dex, 60' climb/fly/swim",
@@ -1839,53 +1959,65 @@ HybridD20.powerRules = function(rules, powers) {
         "featureNotes.animalFormFeature:Darkvision/Low-Light Vision/Scent/Improved Grab/Improved Pounce/Improved Trip",
         'magicNotes.animalFormFeature:<i>Beast Shape II</i> to selected beast at will'
       ];
-    } else if(power == 'Arcane Arrow') {
+    } else if(power == 'Arrow Of Death') {
+      cost = 24;
       // TODO
     } else if(power == 'Arcane Sight') {
+      cost = 30;
       // TODO
     } else if(power == 'Arcane Strike') {
+      cost = 50;
       // TODO
     } else if(power == 'Arcane Theurgy') {
+      cost = 0;
       // TODO
     } else if(power == 'Armored Skin') {
+      cost = 30;
       // TODO
     } else if(power == 'Augment Summoning') {
+      cost = 45;
       // TODO
-    } else if(power == 'Bardic Performance') {
+    } else if(power == 'Bleeding Critical') {
+      cost = 35;
+      // TODO
+    } else if(power == 'Blinding Critical') {
+      cost = 45;
       // TODO
     } else if(power == 'Blinding Speed') {
+      cost = 50;
       // TODO
     } else if(power == 'Blindsight') {
+      cost = 40;
       // TODO
-    } else if(power == 'Bloodline Abilities') {
+    } else if(power == 'Breath Weapon') {
+      cost = 14;
       // TODO
     } else if(power == 'Call To Mind') {
+      cost = 10;
+      // TODO
+    } else if(power == 'Channeling Smite') {
+      cost = 20;
+      // TODO
+    } else if(power == 'Claws') {
+      cost = 20;
       // TODO
     } else if(power == 'Clerical Ordainment') {
+      cost = 0;
       // TODO
     } else if(power == 'Combat Focus') {
+      cost = 40;
       // TODO
-    } else if(power == 'Critical Feats (Bleeding)') {
+    } else if(power == 'Corrupting Touch') {
+      cost = 10;
       // TODO
-    } else if(power == 'Critical Feats (Blinding)') {
+    } else if(power == 'Conviction') {
+      cost = 28;
       // TODO
-    } else if(power == 'Critical Feats (Deafening)') {
-      // TODO
-    } else if(power == 'Critical Feats (Devastating)') {
-      // TODO
-    } else if(power == 'Critical Feats (Exhausting)') {
-      // TODO
-    } else if(power == 'Critical Feats (Sickening)') {
-      // TODO
-    } else if(power == 'Critical Feats (Spell)') {
-      // TODO
-    } else if(power == 'Critical Feats (Staggering)') {
-      // TODO
-    } else if(power == 'Critical Feats (Stunning)') {
-      // TODO
-    } else if(power == 'Critical Feats (Tiring)') {
+    } else if(power == 'Countersong') {
+      cost = 4;
       // TODO
     } else if(power == 'Damage Reduction') {
+      cost = 4; // TODO
       // TODO
     } else if(power == 'Darkvision') {
       cost = 'source * 5 + 15';
@@ -1897,21 +2029,72 @@ HybridD20.powerRules = function(rules, powers) {
       );
     } else if(power == 'Dazzling Display') {
       // TODO
+    } else if(power == 'Deadly Performance') {
+      cost = 28;
+      // TODO
+    } else if(power == 'Deafening Critical') {
+      cost = 45;
+      // TODO
+    } else if(power == "Death's Gift") {
+      cost = 30;
+      // TODO
     } else if(power == 'Deathless') {
       // TODO
     } else if(power == 'Defensive Precognition') {
       // TODO
     } else if(power == 'Defensive Prescience') {
       // TODO
+    } else if(power == 'Destiny Realized') {
+      cost = 68;
+      // TODO
+    } else if(power == 'Devastating Critical') {
+      cost = 50;
+      // TODO
     } else if(power == 'Dimension Spring Attack') {
+      // TODO
+    } else if(power == 'Dirge Of Doom') {
+      cost = 12;
+      // TODO
+    } else if(power == 'Discordant Performance') {
+      cost = 16;
+      // TODO
+    } else if(power == 'Distance Arrow') {
+      cost = 20;
       // TODO
     } else if(power == 'Druidical Initiation') {
       // TODO
+    } else if(power == 'Elemental Blast') {
+      cost = 14;
+      // TODO
+    } else if(power == 'Elemental Ray') {
+      cost = 10;
+      // TODO
+    } else if(power == 'Energy Arrow') {
+      cost = 60;
+      // TODO
+    } else if(power == 'Energy Burst Arrow') {
+      cost = 70;
+      // TODO
     } else if(power == 'Energy Resistance') {
+      // TODO
+    } else if(power == 'Enhance Arrows') {
+      cost = 35;
       // TODO
     } else if(power == 'Eschew Materials') {
       // TODO
+    } else if(power == 'Exhausting Critical') {
+      cost = 80;
+      // TODO
+    } else if(power == 'Fascinate') {
+      cost = 8;
+      // TODO
     } else if(power == 'Fast Healing') {
+      // TODO
+    } else if(power == 'Fated') {
+      cost = 30;
+      // TODO
+    } else if(power == 'Fey Magic') {
+      cost = 90;
       // TODO
     } else if(power == 'Fey Touched') {
       // TODO
@@ -1921,31 +2104,81 @@ HybridD20.powerRules = function(rules, powers) {
       // TODO
     } else if(power == 'Free Manifesting') {
       // TODO
+    } else if(power == 'Frightening Tune') {
+      cost = 16;
+      // TODO
+    } else if(power == 'Grasp Of The Dead') {
+      cost = 14;
+      // TODO
+    } else if(power == 'Grave Touch') {
+      cost = 10;
+      // TODO
     } else if(power == 'Greater Arcane Resistance') {
+      cost = 60;
       // TODO
     } else if(power == 'Greater Dispelling Attack') {
       // TODO
     } else if(power == 'Greater Reaving Dispelling Attack') {
       // TODO
+    } else if(power == 'Hail Of Arrows') {
+      cost = 26;
+      // TODO
     } else if(power == 'Hand Of The Apprentice') {
+      // TODO
+    } else if(power == 'Heavenly Fire') {
+      cost = 20;
+      // TODO
+    } else if(power == 'Hellfire') {
+      cost = 14;
+      // TODO
+    } else if(power == 'Imbue Arrow') {
+      cost = 45;
       // TODO
     } else if(power == 'Impromptu Sneak Attack') {
       // TODO
+    } else if(power == 'Incorporeal Form') {
+      cost = 48;
+      // TODO
     } else if(power == 'Inertial Armor') {
+      // TODO
+    } else if(power == 'Inspire Competence') {
+      cost = 8;
+      // TODO
+    } else if(power == 'Inspire Courage') {
+      cost = 4;
+      // TODO
+    } else if(power == 'Inspire Greatness') {
+      cost = 12;
+      // TODO
+    } else if(power == 'Inspire Heroics') {
+      cost = 16;
+      // TODO
+    } else if(power == 'It Was Meant To Be') {
+      cost = 14;
       // TODO
     } else if(power == 'Ki Mastery') {
       // TODO
     } else if(power == 'Know Direction') {
       // TODO
+    } else if(power == 'Laughing Touch') {
+      cost = 10;
+      // TODO
     } else if(power == 'Lay On Hands') {
       // TODO
     } else if(power == 'Lesser Arcane Resistance') {
+      cost = 40;
       // TODO
     } else if(power == "Lion's Charge") {
+      // TODO
+    } else if(power == 'Long Limbs') {
+      cost = 60;
       // TODO
     } else if(power == 'Low-Light Vision') {
       // TODO
     } else if(power == 'Luck') {
+      // TODO
+    } else if(power == 'Mass Suggestion') {
+      cost = 20;
       // TODO
     } else if(power == 'Metamagic Adept') {
       // TODO
@@ -1959,11 +2192,20 @@ HybridD20.powerRules = function(rules, powers) {
       // TODO
     } else if(power == 'Offensive Prescience') {
       // TODO
+    } else if(power == 'One Of Us') {
+      cost = 15;
+      // TODO
     } else if(power == 'Opportunistic Strike') {
+      // TODO
+    } else if(power == 'Paralyzing Show') {
+      cost = 28;
       // TODO
     } else if(power == 'Perfect Self') {
       // TODO
     } else if(power == 'Power Over Shadow') {
+      // TODO
+    } else if(power == 'Phase Arrow') {
+      cost = 17;
       // TODO
     } else if(power == 'Pierce The Fog Of War') {
       // TODO
@@ -1983,7 +2225,14 @@ HybridD20.powerRules = function(rules, powers) {
       // TODO
     } else if(power == 'School Defense') {
       // TODO
+    } else if(power == 'Seeker Arrow') {
+      cost = 12;
+      // TODO
     } else if(power == 'Selective Channeling') {
+      cost = 0;
+      // TODO
+    } else if(power == 'Sickening Critical') {
+      cost = 40;
       // TODO
     } else if(power == 'Slippery Mind') {
       // TODO
@@ -1991,11 +2240,23 @@ HybridD20.powerRules = function(rules, powers) {
       // TODO
     } else if(power == 'Sorcery') {
       // TODO
+    } else if(power == 'Soothing Performance') {
+      cost = 20;
+      // TODO
+    } else if(power == 'Song Of Freedom') {
+      cost = 20;
+      // TODO
+    } else if(power == 'Soul Of The Fey') {
+      cost = 90;
+      // TODO
     } else if(power == 'Soulknife') {
       // TODO
     } else if(power == 'Speak With Animals') {
       // TODO
     } else if(power == 'Spectral Tendril') {
+      // TODO
+    } else if(power == 'Spell Critical') {
+      cost = 40;
       // TODO
     } else if(power == 'Spell Immunity') {
       // TODO
@@ -2027,13 +2288,28 @@ HybridD20.powerRules = function(rules, powers) {
       // TODO
     } else if(power == 'Spontaneous Casting') {
       // TODO
+    } else if(power == 'Staggering Critical') {
+      cost = 35;
+      // TODO
+    } else if(power == 'Stunning Critical') {
+      cost = 30;
+      // TODO
+    } else if(power == 'Suggestion') {
+      cost = 12;
+      // TODO
     } else if(power == 'Surprise Spells') {
       // TODO
     } else if(power == 'Tenacious Magic') {
       // TODO
     } else if(power == 'Timeless Body') {
       // TODO
+    } else if(power == 'Tiring Critical') {
+      cost = 50;
+      // TODO
     } else if(power == 'Touch Of Death') {
+      // TODO
+    } else if(power == 'Touch Of Destiny') {
+      cost = 20;
       // TODO
     } else if(power == 'Trackless Step') {
       // TODO
@@ -2043,11 +2319,23 @@ HybridD20.powerRules = function(rules, powers) {
       // TODO
     } else if(power == 'Turn Elemental') {
       // TODO
+    } else if(power == 'Unusual Anatomy') {
+      cost = 30;
+      // TODO
     } else if(power == 'Wand Expertise') {
       // TODO
     } else if(power == 'Wild Shape') {
       // TODO
     } else if(power == 'Wild Surge') {
+      // TODO
+    } else if(power == 'Wings') {
+      cost = 30;
+      // TODO
+    } else if(power == 'Wings Of Heaven') {
+      cost = 14;
+      // TODO
+    } else if(power == 'Within Reach') {
+      cost = 22;
       // TODO
     } else if(power == 'Wizardry') {
       // TODO
