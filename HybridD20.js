@@ -114,54 +114,62 @@ HybridD20.RANDOMIZABLE_ATTRIBUTES = [
 ];
 // TODO Domain Powers, Immunity, School Focus, School Specialization
 HybridD20.POWERS = [
-  'Acidic Ray',
-  'Added Summonings',
-  'Alien Resistance',
-  'Aligned Arrow', 'Animal Form', 'Arcane Arrow', 'Arcane Sight',
-  'Arcane Strike', 'Arrow Of Death', 'Arcane Theurgy', 'Armored Skin',
-  'Augment Summoning', 'Blinding Speed', 'Blindsight', 'Bloodline Abilities',
-  'Breath Weapon', 'Call To Mind', 'Channeling Smite', ,'Claws',
+  'Abundant Step', 'Acidic Ray', 'Added Summonings', 'Alien Resistance',
+  'Aligned Arrow', 'Aligned Ki Strike', 'Animal Form', 'Animal Fury',
+  'Arcane Arrow', 'Arcane Sight', 'Arcane Strike', 'Arcane Theurgy',
+  'Armored Skin', 'Arrow Of Death', 'Augment Summoning', 'Augmented Wild Shape',
+  'Axiomatic Strike', 'Beast Wild Shape', 'Bleeding Critical',
+  'Blinding Critical', 'Blinding Speed', 'Blindsight', 'Bloodline Abilities',
+  'Breath Weapon', 'Call To Mind', 'Channeling Smite', 'Claws', 'Clear Mind',
   'Clerical Ordainment', 'Combat Focus', 'Conviction', 'Corrupting Touch',
-  'Countersong', 'Bleeding Critical', 'Blinding Critical',
-  'Deafening Critical', 'Devastating Critical',
-  'Exhausting Critical', 'Sickening Critical',
-  'Spell Critical', 'Staggering Critical',
-  'Stunning Critical', 'Tiring Critical', 'Damage Reduction',
-  'Darkvision', 'Dazzling Display', 'Deadly Performance',
-  "Death's Gift", 'Deathless', 'Defensive Precognition', 'Defensive Prescience',
-  'Destiny Realized', 'Dimension Spring Attack', 'Dirge Of Doom',
+  'Countersong', 'Damage Reduction', 'Darkvision', 'Dazzling Display',
+  'Deadly Performance', 'Deafening Critical', "Death's Gift", 'Deathless',
+  'Defensive Precognition', 'Defensive Prescience', 'Destiny Realized',
+  'Devastating Critical', 'Dimension Spring Attack', 'Dirge Of Doom',
   'Discordant Performance', 'Distance Arrow', 'Druidical Initiation',
-  'Elemental Blast', 'Elemental Ray', 'Energy Arrow', 'Energy Burst Arrow',
-  'Energy Resistance', 'Enhance Arrows', 'Eschew Materials', 'Fascinate',
-  'Fast Healing', 'Fated', 'Fey Magic', 'Fey Touched', 'Font Of Power',
-  'Free Casting', 'Free Manifesting', 'Frightening Tune', 'Grasp Of The Dead',
-  'Grave Touch', 'Greater Arcane Resistance', 'Greater Dispelling Attack',
-  'Greater Reaving Dispelling Attack', 'Hail Of Arrows',
-  'Hand Of The Apprentice', 'Heavenly Fire', 'Hellfire', 'Imbue Arrow',
-  'Impromptu Sneak Attack', 'Incorporeal Form', 'Inertial Armor',
-  'Inspire Competence', 'Inspire Courage', 'Inspire Greatness',
-  'Inspire Heroics', 'It Was Meant To Be', 'Ki Mastery', 'Know Direction',
-  'Laughing Touch', 'Lay On Hands', 'Lesser Arcane Resistance', "Lion's Charge",
-  'Long Limbs', 'Low-Light Vision', 'Luck', 'Mass Suggestion',
-  'Metamagic Adept', 'Metamagic Mastery', 'Mind Over Body (Power)',
-  'Natural Spell', 'Offensive Precognition', 'Offensive Prescience',
-  'One Of Us', 'Opportunistic Strike', 'Paralyzing Show', 'Perfect Self',
-  'Phase Arrow', 'Power Over Shadow', 'Pierce The Fog Of War',
-  'Psionic Awareness', 'Psychic Warrior', 'Rage', 'Ranged Legerdemain',
-  'Reaving Dispelling Attack', 'Regeneration', 'Scent', 'School Defense',
-  'Seeker Arrow', 'Selective Channeling', 'Slippery Mind', 'Smite Evil',
-  'Song Of Freedom', 'Soothing Performance', 'Sorcery', 'Soul Of The Fey',
-  'Soulknife', 'Speak With Animals', 'Spectral Tendril', 'Spell Immunity',
+  'Elemental Blast', 'Elemental Rage', 'Elemental Ray', 'Empty Body',
+  'Energy Arrow', 'Energy Burst Arrow', 'Energy Resistance', 'Enhance Arrows',
+  'Eschew Materials', 'Exhausting Critical', 'Fascinate', 'Fast Healing',
+  'Fated', 'Fey Magic', 'Feytouched', 'Font Of Power', 'Free Casting',
+  'Free Manifesting', 'Frightening Tune', "Gorgon's Fist", 'Grasp Of The Dead',
+  'Grave Touch', 'Greater Arcane Resistance', 'Greater Augmented Wild Shape',
+  'Greater Dispelling Attack', 'Greater Rage',
+  'Greater Reaving Dispelling Attack', 'Greater Wild Shape', 'Guarded Stance',
+  'Hail Of Arrows', 'Hand Of The Apprentice', 'Heavenly Fire', 'Hellfire',
+  'Huge Elemental Wild Shape', 'Huge Plant Wild Shape', 'Imbue Arrow',
+  'Impromptu Sneak Attack', 'Incorporeal Form', 'Increased DR',
+  'Inertial Armor', 'Inspire Competence', 'Inspire Courage',
+  'Inspire Greatness', 'Inspire Heroics', 'Intimidating Glare',
+  'It Was Meant To Be', 'Ki Alacrity', 'Ki Dodge', 'Ki Flurry', 'Ki Strike',
+  'Knockback', 'Know Direction', 'Large Elemental Wild Shape', 'Laughing Touch',
+  'Lay On Hands', 'Lesser Arcane Resistance', "Lion's Charge", 'Long Limbs',
+  'Low-Light Vision', 'Luck', 'Mass Suggestion', 'Medium Elemental Wild Shape',
+  'Metamagic Adept', 'Metamagic Mastery', 'Mighty Rage', 'Mighty Swing',
+  'Mind Over Body (Power)', 'Moment Of Clarity', 'Natural Spell',
+  'Night Vision', 'Offensive Precognition', 'Offensive Prescience', 'One Of Us',
+  'Opportunistic Strike', 'Paralyzing Show', 'Perfect Self', 'Phase Arrow',
+  'Pierce The Fog Of War', 'Plant Wild Shape', 'Power Over Shadow',
+  'Powerful Blow', 'Psionic Awareness', 'Psychic Warrior', 'Quick Reflexes',
+  'Quivering Palm Power', 'Rage', 'Ranged Legerdemain',
+  'Reaving Dispelling Attack', 'Regeneration', 'Renewed Vigor', 'Rolling Dodge',
+  'Roused Anger', 'Scent', 'School Defense', 'Seeker Arrow',
+  'Selective Channeling', 'Sickening Critical', 'Slippery Mind', 'Slow Fall',
+  'Small Elemental Wild Shape', 'Smite Evil', 'Song Of Freedom',
+  'Soothing Performance', 'Sorcery', 'Soul Of The Fey', 'Soulknife',
+  'Speak With Animals', 'Spectral Tendril', 'Spell Critical', 'Spell Immunity',
   'Spell Mastery', 'Spell Penetration', 'Spell Repertoire (Bard)',
   'Spell Repertoire (Divine)', 'Spell Repertoire (Druidical)',
   'Spell Repertoire (Sorcerer)', 'Spell Repertoire (Wizard)',
   'Spell Resistance', 'Spell Synthesis', 'Spell Theurgy',
   'Spellcasting (Arcane)', 'Spellcasting (Divine)', 'Spellcasting (Druidical)',
-  'Spontaneous Casting', 'Suggestion', 'Surprise Spells', 'Tenacious Magic',
-  'Timeless Body', 'Touch Of Death', 'Touch Of Destiny', 'Trackless Step',
-  'Trollborn', 'Turn Outsider', 'Turn Elemental', 'Unusual Anatomy',
-  'Wand Expertise', 'Wild Shape', 'Wild Surge', 'Wings', 'Wings Of Heaven',
-  'Within Reach', 'Wizardry', 'Woodland Stride'
+  'Spontaneous Casting', 'Staggering Critical', 'Stength Surge',
+  'Stunning Critical', 'Suggestion', 'Superior Wild Shape', 'Surprise Accuracy',
+  'Surprise Spells', 'Swift Foot', 'Tenacious Magic', 'Terrifying Howl',
+  'Timeless Body', 'Tireless Rage', 'Tiring Critical', 'Touch Of Death',
+  'Touch Of Destiny', 'Trackless Step', 'Trollborn', 'Turn Elemental',
+  'Turn Outsider', 'Unexpected Strike', 'Unusual Anatomy', 'Wand Expertise',
+  'Wild Shape', 'Wild Surge', 'Wings Of Heaven', 'Wings', 'Within Reach',
+  'Wizardry', 'Woodland Stride'
 ];
 HybridD20.SPELLS = {
 
@@ -1939,7 +1947,13 @@ HybridD20.powerRules = function(rules, powers) {
     var matchInfo;
     var notes = null;
 
-    if(power == 'Acidic Ray') {
+    if(power == 'Abundant Step') {
+      cost = 12;
+      // TODO
+    } else if(power == 'Aligned Ki Strike') {
+      cost = 20;
+      // TODO
+    } else if(power == 'Acidic Ray') {
       cost = 10;
       // TODO
     } else if(power == 'Added Summonings') {
@@ -1959,6 +1973,9 @@ HybridD20.powerRules = function(rules, powers) {
         "featureNotes.animalFormFeature:Darkvision/Low-Light Vision/Scent/Improved Grab/Improved Pounce/Improved Trip",
         'magicNotes.animalFormFeature:<i>Beast Shape II</i> to selected beast at will'
       ];
+    } else if(power == 'Animal Fury') {
+      cost = 20;
+      // TODO
     } else if(power == 'Arrow Of Death') {
       cost = 24;
       // TODO
@@ -1976,6 +1993,15 @@ HybridD20.powerRules = function(rules, powers) {
       // TODO
     } else if(power == 'Augment Summoning') {
       cost = 45;
+      // TODO
+    } else if(power == 'Augmented Wild Shape') {
+      cost = 20;
+      // TODO
+    } else if(power == 'Axiomatic Strike') {
+      cost = 60;
+      // TODO
+    } else if(power == 'Beast Wild Shape') {
+      cost = 12;
       // TODO
     } else if(power == 'Bleeding Critical') {
       cost = 35;
@@ -2000,6 +2026,9 @@ HybridD20.powerRules = function(rules, powers) {
       // TODO
     } else if(power == 'Claws') {
       cost = 20;
+      // TODO
+    } else if(power == 'Clear Mind') {
+      cost = 30;
       // TODO
     } else if(power == 'Clerical Ordainment') {
       cost = 0;
@@ -2028,6 +2057,7 @@ HybridD20.powerRules = function(rules, powers) {
         'powers.Darkvision', '=', 'source * 5 + 55'
       );
     } else if(power == 'Dazzling Display') {
+      cost = 20;
       // TODO
     } else if(power == 'Deadly Performance') {
       cost = 28;
@@ -2039,10 +2069,13 @@ HybridD20.powerRules = function(rules, powers) {
       cost = 30;
       // TODO
     } else if(power == 'Deathless') {
+      cost = 120;
       // TODO
     } else if(power == 'Defensive Precognition') {
+      cost = 20;
       // TODO
     } else if(power == 'Defensive Prescience') {
+      cost = 20;
       // TODO
     } else if(power == 'Destiny Realized') {
       cost = 68;
@@ -2051,6 +2084,7 @@ HybridD20.powerRules = function(rules, powers) {
       cost = 50;
       // TODO
     } else if(power == 'Dimension Spring Attack') {
+      cost = 100;
       // TODO
     } else if(power == 'Dirge Of Doom') {
       cost = 12;
@@ -2062,12 +2096,19 @@ HybridD20.powerRules = function(rules, powers) {
       cost = 20;
       // TODO
     } else if(power == 'Druidical Initiation') {
+      cost = 0;
       // TODO
     } else if(power == 'Elemental Blast') {
       cost = 14;
       // TODO
+    } else if(power == 'Elemental Rage') {
+      cost = 20;
+      // TODO
     } else if(power == 'Elemental Ray') {
       cost = 10;
+      // TODO
+    } else if(power == 'Empty Body') {
+      cost = 18;
       // TODO
     } else if(power == 'Energy Arrow') {
       cost = 60;
@@ -2076,11 +2117,13 @@ HybridD20.powerRules = function(rules, powers) {
       cost = 70;
       // TODO
     } else if(power == 'Energy Resistance') {
+      cost = 3;
       // TODO
     } else if(power == 'Enhance Arrows') {
       cost = 35;
       // TODO
     } else if(power == 'Eschew Materials') {
+      cost = 20;
       // TODO
     } else if(power == 'Exhausting Critical') {
       cost = 80;
@@ -2089,6 +2132,7 @@ HybridD20.powerRules = function(rules, powers) {
       cost = 8;
       // TODO
     } else if(power == 'Fast Healing') {
+      cost = 40;;
       // TODO
     } else if(power == 'Fated') {
       cost = 30;
@@ -2096,16 +2140,23 @@ HybridD20.powerRules = function(rules, powers) {
     } else if(power == 'Fey Magic') {
       cost = 90;
       // TODO
-    } else if(power == 'Fey Touched') {
+    } else if(power == 'Feytouched') {
+      cost = 68;
       // TODO
     } else if(power == 'Font Of Power') {
+      cost = 30;
       // TODO
     } else if(power == 'Free Casting') {
+      cost = 26;
       // TODO
     } else if(power == 'Free Manifesting') {
+      cost = 26;
       // TODO
     } else if(power == 'Frightening Tune') {
       cost = 16;
+      // TODO
+    } else if(power == "Gorgon's Fist") {
+      cost = 20;
       // TODO
     } else if(power == 'Grasp Of The Dead') {
       cost = 14;
@@ -2116,14 +2167,29 @@ HybridD20.powerRules = function(rules, powers) {
     } else if(power == 'Greater Arcane Resistance') {
       cost = 60;
       // TODO
+    } else if(power == 'Greater Augmented Wild Shape') {
+      cost = 40;
+      // TODO
     } else if(power == 'Greater Dispelling Attack') {
+      cost = 50;
+      // TODO
+    } else if(power == 'Greater Rage') {
+      cost = 40;
       // TODO
     } else if(power == 'Greater Reaving Dispelling Attack') {
+      cost = 70;
+      // TODO
+    } else if(power == 'Greater Wild Shape') {
+      cost = 8;
+      // TODO
+    } else if(power == 'Guarded Stance') {
+      cost = 10;
       // TODO
     } else if(power == 'Hail Of Arrows') {
       cost = 26;
       // TODO
     } else if(power == 'Hand Of The Apprentice') {
+      cost = 20;
       // TODO
     } else if(power == 'Heavenly Fire') {
       cost = 20;
@@ -2131,15 +2197,26 @@ HybridD20.powerRules = function(rules, powers) {
     } else if(power == 'Hellfire') {
       cost = 14;
       // TODO
+    } else if(power == 'Huge Elemental Wild Shape') {
+      cost = 14;
+      // TODO
+    } else if(power == 'Huge Plant Wild Shape') {
+      cost = 14;
+      // TODO
     } else if(power == 'Imbue Arrow') {
       cost = 45;
       // TODO
     } else if(power == 'Impromptu Sneak Attack') {
+      cost = 8;
       // TODO
     } else if(power == 'Incorporeal Form') {
       cost = 48;
       // TODO
+    } else if(power == 'Increased DR') {
+      cost = 18;
+      // TODO
     } else if(power == 'Inertial Armor') {
+      cost = 10;
       // TODO
     } else if(power == 'Inspire Competence') {
       cost = 8;
@@ -2153,77 +2230,155 @@ HybridD20.powerRules = function(rules, powers) {
     } else if(power == 'Inspire Heroics') {
       cost = 16;
       // TODO
+    } else if(power == 'Intimidating Glare') {
+      cost = 10;
+      // TODO
     } else if(power == 'It Was Meant To Be') {
       cost = 14;
       // TODO
-    } else if(power == 'Ki Mastery') {
+    } else if(power == 'Ki Alacrity') {
+      cost = 4;
+      // TODO
+    } else if(power == 'Ki Dodge') {
+      cost = 6;
+      // TODO
+    } else if(power == 'Ki Flurry') {
+      cost = 20;
+      // TODO
+    } else if(power == 'Ki Strike') {
+      cost = 30;
+      // TODO
+    } else if(power == 'Knockback') {
+      cost = 20;
       // TODO
     } else if(power == 'Know Direction') {
+      cost = 20;
+      // TODO
+    } else if(power == 'Large Elemental Wild Shape') {
+      cost = 12;
       // TODO
     } else if(power == 'Laughing Touch') {
       cost = 10;
       // TODO
     } else if(power == 'Lay On Hands') {
+      cost = 20;
       // TODO
     } else if(power == 'Lesser Arcane Resistance') {
       cost = 40;
       // TODO
     } else if(power == "Lion's Charge") {
+      cost = 20;
       // TODO
     } else if(power == 'Long Limbs') {
       cost = 60;
       // TODO
     } else if(power == 'Low-Light Vision') {
+      cost = 10; // TODO Rage-related costs only 5
       // TODO
     } else if(power == 'Luck') {
+      cost = 20;
       // TODO
     } else if(power == 'Mass Suggestion') {
       cost = 20;
       // TODO
+    } else if(power == 'Medium Elemental Wild Shape') {
+      cost = 10;
+      // TODO
     } else if(power == 'Metamagic Adept') {
+      cost = 8;
       // TODO
     } else if(power == 'Metamagic Mastery') {
+      cost = 10;
+      // TODO
+    } else if(power == 'Mighty Rage') {
+      cost = 40;
+      // TODO
+    } else if(power == 'Mighty Swing') {
+      cost = 20;
       // TODO
     } else if(power == 'Mind Over Body (Power)') {
+      cost = 0;
+      // TODO
+    } else if(power == 'Moment Of Clarity') {
+      cost = 20;
       // TODO
     } else if(power == 'Natural Spell') {
+      cost = 35;
+      // TODO
+    } else if(power == 'Night Vision') {
+      cost = 15;
       // TODO
     } else if(power == 'Offensive Precognition') {
+      cost = 20;
       // TODO
     } else if(power == 'Offensive Prescience') {
+      cost = 20;
       // TODO
     } else if(power == 'One Of Us') {
       cost = 15;
       // TODO
     } else if(power == 'Opportunistic Strike') {
+      cost = 15;
       // TODO
     } else if(power == 'Paralyzing Show') {
       cost = 28;
       // TODO
     } else if(power == 'Perfect Self') {
+      cost = 68;
+      // TODO
+    } else if(power == 'Plant Wild Shape') {
+      cost = 10;
       // TODO
     } else if(power == 'Power Over Shadow') {
+      cost = 70;
       // TODO
     } else if(power == 'Phase Arrow') {
       cost = 17;
       // TODO
     } else if(power == 'Pierce The Fog Of War') {
+      cost = 90;
+      // TODO
+    } else if(power == 'Powerful Blow') {
+      cost = 10;
       // TODO
     } else if(power == 'Psionic Awareness') {
+      cost = 0;
       // TODO
     } else if(power == 'Psychic Warrior') {
+      cost = 0;
+      // TODO
+    } else if(power == 'Quick Reflexes') {
+      cost = 10;
+      // TODO
+    } else if(power == 'Quivering Palm Power') {
+      cost = 20;
       // TODO
     } else if(power == 'Rage') {
+      cost = 16;
       // TODO
     } else if(power == 'Ranged Legerdemain') {
+      cost = 30;
       // TODO
     } else if(power == 'Reaving Dispelling Attack') {
+      cost = 70;
       // TODO
     } else if(power == 'Regeneration') {
+      cost = 120;
+      // TODO
+    } else if(power == 'Renewed Vigor') {
+      cost = 10;
+      // TODO
+    } else if(power == 'Rolling Dodge') {
+      cost = 10;
+      // TODO
+    } else if(power == 'Roused Anger') {
+      cost = 20;
       // TODO
     } else if(power == 'Scent') {
+      cost = 30;
       // TODO
     } else if(power == 'School Defense') {
+      cost = 10;
       // TODO
     } else if(power == 'Seeker Arrow') {
       cost = 12;
@@ -2235,10 +2390,19 @@ HybridD20.powerRules = function(rules, powers) {
       cost = 40;
       // TODO
     } else if(power == 'Slippery Mind') {
+      cost = 35;
+      // TODO
+    } else if(power == 'Slow Fall') {
+      cost = 10;
+      // TODO
+    } else if(power == 'Small Elemental Wild Shape') {
+      cost = 8;
       // TODO
     } else if(power == 'Smite Evil') {
+      cost = 14;
       // TODO
     } else if(power == 'Sorcery') {
+      cost = 10;
       // TODO
     } else if(power == 'Soothing Performance') {
       cost = 20;
@@ -2250,46 +2414,67 @@ HybridD20.powerRules = function(rules, powers) {
       cost = 90;
       // TODO
     } else if(power == 'Soulknife') {
+      cost = 30;
       // TODO
     } else if(power == 'Speak With Animals') {
+      cost = 20;
       // TODO
     } else if(power == 'Spectral Tendril') {
+      cost = 30;
       // TODO
     } else if(power == 'Spell Critical') {
       cost = 40;
       // TODO
     } else if(power == 'Spell Immunity') {
+      cost = 10;
       // TODO
     } else if(power == 'Spell Mastery') {
+      cost = 5;
       // TODO
     } else if(power == 'Spell Penetration') {
+      cost = 40;
       // TODO
     } else if(power == 'Spell Repertoire (Bard)') {
+      cost = 0;
       // TODO
     } else if(power == 'Spell Repertoire (Divine)') {
+      cost = 0;
       // TODO
     } else if(power == 'Spell Repertoire (Druidical)') {
+      cost = 0;
       // TODO
     } else if(power == 'Spell Repertoire (Sorcerer)') {
+      cost = 0;
       // TODO
     } else if(power == 'Spell Repertoire (Wizard)') {
+      cost = 0;
       // TODO
     } else if(power == 'Spell Resistance') {
+      cost = 100;
       // TODO
     } else if(power == 'Spell Synthesis') {
+      cost = 26;
       // TODO
     } else if(power == 'Spell Theurgy') {
+      cost = 0;
       // TODO
     } else if(power == 'Spellcasting (Arcane)') {
+      cost = 0;
       // TODO
     } else if(power == 'Spellcasting (Divine)') {
+      cost = 0;
       // TODO
     } else if(power == 'Spellcasting (Druidical)') {
+      cost = 0;
       // TODO
     } else if(power == 'Spontaneous Casting') {
+      cost = 20;
       // TODO
     } else if(power == 'Staggering Critical') {
       cost = 35;
+      // TODO
+    } else if(power == 'Stength Surge') {
+      cost = 10;
       // TODO
     } else if(power == 'Stunning Critical') {
       cost = 30;
@@ -2297,36 +2482,65 @@ HybridD20.powerRules = function(rules, powers) {
     } else if(power == 'Suggestion') {
       cost = 12;
       // TODO
+    } else if(power == 'Superior Wild Shape') {
+      cost = 10;
+      // TODO
+    } else if(power == 'Surprise Accuracy') {
+      cost = 10;
+      // TODO
     } else if(power == 'Surprise Spells') {
+      cost = 60;
+      // TODO
+    } else if(power == 'Swift Foot') {
+      cost = 5;
       // TODO
     } else if(power == 'Tenacious Magic') {
+      cost = 15;
+      // TODO
+    } else if(power == 'Terrifying Howl') {
+      cost = 20;
       // TODO
     } else if(power == 'Timeless Body') {
+      cost = 90;
+      // TODO
+    } else if(power == 'Tireless Rage') {
+      cost = 30;
       // TODO
     } else if(power == 'Tiring Critical') {
       cost = 50;
       // TODO
     } else if(power == 'Touch Of Death') {
+      cost = 10;
       // TODO
     } else if(power == 'Touch Of Destiny') {
       cost = 20;
       // TODO
     } else if(power == 'Trackless Step') {
+      cost = 20;
       // TODO
     } else if(power == 'Trollborn') {
+      cost = 70;
       // TODO
     } else if(power == 'Turn Outsider') {
+      cost = 40;
       // TODO
     } else if(power == 'Turn Elemental') {
+      cost = 40;
+      // TODO
+    } else if(power == 'Unexpected Strike') {
+      cost = 15;
       // TODO
     } else if(power == 'Unusual Anatomy') {
       cost = 30;
       // TODO
     } else if(power == 'Wand Expertise') {
+      cost = 50;
       // TODO
     } else if(power == 'Wild Shape') {
+      cost = 6;
       // TODO
     } else if(power == 'Wild Surge') {
+      cost = 0;
       // TODO
     } else if(power == 'Wings') {
       cost = 30;
@@ -2338,8 +2552,10 @@ HybridD20.powerRules = function(rules, powers) {
       cost = 22;
       // TODO
     } else if(power == 'Wizardry') {
+      cost = 0;
       // TODO
     } else if(power == 'Woodland Stride') {
+      cost = 0;
       // TODO
     } else
       continue;
