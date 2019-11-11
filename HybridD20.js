@@ -116,8 +116,8 @@ HybridD20.RANDOMIZABLE_ATTRIBUTES = [
 HybridD20.POWERS = [
   'Abundant Step', 'Acidic Ray', 'Added Summonings', 'Alien Resistance',
   'Aligned Arrow', 'Aligned Ki Strike', 'Animal Form', 'Animal Fury',
-  'Arcane Arrow', 'Arcane Sight', 'Arcane Strike', 'Arcane Theurgy',
-  'Armored Skin', 'Arrow Of Death', 'Augment Summoning', 'Augmented Wild Shape',
+  'Arcane Sight', 'Arcane Strike', 'Arcane Theurgy', 'Armored Skin',
+  'Arrow Of Death', 'Augment Summoning', 'Augmented Wild Shape',
   'Axiomatic Strike', 'Beast Wild Shape', 'Bleeding Critical',
   'Blinding Critical', 'Blinding Speed', 'Blindsight', 'Bloodline Abilities',
   'Breath Weapon', 'Call To Mind', 'Channeling Smite', 'Claws', 'Clear Mind',
@@ -1948,23 +1948,50 @@ HybridD20.powerRules = function(rules, powers) {
     var notes = null;
 
     if(power == 'Abundant Step') {
+      notes = [
+        'magicNotes.abundantStepFeature:<i>Dimension Door</i> for 2 Ki points',
+        'validationNotes.abundantStepPowerFeatures:Requires Ki Mastery'
+      ];
       cost = 12;
-      // TODO
     } else if(power == 'Aligned Ki Strike') {
+      notes = [
+        'combatNotes.alignedKiStrikeFeature:Treat unarmed as lawful weapon',
+        'validationNotes.alignedKiStrikePowerFeatures:Requires Ki Mastery'
+      ];
       cost = 20;
-      // TODO
     } else if(power == 'Acidic Ray') {
+      notes = [
+        'magicNotes.acidicRayFeature:30 ft ranged touch for 1d6+%V',
+        'validationNotes.acidicRayPowerFeatures:Requires Sorcery'
+      ];
       cost = 10;
-      // TODO
+      rules.defineRule('magicNotes.acidicRayFeature',
+        'features.Sorcery', '=', 'Math.floor(source / 2) + 1'
+      );
     } else if(power == 'Added Summonings') {
+      notes = [
+        'magicNotes.addedSummoningsFeature:' +
+          '<i>Summon Monster</i> brings additional demon/fiendish creature',
+        'validationNotes.addedSummoningsPowerFeatures:Requires Sorcery'
+      ];
       cost = 20;
-      // TODO
     } else if(power == 'Alien Resistance') {
+      notes = [
+        'saveNotes.alienResistanceFeature:%V spell resistance',
+        'validationNotes.alienResistancePowerFeatures:Requires Sorcery'
+      ];
       cost = 100;
-      // TODO
+      rules.defineRule('saveNotes.alienResistanceFeature',
+        'features.Sorcery', '=', 'source + 11'
+      );
     } else if(power == 'Aligned Arrow') {
+      notes = [
+        'combatNotes.alignedArrowsFeature:Arrows anarchic/axiomatic/holy/unholy',
+        'validationNotes.alignedArrowPowerFeatures:' +
+          'Requires Arcane Spellcasting/Point-Blank Shot/Precise Shot/Spell Repertoire (Arcane)/Weapon Training (Bows)',
+        'validationNotes.alignedArrowPowerSkills:Requires Combat (Fire) >= 15'
+      ];
       cost = 40;
-      // TODO
     } else if(power == 'Animal Form') {
       cost = 20;
       notes = [
@@ -1974,32 +2001,79 @@ HybridD20.powerRules = function(rules, powers) {
         'magicNotes.animalFormFeature:<i>Beast Shape II</i> to selected beast at will'
       ];
     } else if(power == 'Animal Fury') {
+      notes = [
+        'combatNotes.animalFuryFeature:Bite attack for 1d%V+%1 during rage',
+        'validationNotes.animalFuryPowerFeatures:Requires Rage >= 2'
+      ];
+      rules.defineRule('combatNotes.animalFuryFeature',
+        '', '=', '6',
+        'features.Small', '+', '-2'
+      );
+      rules.defineRule('combatNotes.animalFuryFeature.1',
+        'strengthModifier', '=', 'Math.floor(source / 2)'
+      );
       cost = 20;
-      // TODO
     } else if(power == 'Arrow Of Death') {
+      notes = [
+        'combatNotes.arrowOfDeathFeature:' +
+          'Special arrow kills (DC 20 Fort 3d6+%V HP)',
+        'validationNotes.arrowOfDeathPowerFeatures:' +
+          'Requires Point-Blank Shot/Precise Shot/Spell Repertoire (Arcane)/Spellcasting (Arcane)/Weapon Training (Bows)',
+        'validationNotes.arrowOfDeathPowerSkills:Requires Combat (Fire) >= 16'
+      ];
+      rules.defineRule('combatNotes.arrowOfDeathFeature',
+        'features.Spellcasting (Arcane)', '=', null
+      );
       cost = 24;
-      // TODO
     } else if(power == 'Arcane Sight') {
+      notes = [
+        "featureNotes.arcaneSightFeature:See magical auras within 120'"
+      ];
       cost = 30;
-      // TODO
     } else if(power == 'Arcane Strike') {
+      notes = [
+        'combatNotes.arcaneStrikeFeature:' +
+          'Weapons +%V magic damage bonus for 1 rd',
+        'validationNotes.arcaneStrikePowerFeatures:' +
+           'Requires Spellcasting (Arcane)'
+      ];
       cost = 50;
-      // TODO
+      rules.defineRule('combatNotes.arcaneStrikeFeature',
+        'features.Spellcasting (Arcane)', '=', 'Math.floor(source / 5) + 1'
+      );
     } else if(power == 'Arcane Theurgy') {
       cost = 0;
       // TODO
     } else if(power == 'Armored Skin') {
+      notes = [
+        'combatNotes.armoredSkinFeature:+%V AC'
+      ];
       cost = 30;
-      // TODO
+      rules.defineRule
+        ('armorClass', 'combatNotes.armoredSkinFeature', '+', null);
+      rules.defineRule('combatNotes.armoredSkinFeature',
+        'powers.Armored Skin', '=', 'Math.floor(source / 3) + 1'
+      );
     } else if(power == 'Augment Summoning') {
+      notes = [
+        'magicNotes.augmentSummoningFeature:Summoned creatures +4 Str/Con',
+        'validationNotes.augmentSummoningFeatFeatures:' +
+          'Requires Spell Focus (Conjuration)'
+      ];
       cost = 45;
-      // TODO
     } else if(power == 'Augmented Wild Shape') {
+      notes = [
+        'magicNotes.augmentedWildShapeFeature:+%V Str in Wild Shape',
+        'validationNotes.augmentSummoningFeatFeatures:Requires Wild Shape'
+      ];
       cost = 20;
-      // TODO
+      rules.defineRule('magicNotes.augmentedWildShapeFeature', '', '=', '4');
     } else if(power == 'Axiomatic Strike') {
+      notes = [
+        'combatNotes.axiomaticStrikeFeature:Unarmed +2d6 vs. chaotic',
+        'validationNotes.axiomaticStrikePowerFeatures:Requires Ki Mastery'
+      ];
       cost = 60;
-      // TODO
     } else if(power == 'Beast Wild Shape') {
       cost = 12;
       // TODO
@@ -2168,8 +2242,16 @@ HybridD20.powerRules = function(rules, powers) {
       cost = 60;
       // TODO
     } else if(power == 'Greater Augmented Wild Shape') {
-      cost = 40;
-      // TODO
+      notes = [
+        'magicNotes.greaterAugmentedWildShapeFeature:+2 Str in Wild Shape',
+        // Note: treat this as required, since the cost works out the same
+        'validationNotes.augmentSummoningFeatFeatures:' +
+          'Requires Augmented Wild Shape'
+      ];
+      rules.defineRule('magicNotes.augmentedWildShapeFeature',
+        'magicNotes.greaterAugmentedWildShapeFeature', '+', '2'
+      );
+      cost = 20;
     } else if(power == 'Greater Dispelling Attack') {
       cost = 50;
       // TODO
