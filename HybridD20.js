@@ -54,8 +54,8 @@ function HybridD20() {
   HybridD20.featRules(rules, HybridD20.FEATS);
   HybridD20.powerRules(rules, HybridD20.POWERS);
   SRD35.descriptionRules(rules, SRD35.ALIGNMENTS, SRD35.DEITIES, SRD35.GENDERS);
-  HybridD20.equipmentRules
-    (rules, SRD35.ARMORS, SRD35.GOODIES, SRD35.SHIELDS, SRD35.WEAPONS);
+  HybridD20.equipmentRules(rules, SRD35.ARMORS, SRD35.SHIELDS, SRD35.WEAPONS);
+  SRD35.goodiesRules(rules, SRD35.GOODIES);
   HybridD20.combatRules(rules);
   SRD35.movementRules(rules);
   HybridD20.magicRules(rules, SRD35.SCHOOLS);
@@ -677,12 +677,12 @@ HybridD20.combatRules = function(rules) {
 };
 
 /* Defines the rules related to equipment. */
-HybridD20.equipmentRules = function(rules, armors, goodies, shields, weapons) {
+HybridD20.equipmentRules = function(rules, armors, shields, weapons) {
 
   rules.defineRule('armorProficiencyLevel', '', '=', SRD35.PROFICIENCY_NONE);
   rules.defineRule('shieldProficiencyLevel', '', '=', SRD35.PROFICIENCY_NONE);
   rules.defineRule('weaponProficiencyLevel', '', '=', SRD35.PROFICIENCY_LIGHT);
-  SRD35.equipmentRules(rules, armors, goodies, shields, weapons);
+  SRD35.equipmentRules(rules, armors, shields, weapons);
 
 }
 
@@ -1813,30 +1813,30 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Empower Spell') {
       notes = [
         'magicNotes.empowerSpellFeature:' +
-          'x1.5 designated spell variable effects uses +2 spell slot',
+          'x1.5 chosen spell variable effects uses +2 spell slot',
         'sanityNotes.empowerSpellFeatCasterLevel:Implies Caster Level >= 1'
       ];
     } else if(feat == 'Enlarge Spell') {
       notes = [
         'magicNotes.enlargeSpellFeature:' +
-          'x2 designated spell range uses +1 spell slot',
+          'x2 chosen spell range uses +1 spell slot',
         'sanityNotes.enlargeSpellFeatCasterLevel:Implies Caster Level >= 1'
       ];
     } else if(feat == 'Extend Spell') {
       notes = [
         'magicNotes.extendSpellFeature:' +
-          'x2 designated spell duration uses +1 spell slot',
+          'x2 chosen spell duration uses +1 spell slot',
         'sanityNotes.extendSpellFeatCasterLevel:Implies Caster Level >= 1'
       ];
     } else if(feat == 'Heighten Spell') {
       notes = [
-        'magicNotes.heightenSpellFeature:Increase designated spell level',
+        'magicNotes.heightenSpellFeature:Increase chosen spell level',
         'sanityNotes.heightenSpellFeatCasterLevel:Implies Caster Level >= 1'
       ];
     } else if(feat == 'Maximize Spell') {
       notes = [
         'magicNotes.maximizeSpellFeature:' +
-          'Maximize all designated spell variable effects uses +3 spell slot',
+          'Maximize all chosen spell variable effects uses +3 spell slot',
         'sanityNotes.maximizeSpellFeatCasterLevel:Implies Caster Level >= 1'
       ];
     } else if(feat == 'Quicken Spell') {
