@@ -17,7 +17,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 
 "use strict";
 
-var HybridD20_VERSION = '1.4.0.1alpha';
+var HybridD20_VERSION = '1.5.0.1alpha';
 
 /*
  * This module loads the rules for Hybrid D20.  The HybridD20 module
@@ -55,7 +55,6 @@ function HybridD20() {
   HybridD20.powerRules(rules, HybridD20.POWERS);
   SRD35.descriptionRules(rules, SRD35.ALIGNMENTS, SRD35.DEITIES, SRD35.GENDERS);
   HybridD20.equipmentRules(rules, SRD35.ARMORS, SRD35.SHIELDS, SRD35.WEAPONS);
-  SRD35.goodiesRules(rules, SRD35.GOODIES);
   HybridD20.combatRules(rules);
   SRD35.movementRules(rules);
   HybridD20.magicRules(rules, SRD35.SCHOOLS);
@@ -109,8 +108,7 @@ HybridD20.FEATS = [
 HybridD20.RANDOMIZABLE_ATTRIBUTES = [
   'charisma', 'constitution', 'dexterity', 'intelligence', 'strength', 'wisdom',
   'name', 'race', 'gender', 'alignment', 'deity', 'experience', 'feats',
-  'skills', 'languages', 'hitPoints', 'armor', 'shield', 'weapons', 'spells',
-  'goodies'
+  'skills', 'languages', 'hitPoints', 'armor', 'shield', 'weapons', 'spells'
 ];
 // TODO Domain Powers, Immunity, School Focus, School Specialization
 HybridD20.POWERS = [
@@ -1913,7 +1911,6 @@ HybridD20.initialEditorElements = function() {
     ['shield', 'Shield', 'select-one', 'shields'],
     ['weapons', 'Weapons', 'bag', 'weapons'],
     ['spells', 'Spells', 'fset', 'spells'],
-    ['goodies', 'Goodies', 'bag', 'goodies'],
     ['notes', 'Notes', 'textarea', [40,10]],
     ['hiddenNotes', 'Hidden Notes', 'textarea', [40,10]]
   ];
@@ -1922,18 +1919,7 @@ HybridD20.initialEditorElements = function() {
 
 /* Defines the rules related to spells. */
 HybridD20.magicRules = function(rules, schools) {
-
   rules.defineChoice('schools', schools);
-
-  rules.defineRule
-    ('armorClass', 'combatNotes.goodiesArmorClassAdjustment', '+', null);
-  rules.defineRule('combatNotes.goodiesArmorClassAdjustment',
-    'goodies.Ring Of Protection +1', '+=', null,
-    'goodies.Ring Of Protection +2', '+=', 'source * 2',
-    'goodies.Ring Of Protection +3', '+=', 'source * 3',
-    'goodies.Ring Of Protection +4', '+=', 'source * 4'
-  );
-
 };
 
 
