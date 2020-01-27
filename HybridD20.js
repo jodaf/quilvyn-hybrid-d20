@@ -852,7 +852,7 @@ HybridD20.featRules = function(rules, feats) {
     } else if(feat == 'Death Attack') {
       notes = [
         'combatNotes.deathAttackFeature:' +
-          'Target studied 3+ rd paralyzed d6+%1 rd or killed when struck (DC %V Fort neg)',
+          'Target studied 3+ rd paralyzed 1d6+%1 rd or killed when struck (DC %V Fort neg)',
         'validationNotes.deathAttackFeatFeatures:' +
            'Requires Sneak Attack >= Death Attack',
         'validationNotes.deathAttackFeatSkills:Requires Stealth >= 5'
@@ -926,11 +926,11 @@ HybridD20.featRules = function(rules, feats) {
         'feats.Dodge', '=', 'Math.floor(source / 4) + 1'
       );
       rules.defineRule('combatNotes.dodgeFeature.1',
-        'feats.Dodge', '=', 'source < 6 ? "" : ", 20% conceal for 1 rd after 5\' move"',
+        'feats.Dodge', '=', 'source < 6 ? "" : ", 20% conceal 1 rd after 5\' move"',
         'dexterity', '=', 'source >= 15 ? null : ""'
       );
       rules.defineRule('combatNotes.dodgeFeature.2',
-        'feats.Dodge', '=', 'source < 11 ? "" : ", 50% conceal for 1 rd after 2 move or withdraw"',
+        'feats.Dodge', '=', 'source < 11 ? "" : ", 50% conceal 1 rd after 2 move or withdraw"',
         'dexterity', '=', 'source >= 17 ? null : ""'
       );
     } else if(feat == 'Double Slice') {
@@ -1514,7 +1514,7 @@ HybridD20.featRules = function(rules, feats) {
       ];
     } else if(feat == 'Resiliency') {
       notes = [
-        'combatNotes.resiliencyFeature:%V temp HP/day to stay >= 0 for 1 min'
+        'combatNotes.resiliencyFeature:%V temp HP/day to stay >= 0 1 min'
       ];
       rules.defineRule
         ('combatNotes.resiliencyFeature', 'feats.Resiliency', '=', null);
@@ -1961,7 +1961,7 @@ HybridD20.powerRules = function(rules, powers) {
       cost = 20;
     } else if(power == 'Acidic Ray') {
       notes = [
-        'magicNotes.acidicRayFeature:30 ft ranged touch for 1d6+%V',
+        'magicNotes.acidicRayFeature:30 ft ranged touch 1d6+%V HP',
         'validationNotes.acidicRayPowerFeatures:Requires Sorcery'
       ];
       cost = 10;
@@ -2002,7 +2002,7 @@ HybridD20.powerRules = function(rules, powers) {
       ];
     } else if(power == 'Animal Fury') {
       notes = [
-        'combatNotes.animalFuryFeature:Bite attack for 1d%V+%1 during rage',
+        'combatNotes.animalFuryFeature:Bite attack 1d%V+%1 HP during rage',
         'validationNotes.animalFuryPowerFeatures:Requires Rage >= 2'
       ];
       rules.defineRule('combatNotes.animalFuryFeature',
@@ -2033,7 +2033,7 @@ HybridD20.powerRules = function(rules, powers) {
     } else if(power == 'Arcane Strike') {
       notes = [
         'combatNotes.arcaneStrikeFeature:' +
-          'Weapons +%V magic damage bonus for 1 rd',
+          'Weapons +%V magic damage bonus 1 rd',
         'validationNotes.arcaneStrikePowerFeatures:' +
            'Requires Spellcasting (Arcane)'
       ];
@@ -2057,14 +2057,14 @@ HybridD20.powerRules = function(rules, powers) {
     } else if(power == 'Augment Summoning') {
       notes = [
         'magicNotes.augmentSummoningFeature:Summoned creatures +4 Str/Con',
-        'validationNotes.augmentSummoningFeatFeatures:' +
+        'validationNotes.augmentSummoningPowerFeatures:' +
           'Requires Spell Focus (Conjuration)'
       ];
       cost = 45;
     } else if(power == 'Augmented Wild Shape') {
       notes = [
         'magicNotes.augmentedWildShapeFeature:+%V Str in Wild Shape',
-        'validationNotes.augmentSummoningFeatFeatures:Requires Wild Shape'
+        'validationNotes.augmentedWildShapePowerFeatures:Requires Wild Shape'
       ];
       cost = 20;
       rules.defineRule('magicNotes.augmentedWildShapeFeature', '', '=', '4');
@@ -2075,23 +2075,81 @@ HybridD20.powerRules = function(rules, powers) {
       ];
       cost = 60;
     } else if(power == 'Beast Wild Shape') {
+      notes = [
+        'magicNotes.augmentedWildShapeFeature:Wild Shape to magical beast',
+        'validationNotes.beastWildShapePowerFeatures:Requires Wild Shape'
+      ];
       cost = 12;
-      // TODO
     } else if(power == 'Bleeding Critical') {
+      notes = [
+        'combatNotes.bleedingCriticalFeature:1d6 HP/rd after critical hit',
+        'validationNotes.bleedingCriticalPowerFeatures:' +
+          'Requires Improved Critical >= 4'
+      ];
       cost = 35;
-      // TODO
     } else if(power == 'Blinding Critical') {
+      notes = [
+        'combatNotes.blindingCriticalFeature:' +
+          'Foe permanently blind (DC %V Fort 1 rd) after critical hit',
+        'validationNotes.blindingCriticalPowerFeatures:' +
+          'Requires Improved Critical >= 8'
+      ];
       cost = 45;
-      // TODO
+      rules.defineRule('combatNotes.blindingCriticalFeature',
+        'baseAttack', '=', 'source + 10'
+      );
     } else if(power == 'Blinding Speed') {
+      notes = [
+        "abilityNotes.blindingSpeedFeature:+30' move %V rd/day",
+        'combatNotes.blindingSpeedFeature:+1 attack/AC %V rd/day',
+        'saveNotes.blindingSpeedFeature:+1 Reflex %V rd/day',
+        'validationNotes.blindingCriticalPowerAbility:Requires Dexterity >= 25'
+      ];
       cost = 50;
-      // TODO
+      rules.defineRule('abilityNotes.blindingSpeedFeature',
+        'feats.Blinding Speed', '=', 'source >= 5 ? source : null'
+      );
+      rules.defineRule('combatNotes.blindingSpeedFeature',
+        'feats.Blinding Speed', '=', 'source >= 5 ? source : null'
+      );
+      rules.defineRule('saveNotes.blindingSpeedFeature',
+        'feats.Blinding Speed', '=', 'source >= 5 ? source : null'
+      );
     } else if(power == 'Blindsight') {
+      notes = [
+        'abilityNotes.blindsightFeature:' +
+          "Percieve through invisibility and concealment w/in 30'",
+        'validationNotes.blindsightPowerFeatures:Requires Blind-Fight'
+      ];
       cost = 40;
-      // TODO
+      // TODO Extend 15' per 20 XP
     } else if(power == 'Breath Weapon') {
+      notes = [
+        'combatNotes.blindingCriticalFeature:' +
+          'Foe blinded permanently (DC %V Fort for 1 rd) after critical hit',
+        'combatNotes.breathWeaponFeature:' +
+          "%3 %4 %Vd6 HP (%1 DC Reflex half) %2/day",
+        'validationNotes.breathWeaponPowerFeatures:Requires Sorcery >= 9'
+      ];
       cost = 14;
-      // TODO
+      var breathShape = "30' cone"; // TODO
+      var energyType = 'acid'; // TODO
+      rules.defineRule
+        ('combatNotes.breathWeaponFeature', 'features.Sorcery', '=', null);
+      rules.defineRule('combatNotes.breathWeaponFeature.1',
+        'features.Sorcery', '=', '10 + Math.floor(source / 2)',
+        'charismaModifier', '+', null
+      );
+      rules.defineRule('combatNotes.breathWeaponFeature.2',
+        'features.Sorcery', '=',
+        'source >= 20 ? 3 : source >= 17 ? 2 : source >= 9 ? 1 : null'
+      );
+      rules.defineRule('combatNotes.breathWeaponFeature.3',
+        'features.Sorcery', '=', '"' + breathShape + '"'
+      );
+      rules.defineRule('combatNotes.breathWeaponFeature.4',
+        'features.Sorcery', '=', '"' + energyType + '"'
+      );
     } else if(power == 'Call To Mind') {
       cost = 10;
       // TODO
@@ -2137,8 +2195,16 @@ HybridD20.powerRules = function(rules, powers) {
       cost = 28;
       // TODO
     } else if(power == 'Deafening Critical') {
+      notes = [
+        'combatNotes.deafeningCriticalFeature:' +
+          'Foe permanently deaf (DC %V Fort 1 rd) after critical hit',
+        'validationNotes.deafeningCriticalPowerFeatures:' +
+          'Requires Improved Critical >= 6'
+      ];
       cost = 45;
-      // TODO
+      rules.defineRule('combatNotes.deafeningCriticalFeature',
+        'baseAttack', '=', 'source + 10'
+      );
     } else if(power == "Death's Gift") {
       cost = 30;
       // TODO
@@ -2155,8 +2221,16 @@ HybridD20.powerRules = function(rules, powers) {
       cost = 68;
       // TODO
     } else if(power == 'Devastating Critical') {
+      notes = [
+        'combatNotes.devastatingCriticalFeature:' +
+          'Foe die (DC %V Fort 3d6 HP) after critical hit',
+        'validationNotes.devastatingCriticalPowerFeatures:' +
+          'Requires Improved Critical >= 20'
+      ];
       cost = 50;
-      // TODO
+      rules.defineRule('combatNotes.devastatingCriticalFeature',
+        'strengthModifier', '=', 'source + 20'
+      );
     } else if(power == 'Dimension Spring Attack') {
       cost = 100;
       // TODO
@@ -2200,8 +2274,13 @@ HybridD20.powerRules = function(rules, powers) {
       cost = 20;
       // TODO
     } else if(power == 'Exhausting Critical') {
+      notes = [
+        'combatNotes.exhaustingCriticalFeature:' +
+          'Foe exhausted after critical hit',
+        'validationNotes.exhaustingCriticalPowerFeatures:' +
+          'Requires Improved Critical >= 8'
+      ];
       cost = 80;
-      // TODO
     } else if(power == 'Fascinate') {
       cost = 8;
       // TODO
@@ -2245,7 +2324,7 @@ HybridD20.powerRules = function(rules, powers) {
       notes = [
         'magicNotes.greaterAugmentedWildShapeFeature:+2 Str in Wild Shape',
         // Note: treat this as required, since the cost works out the same
-        'validationNotes.augmentSummoningFeatFeatures:' +
+        'validationNotes.augmentSummoningPowerFeatures:' +
           'Requires Augmented Wild Shape'
       ];
       rules.defineRule('magicNotes.augmentedWildShapeFeature',
@@ -2469,8 +2548,13 @@ HybridD20.powerRules = function(rules, powers) {
       cost = 0;
       // TODO
     } else if(power == 'Sickening Critical') {
+      notes = [
+        'combatNotes.sickeningingCriticalFeature:' +
+          'Foe sickened 1 min after critical hit',
+        'validationNotes.sickeningingCriticalPowerFeatures:' +
+          'Requires Improved Critical >= 6'
+      ];
       cost = 40;
-      // TODO
     } else if(power == 'Slippery Mind') {
       cost = 35;
       // TODO
@@ -2505,8 +2589,13 @@ HybridD20.powerRules = function(rules, powers) {
       cost = 30;
       // TODO
     } else if(power == 'Spell Critical') {
+      notes = [
+        'combatNotes.spellCriticalFeature:' +
+          'Cast spell on foe as free action after critical hit',
+        'validationNotes.spellCriticalPowerFeatures:' +
+          'Requires Improved Critical >= 11'
+      ];
       cost = 40;
-      // TODO
     } else if(power == 'Spell Immunity') {
       cost = 10;
       // TODO
@@ -2553,14 +2642,31 @@ HybridD20.powerRules = function(rules, powers) {
       cost = 20;
       // TODO
     } else if(power == 'Staggering Critical') {
+      notes = [
+        'combatNotes.staggeringCriticalFeature:' +
+          'Foe staggered 1d4+1 rd (DC %V Fort 1 rd) after critical hit',
+        'validationNotes.staggeringCriticalPowerFeatures:' +
+          'Requires Improved Critical >= 6'
+      ];
       cost = 35;
+      rules.defineRule('combatNotes.staggeringingCriticalFeature',
+        'baseAttack', '=', 'source + 10'
+      );
       // TODO
     } else if(power == 'Stength Surge') {
       cost = 10;
       // TODO
     } else if(power == 'Stunning Critical') {
+      notes = [
+        'combatNotes.stunningCriticalFeature:' +
+          'Foe stunned 1d4+1 rd (DC %V Fort 1 rd) after critical hit',
+        'validationNotes.stunningCriticalPowerFeatures:' +
+          'Requires Improved Critical >= 10'
+      ];
       cost = 30;
-      // TODO
+      rules.defineRule('combatNotes.stunningCriticalFeature',
+        'baseAttack', '=', 'source + 10'
+      );
     } else if(power == 'Suggestion') {
       cost = 12;
       // TODO
@@ -2589,8 +2695,12 @@ HybridD20.powerRules = function(rules, powers) {
       cost = 30;
       // TODO
     } else if(power == 'Tiring Critical') {
+      notes = [
+        'combatNotes.tiringCriticalFeature:Foe fatigued after critical hit',
+        'validationNotes.tiringCriticalPowerFeatures:' +
+          'Requires Improved Critical >= 6'
+      ];
       cost = 50;
-      // TODO
     } else if(power == 'Touch Of Death') {
       cost = 10;
       // TODO
