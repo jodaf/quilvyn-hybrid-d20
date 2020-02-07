@@ -34,7 +34,7 @@ function HybridD20() {
     return;
   }
 
-  var rules = new ScribeRules('HybridD20', HybridD20_VERSION);
+  var rules = new QuilvynRules('HybridD20', HybridD20_VERSION);
   rules.editorElements = HybridD20.initialEditorElements();
   SRD35.createViewers(rules, SRD35.VIEWERS);
   // Remove some character sheet elements that don't apply
@@ -61,7 +61,7 @@ function HybridD20() {
   HybridD20.spellDescriptionRules(rules);
   rules.defineChoice('preset', 'race', 'level', 'powers');
   rules.defineChoice('random', HybridD20.RANDOMIZABLE_ATTRIBUTES);
-  Scribe.addRuleSet(rules);
+  Quilvyn.addRuleSet(rules);
   HybridD20.rules = rules;
 }
 
@@ -2779,7 +2779,7 @@ HybridD20.randomizeOneAttribute = function(attributes, attribute) {
     var level = attributes['level'] || 1;
     var max = Math.floor(1000 * Math.pow(1.1, level + 1) - 1001);
     var min = Math.floor(1000 * Math.pow(1.1, level) - 1000);
-    attributes['experience'] = ScribeUtils.random(min, max);
+    attributes['experience'] = QuilvynUtils.random(min, max);
   } else if(attribute == 'feats') {
     // TODO
   } else if(attribute == 'hitPoints') {
@@ -2787,7 +2787,7 @@ HybridD20.randomizeOneAttribute = function(attributes, attribute) {
     var hitDice = attrs['baseAttack'] || 0;
     var hitPoints = 0;
     for(var i = 1; i <= hitDice; i++) {
-      hitPoints += i == 1 ? 10 : ScribeUtils.random(1, 10);
+      hitPoints += i == 1 ? 10 : QuilvynUtils.random(1, 10);
     }
     attributes['hitPoints'] = hitPoints;
   } else if(attribute == 'skills') {
@@ -2795,12 +2795,12 @@ HybridD20.randomizeOneAttribute = function(attributes, attribute) {
     var choices = this.getChoices('skills');
     var xpTotal = attrs['experience'] || 0;
     var xpUsed = attrs['experienceUsed'] || 0;
-    var useUpTo = xpUsed + ScribeUtils.random(0, xpTotal - xpUsed) / 2;
+    var useUpTo = xpUsed + QuilvynUtils.random(0, xpTotal - xpUsed) / 2;
     var skill = null;
     while(xpUsed <= useUpTo) {
       skill = !attributes['skills.HTH Combat'] ? 'skills.HTH Combat' :
               !attributes['skills.Fire Combat'] ? 'skills.Fire Combat' :
-              ('skills.' + ScribeUtils.randomKey(choices));
+              ('skills.' + QuilvynUtils.randomKey(choices));
       if(!attributes[skill])
         attributes[skill] = 0;
       else if(attributes[skill] >= attributes['maxAllowedSkillPoints'])
@@ -2857,7 +2857,7 @@ HybridD20.skillRules = function(rules, skills) {
 HybridD20.spellDescriptionRules = function(rules, spells, descriptions) {
 
   if(spells == null) {
-    spells = ScribeUtils.getKeys(rules.choices.spells);
+    spells = QuilvynUtils.getKeys(rules.choices.spells);
   }
   if(descriptions == null) {
     descriptions = HybridD20.spellsDescriptions;
@@ -2920,8 +2920,8 @@ HybridD20.spellDescriptionRules = function(rules, spells, descriptions) {
 /* Returns HTML body content for user notes associated with this rule set. */
 HybridD20.ruleNotes = function() {
   return '' +
-    '<h2>HybridD20 Scribe Module Notes</h2>\n' +
-    'HybridD20 Scribe Module Version ' + HybridD20_VERSION + '\n' +
+    '<h2>HybridD20 Quilvyn Module Notes</h2>\n' +
+    'HybridD20 Quilvyn Module Version ' + HybridD20_VERSION + '\n' +
     '\n' +
     '<h3>Usage Notes</h3>\n' +
     '<p>\n' +
