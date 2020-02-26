@@ -121,20 +121,22 @@ HybridD20.POWERS = [
   'Breath Weapon', 'Call To Mind', 'Channeling Smite', 'Claws', 'Clear Mind',
   'Clerical Ordainment', 'Combat Focus', 'Conviction', 'Corrupting Touch',
   'Countersong', 'Damage Reduction', 'Darkvision', 'Dazzling Display',
-  'Deadly Performance', 'Deafening Critical', "Death's Gift", 'Deathless',
-  'Defensive Precognition', 'Defensive Prescience', 'Destiny Realized',
-  'Devastating Critical', 'Dimension Spring Attack', 'Dirge Of Doom',
-  'Discordant Performance', 'Distance Arrow', 'Druidical Initiation',
-  'Elemental Blast', 'Elemental Rage', 'Elemental Ray', 'Empty Body',
-  'Energy Arrow', 'Energy Burst Arrow', 'Energy Resistance', 'Enhance Arrows',
-  'Eschew Materials', 'Exhausting Critical', 'Fascinate', 'Fast Healing',
-  'Fated', 'Fey Magic', 'Feytouched', 'Font Of Power', 'Free Casting',
-  'Free Manifesting', 'Frightening Tune', "Gorgon's Fist", 'Grasp Of The Dead',
-  'Grave Touch', 'Greater Arcane Resistance', 'Greater Augmented Wild Shape',
-  'Greater Dispelling Attack', 'Greater Rage',
+  'Deadly Performance', 'Deadly Stroke', 'Deafening Critical', "Death's Gift",
+  'Deathless', 'Deep Impact', 'Defensive Precognition', 'Defensive Prescience',
+  'Destiny Realized', 'Devastating Critical', 'Dimension Spring Attack',
+  'Dirge Of Doom', 'Discordant Performance', 'Distance Arrow',
+  'Druidical Initiation', 'Elemental Blast', 'Elemental Rage', 'Elemental Ray',
+  'Empty Body', 'Energy Arrow', 'Energy Burst Arrow', 'Energy Resistance',
+  'Enhance Arrows', 'Eschew Materials', 'Exhausting Critical', 'Fascinate',
+  'Fast Healing', 'Fast Movement', 'Fated', 'Fell Shot', 'Fey Magic',
+  'Feytouched', 'Focus Meditation', 'Focused Fist', 'Focused Shot',
+  'Focused Sunder', 'Font Of Power', 'Free Casting', 'Free Manifesting',
+  'Frightening Tune', 'Frightful Presence', 'Ghost Attack', "Gorgon's Fist",
+  'Grasp Of The Dead', 'Grave Touch', 'Greater Arcane Resistance',
+  'Greater Augmented Wild Shape', 'Greater Dispelling Attack', 'Greater Rage',
   'Greater Reaving Dispelling Attack', 'Greater Wild Shape', 'Guarded Stance',
   'Hail Of Arrows', 'Hand Of The Apprentice', 'Heavenly Fire', 'Hellfire',
-  'Huge Elemental Wild Shape', 'Huge Plant Wild Shape', 'Imbue Arrow',
+  'Huge Elemental Wild Shape', 'Huge Plant Wild Shape', 'Hustle', 'Imbue Arrow',
   'Impromptu Sneak Attack', 'Incorporeal Form', 'Increased DR',
   'Inertial Armor', 'Inspire Competence', 'Inspire Courage',
   'Inspire Greatness', 'Inspire Heroics', 'Intimidating Glare',
@@ -147,8 +149,8 @@ HybridD20.POWERS = [
   'Night Vision', 'Offensive Precognition', 'Offensive Prescience', 'One Of Us',
   'Opportunistic Strike', 'Paralyzing Show', 'Perfect Self', 'Phase Arrow',
   'Pierce The Fog Of War', 'Plant Wild Shape', 'Power Over Shadow',
-  'Powerful Blow', 'Psionic Awareness', 'Psychic Warrior', 'Quick Reflexes',
-  'Quivering Palm Power', 'Rage', 'Ranged Legerdemain',
+  'Powerful Blow', 'Prowess', 'Psionic Awareness', 'Psychic Warrior',
+  'Quick Reflexes', 'Quivering Palm Power', 'Rage', 'Ranged Legerdemain',
   'Reaving Dispelling Attack', 'Regeneration', 'Renewed Vigor', 'Rolling Dodge',
   'Roused Anger', 'Scent', 'School Defense', 'Seeker Arrow',
   'Selective Channeling', 'Sickening Critical', 'Slippery Mind', 'Slow Fall',
@@ -160,14 +162,15 @@ HybridD20.POWERS = [
   'Spell Repertoire (Sorcerer)', 'Spell Repertoire (Wizard)',
   'Spell Resistance', 'Spell Synthesis', 'Spell Theurgy',
   'Spellcasting (Arcane)', 'Spellcasting (Divine)', 'Spellcasting (Druidical)',
-  'Spontaneous Casting', 'Staggering Critical', 'Stength Surge',
-  'Stunning Critical', 'Suggestion', 'Superior Wild Shape', 'Surprise Accuracy',
-  'Surprise Spells', 'Swift Foot', 'Tenacious Magic', 'Terrifying Howl',
-  'Timeless Body', 'Tireless Rage', 'Tiring Critical', 'Touch Of Death',
-  'Touch Of Destiny', 'Trackless Step', 'Trollborn', 'Turn Elemental',
-  'Turn Outsider', 'Unexpected Strike', 'Unusual Anatomy', 'Wand Expertise',
-  'Wild Shape', 'Wild Surge', 'Wings Of Heaven', 'Wings', 'Within Reach',
-  'Wizardry', 'Woodland Stride'
+  'Spontaneous Casting', 'Staggering Critical', 'Staredown', 'Stength Surge',
+  'Stunning Critical', 'Stunning Defense', 'Suggestion', 'Superior Wild Shape',
+  'Surprise Accuracy', 'Surprise Spells', 'Swift Foot', 'Tenacious Magic',
+  'Terrifying Howl', 'Timeless Body', 'Tireless Rage', 'Tiring Critical',
+  'Touch Of Death', 'Touch Of Destiny', 'Trackless Step', 'Trollborn',
+  'Turn Elemental', 'Turn Outsider', 'Unavoidable Strike', 'Unexpected Strike',
+  'Unusual Anatomy', 'Wand Expertise', 'Wild Shape', 'Wild Surge',
+  'Wings Of Heaven', 'Wings', 'Within Reach', 'Wizardry', 'Woodland Stride',
+  'Wounding Attack'
 ];
 HybridD20.SPELLS = {
 
@@ -2137,23 +2140,58 @@ HybridD20.powerRules = function(rules, powers) {
         'features.Sorcery', '=', '"' + energyType + '"'
       );
     } else if(power == 'Call To Mind') {
+      notes = [
+        'skillNotes.callToMindFeature:Reroll failed Knowledge check at +%V',
+        'validationNotes.callToMindPowerSkills:' +
+          'Requires Concentration/Perception'
+      ];
       cost = 10;
-      // TODO
+      rules.defineRule
+        ('skillNotes.callToMindFeatue', 'features.Call To Mind', '=', null);
     } else if(power == 'Channeling Smite') {
+      notes = [
+        'magicNotes.channelingSmiteFeature:' +
+          'Spend 2 Lay On Hands to cause channeling effect on hit',
+        'validationNotes.channelingSmitePowerFeature:Requires Lay On Hands || Touch Of Death'
+        // TODO Requires Channel Positive or Negative Energy
+      ];
       cost = 20;
-      // TODO
     } else if(power == 'Claws') {
+      notes = [
+        'combatNotes.clawsFeature:2@1d%V in full-attack'
+      ];
       cost = 20;
-      // TODO
+      rules.defineRule('combatNotes.clawsFeature',
+        '', '=', '6',
+        'features.Small', '=', '4'
+      );
     } else if(power == 'Clear Mind') {
+      notes = [
+        'saveNotes.clearMindFeature:Reroll failed Will'
+      ];
       cost = 30;
-      // TODO
     } else if(power == 'Clerical Ordainment') {
+      notes = [
+        'magicNotes.clericalOrdainment:' +
+          'Fill spell slots through prayer, cast via holy symbol',
+        'validationNotes.clericalOrdainmentPowerAbility:' +
+          'Requires Wisdom Modifier >= Clerical Ordainment / 2',
+        'validationNotes.clericalOrdainmentPowerSkills:' +
+          'Requires Knowledge (The Planes) >= Clerical Ordainment/Spellcasting >=  Clerical Ordainment'
+      ];
       cost = 0;
-      // TODO
     } else if(power == 'Combat Focus') {
+      notes = [
+        'combatNotes.combatFocusFeature:' +
+          'DC %V check to start using combat focus power',
+        'validationNotes.combatFocusPowerSkills:' +
+          'Requires HTH Combat >= Combat Focus || Fire Combat >= Combat Focus/Concentration >= Combat Focus'
+      ];
       cost = 40;
-      // TODO
+      rules.defineRule('combatNotes.combatFocusFeature',
+        'powers.Combat Focus', '=', '20 - source',
+        'skillModifier.Concentration', '+', '-source'
+      );
     } else if(power == 'Corrupting Touch') {
       cost = 10;
       // TODO
@@ -2175,10 +2213,22 @@ HybridD20.powerRules = function(rules, powers) {
         'powers.Darkvision', '=', 'source * 5 + 55'
       );
     } else if(power == 'Dazzling Display') {
+      notes = [
+        'skillNotes.dazzlingDisplayFeature:Full-round Bluff to demoralize foe',
+        'validationNotes.dazzlingDisplayPowerFeatures:Requires Weapon Training',
+        'validationNotes.dazzlingDisplayPowerSkills:Requires Bluff/HTH Combat'
+      ];
       cost = 20;
-      // TODO
     } else if(power == 'Deadly Performance') {
       cost = 28;
+      // TODO
+    } else if(power == 'Deadly Stroke') {
+      notes = [
+        'combatNotes.deadlyStrokeFeature:+1 Con vs. flat-footed foe',
+        'validationNotes.deadlyStrokePowerFeatures:' +
+          'Requires Dazzling Display >= 11'
+      ];
+      cost = 50;
       // TODO
     } else if(power == 'Deafening Critical') {
       notes = [
@@ -2195,8 +2245,27 @@ HybridD20.powerRules = function(rules, powers) {
       cost = 30;
       // TODO
     } else if(power == 'Deathless') {
+      notes = [
+        'abilityNotes.deathlessFeature:+%V Charisma',
+        'combatNotes.deathlessFeature:-%V HP',
+        'featureNotes.deathlessFeature:Become undead',
+        'saveNotes.deathlessFeature:-%V Fortitude',
+        'validationNotes.deathlessPowerFeatures:' +
+          'Requires Wizardry >= 20 || Clerical Ordainment >= 11/Craft Magical Item >= 11'
+      ];
       cost = 120;
-      // TODO
+      rules.defineRule
+        ('abilityNotes.deathlessFeature', 'powers.Deathless', '=',  null);
+      rules.defineRule
+        ('combatNotes.deathlessFeature', 'constituionModifier', '=', null);
+      rules.defineRule
+        ('saveNotes.deathlessFeature', 'constitutionModifier', '=', null);
+    } else if(power == 'Deep Impact') {
+      notes = [
+        'combatNotes.deepImpactFeature:Bypass armor on melee weapon attack',
+        'validationNotes.deepImpactPowerFeatures:Requires Combat Focus >= 5'
+      ];
+      cost = 20;
     } else if(power == 'Defensive Precognition') {
       cost = 20;
       // TODO
@@ -2271,10 +2340,23 @@ HybridD20.powerRules = function(rules, powers) {
       cost = 8;
       // TODO
     } else if(power == 'Fast Healing') {
-      cost = 40;;
+      cost = 40;
       // TODO
+    } else if(power == 'Fast Movement') {
+      notes = [
+        'abilityNotes.fastMovementFeature:+10 speed out of heavy armor',
+        'validationNotes.fastMovementPowerFeatures:Requires Combat Focus'
+      ];
+      cost = 10;
     } else if(power == 'Fated') {
       cost = 30;
+      // TODO
+    } else if(power == 'Fell Shot') {
+      notes = [
+        'combatNotes.fellShotFeature:Bypass armor on ranged weapon attack',
+        'validationNotes.fellShotPowerFeatures:Requires Combat Focus >= 5'
+      ];
+      cost = 20;
       // TODO
     } else if(power == 'Fey Magic') {
       cost = 90;
@@ -2285,6 +2367,47 @@ HybridD20.powerRules = function(rules, powers) {
     } else if(power == 'Font Of Power') {
       cost = 30;
       // TODO
+    } else if(power == 'Focus Meditation') {
+      notes = [
+        'combatNotes.focusMeditationFeature:Enter Combat Focus as move action',
+        'validationNotes.focusMeditationPowerFeatures:' +
+          'Requires Combat Focus >= 7'
+      ];
+      cost = 20;
+    } else if(power == 'Focused Fist') {
+      notes = [
+        'combatNotes.focusedFistFeature:+%Vd6 unarmed',
+        'validationNotes.focusedFistPowerFeatures:Requires Combat Focus >= 3'
+      ];
+      cost = 30;
+      rules.defineRule('combatNotes.focusedFistFeature',
+        'skills.HTH Combat', '=', 'Math.floor(source / 2)'
+      );
+    } else if(power == 'Focused Shot') {
+      notes = [
+        'combatNotes.focusedShotFeature:+%Vd6 ranged',
+        'validationNotes.focusedShotPowerFeatures:Requires Combat Focus >= 3'
+      ];
+      cost = 30;
+      rules.defineRule('combatNotes.focusedShotFeature',
+        'skills.Fire Combat', '=', 'Math.floor(source / 2)'
+      );
+    } else if(power == 'Focused Sunder') {
+      notes = [
+        'combatNotes.focusedSunderFeature:' +
+          'Ignore half weapon hardness on sunder attempt',
+        'validationNotes.focusedSunderPowerFeatures:Requires Combat Focus >= 9'
+      ];
+      cost = 50;
+    } else if(power == 'Focused Weapon') {
+      notes = [
+        'combatNotes.focusedWeaponFeature:+%Vd6 melee',
+        'validationNotes.focusedWeaponPowerFeatures:Requires Combat Focus >= 3'
+      ];
+      cost = 30;
+      rules.defineRule('combatNotes.focusedWeaponFeature',
+        'skills.HTH Combat', '=', 'Math.floor(source / 2)'
+      );
     } else if(power == 'Free Casting') {
       cost = 26;
       // TODO
@@ -2294,6 +2417,26 @@ HybridD20.powerRules = function(rules, powers) {
     } else if(power == 'Frightening Tune') {
       cost = 16;
       // TODO
+    } else if(power == 'Frightful Presence') {
+      notes = [
+        'combatNotes.frightfulPresenceFeature:' +
+          "R60' foes shaken (DC %V Will neg)",
+        'validationNotes.frightfulPresencePowerFeatures:' +
+          'Requires Dazzling Display >= 13'
+      ];
+      cost = 80;
+      rules.defineRule('combatNotes.frightfulPresenceFeature',
+        'charismaModifier', '=', '10 + source',
+        'skillModifier.Bluff', '+', null,
+        'features.Small', '+', '-1',
+        'features.Large', '+', '1'
+      );
+    } else if(power == 'Ghost Attack') {
+      notes = [
+        'combatNotes.ghostAttackFeature:Reroll miss vs. incorporeal',
+        'validationNotes.ghostAttackPowerFeatures:Requires Combat Focus >= 5'
+      ];
+      cost = 30;
     } else if(power == "Gorgon's Fist") {
       cost = 20;
       // TODO
@@ -2350,6 +2493,12 @@ HybridD20.powerRules = function(rules, powers) {
     } else if(power == 'Huge Plant Wild Shape') {
       cost = 14;
       // TODO
+    } else if(power == 'Hustle') {
+      notes = [
+        'combatNotes.hustleFeature:Extra move action',
+        'validationNotes.hustlePowerFeatures:Requires Combat Focus >= 5'
+      ];
+      cost = 30;
     } else if(power == 'Imbue Arrow') {
       cost = 45;
       // TODO
@@ -2488,6 +2637,12 @@ HybridD20.powerRules = function(rules, powers) {
     } else if(power == 'Powerful Blow') {
       cost = 10;
       // TODO
+    } else if(power == 'Prowess') {
+      notes = [
+        'combatNotes.prowessFeature:Unlimited AOO',
+        'validationNotes.prowessPowerFeatures:Requires Combat Focus >= 4'
+      ];
+      cost = 20;
     } else if(power == 'Psionic Awareness') {
       cost = 0;
       // TODO
@@ -2639,6 +2794,13 @@ HybridD20.powerRules = function(rules, powers) {
         'baseAttack', '=', 'source + 10'
       );
       // TODO
+    } else if(power == 'Staredown') {
+      notes = [
+        'combatNotes.staredownFeature:' +
+          'Dazzling Display demoralize as move action',
+        'validationNotes.staredownPowerFeatures:Requires Dazzling Display >= 9'
+      ];
+      cost = 20;
     } else if(power == 'Stength Surge') {
       cost = 10;
       // TODO
@@ -2652,6 +2814,17 @@ HybridD20.powerRules = function(rules, powers) {
       cost = 30;
       rules.defineRule('combatNotes.stunningCriticalFeature',
         'baseAttack', '=', 'source + 10'
+      );
+    } else if(power == 'Stunning Defense') {
+      notes = [
+        'combatNotes.stunningDefenseFeature:' +
+          '%V shaken, struck foes flat-footed 1 rd',
+        'validationNotes.stunningDefensePowerFeatures:' +
+          'Requires Dazzling Display >= 7'
+      ];
+      cost = 10;
+      rules.defineRule('combatNotes.stunningDefenseFeature',
+        'skills.Bluff', '=', 'source - 6'
       );
     } else if(power == 'Suggestion') {
       cost = 12;
@@ -2705,6 +2878,13 @@ HybridD20.powerRules = function(rules, powers) {
     } else if(power == 'Turn Elemental') {
       cost = 40;
       // TODO
+    } else if(power == 'Unavoidable Strike') {
+      notes = [
+        'combatNotes.unavoidableStrikeFeature:Bypass armor on unarmed attack',
+        'validationNotes.unavoidableStrikePowerFeatures:' +
+          'Requires Combat Focus >= 5'
+      ];
+      cost = 20;
     } else if(power == 'Unexpected Strike') {
       cost = 15;
       // TODO
@@ -2735,6 +2915,12 @@ HybridD20.powerRules = function(rules, powers) {
     } else if(power == 'Woodland Stride') {
       cost = 0;
       // TODO
+    } else if(power == 'Wounding Attack') {
+      notes = [
+        'combatNotes.woundingAttackFeature:Hit does 1 Con',
+        'validationNotes.woundingAttackPowerFeatures:Requires Combat Focus >= 8'
+      ];
+      cost = 50;
     } else
       continue;
 
