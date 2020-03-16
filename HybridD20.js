@@ -59,7 +59,7 @@ function HybridD20() {
   SRD35.movementRules(rules);
   HybridD20.magicRules(rules, SRD35.SCHOOLS);
   HybridD20.spellDescriptionRules(rules);
-  rules.defineChoice('preset', 'race', 'level', 'powers');
+  rules.defineChoice('preset', 'race', 'level');
   rules.defineChoice('random', HybridD20.RANDOMIZABLE_ATTRIBUTES);
   Quilvyn.addRuleSet(rules);
   HybridD20.rules = rules;
@@ -108,7 +108,8 @@ HybridD20.FEATS = [
 HybridD20.RANDOMIZABLE_ATTRIBUTES = [
   'charisma', 'constitution', 'dexterity', 'intelligence', 'strength', 'wisdom',
   'name', 'race', 'gender', 'alignment', 'deity', 'experience', 'feats',
-  'skills', 'languages', 'hitPoints', 'armor', 'shield', 'weapons', 'spells'
+  'skills', 'powers', 'languages', 'hitPoints', 'armor', 'shield', 'weapons',
+  'spells'
 ];
 // TODO Domain Powers, Immunity, School Focus, School Specialization
 HybridD20.POWERS = [
@@ -2193,14 +2194,26 @@ HybridD20.powerRules = function(rules, powers) {
         'skillModifier.Concentration', '+', '-source'
       );
     } else if(power == 'Corrupting Touch') {
+      notes = [
+        'combatNotes.corruptingTouchFeature:' +
+          'Touched shaken, -2 saves vs. enchantment for %V rd'
+      ];
       cost = 10;
-      // TODO
+      rules.defineRule('combatNotes.corruptingTouchFeature',
+        'casterLevel', '=', 'Math.max(Math.floor(source/2),1)'
+      );
     } else if(power == 'Conviction') {
+      notes = [
+        'featureNotes.convictionFeature:' +
+          'Reroll ability, attack, save, or skill 1/dy'
+      ];
       cost = 28;
-      // TODO
     } else if(power == 'Countersong') {
+      notes = [
+        'magicNotes.countersongFeature:' +
+          "R30' Listners under sonic magic save or use self Perform"
+      ];
       cost = 4;
-      // TODO
     } else if(power == 'Damage Reduction') {
       cost = 4; // TODO
       // TODO
@@ -2220,8 +2233,11 @@ HybridD20.powerRules = function(rules, powers) {
       ];
       cost = 20;
     } else if(power == 'Deadly Performance') {
+      notes = [
+        'magicNotes.deadlyPerformanceFeature:' +
+          "R30' Target dies (Will save stunned 1d4 rd"
+      ];
       cost = 28;
-      // TODO
     } else if(power == 'Deadly Stroke') {
       notes = [
         'combatNotes.deadlyStrokeFeature:+1 Con vs. flat-footed foe',
@@ -2229,7 +2245,6 @@ HybridD20.powerRules = function(rules, powers) {
           'Requires Dazzling Display >= 11'
       ];
       cost = 50;
-      // TODO
     } else if(power == 'Deafening Critical') {
       notes = [
         'combatNotes.deafeningCriticalFeature:' +
@@ -2242,8 +2257,10 @@ HybridD20.powerRules = function(rules, powers) {
         'baseAttack', '=', 'source + 10'
       );
     } else if(power == "Death's Gift") {
+      notes = [
+        "saveNotes.death'sGiftFeature:DR 5/- vs. non-lethal"
+      ];
       cost = 30;
-      // TODO
     } else if(power == 'Deathless') {
       notes = [
         'abilityNotes.deathlessFeature:+%V Charisma',
@@ -2267,14 +2284,33 @@ HybridD20.powerRules = function(rules, powers) {
       ];
       cost = 20;
     } else if(power == 'Defensive Precognition') {
+      notes = [
+        'combatNotes.defensivePrecognitionFeature:+%V AC'
+      ];
       cost = 20;
-      // TODO
+      rules.defineRule
+        ('armorClass', 'combatNotes.defensivePrecognitionFeature', '+', null);
+      rules.defineRule('combatNotes.defensivePrecognitionFeature',
+        'powers.Defensive Precognition', '=', 'Math.floor((source + 1) / 2)'
+      );
     } else if(power == 'Defensive Prescience') {
+      // Note: identical to Defensive Precognition?
+      notes = [
+        'combatNotes.defensivePrescienceFeature:+%V AC'
+      ];
       cost = 20;
-      // TODO
+      rules.defineRule
+        ('armorClass', 'combatNotes.defensivePrescienceFeature', '+', null);
+      rules.defineRule('combatNotes.defensivePrescienceFeature',
+        'powers.Defensive Prescience', '=', 'Math.floor((source + 1) / 2)'
+      );
     } else if(power == 'Destiny Realized') {
+      notes = [
+        'combatNotes.destinyRealizedFeature:' +
+          'Self crit auto succeeds, foe crit requires 2nd nat 20',
+        'magicNotes.destinyRealizedFeature:Auto succeed resistance check 1/dy'
+      ];
       cost = 68;
-      // TODO
     } else if(power == 'Devastating Critical') {
       notes = [
         'combatNotes.devastatingCriticalFeature:' +
@@ -2976,6 +3012,8 @@ HybridD20.randomizeOneAttribute = function(attributes, attribute) {
       hitPoints += i == 1 ? 10 : QuilvynUtils.random(1, 10);
     }
     attributes['hitPoints'] = hitPoints;
+  } else if(attribute == 'powers') {
+    // TODO
   } else if(attribute == 'skills') {
     attrs = this.applyRules(attributes);
     var choices = this.getChoices('skills');
