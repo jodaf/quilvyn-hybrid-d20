@@ -17,7 +17,7 @@ Place, Suite 330, Boston, MA 02111-1307 USA.
 
 "use strict";
 
-var HybridD20_VERSION = '1.6.0.1alpha';
+var HybridD20_VERSION = '1.8.0.1alpha';
 
 /*
  * This module loads the rules for Hybrid D20.  The HybridD20 module
